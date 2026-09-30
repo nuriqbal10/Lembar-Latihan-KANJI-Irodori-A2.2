@@ -95,7 +95,124 @@ function buildIndexApp() {
   <title>IRODORI Kanji Studio A2.2 (Bab 1 - 18) | Lembar Latihan 20-Grid & Kuis Interaktif</title>
   <meta name="description" content="Lembar Latihan Kanji IRODORI A2.2 dengan font UD Digi Kyokasho, 20 Kotak Grid per Kanji, Ukuran Model & Jiplak Presisi, Halaman Latihan A & B Terpisah">
 
+  <!-- Firebase SDK Compat -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+
   <style>
+    
+    /* AUDIO TTS & VOCAB PILL */
+    .btn-voice-mini {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      background: var(--pastel-blue-bg);
+      color: var(--pastel-blue-txt);
+      border: 1px solid var(--pastel-blue-border);
+      border-radius: 6px;
+      font-size: 0.65rem;
+      padding: 1px 4px;
+      cursor: pointer;
+      line-height: 1;
+      transition: transform 0.15s ease;
+      z-index: 5;
+    }
+    .btn-voice-mini:hover { transform: scale(1.15); background: #dbeafe; }
+
+    .btn-voice-inline {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 0 3px;
+      line-height: 1;
+      opacity: 0.75;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+    .btn-voice-inline:hover { opacity: 1; transform: scale(1.2); }
+
+    .vocab-pill {
+      background: var(--clay-surface);
+      padding: 3px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* GOOGLE SIGN IN & SENSEI DASHBOARD */
+    .btn-google {
+      width: 100%;
+      background: #ffffff;
+      color: #1e293b;
+      border: 1.5px solid #cbd5e1;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .btn-google:hover { background: #f8fafc; border-color: #94a3b8; }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 12px 0 16px;
+      color: var(--text-light);
+      font-size: 0.75rem;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .auth-divider span { padding: 0 10px; }
+
+    .btn-sensei {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25);
+    }
+    .btn-sensei:hover { opacity: 0.95; transform: translateY(-1px); }
+
+    .sensei-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 14px;
+    }
+    .sensei-table th {
+      background: var(--clay-surface);
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 800;
+      color: var(--text-sub);
+      border-bottom: 2px solid var(--card-border);
+    }
+    .sensei-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
     /* 1. TYPOGRAPHY: STRICT UD DIGI KYOKASHO PRIORITY */
     @font-face {
       font-family: 'UD Digi Kyokasho Native';
@@ -647,6 +764,9 @@ function buildIndexApp() {
         </select>
         <button class="btn-action btn-print" onclick="window.print()">🖨️ Cetak A4</button>
         <button class="btn-action btn-theme" onclick="toggleTheme()" id="themeBtn" title="Ganti Mode Gelap / Terang">🌙</button>
+        <div id="senseiButtonContainer" style="display:none;">
+          <button class="btn-sensei" onclick="openSenseiDashboard()">👑 Rekap Siswa</button>
+        </div>
         <div id="authProfileContainer"></div>
       </div>
     </div>
@@ -728,6 +848,7 @@ function buildIndexApp() {
                 <div class="kanji-header">
                   <div class="kanji-hero">
                     <span>${k.kanji}</span>
+                    <button class="btn-voice-mini no-print" onclick="event.stopPropagation(); speakJapanese('${k.kanji}')" title="Dengarkan Pengucapan Kanji">🔊</button>
                   </div>
                   <div class="kanji-meta">
                     <div class="kanji-readings">
@@ -750,8 +871,9 @@ function buildIndexApp() {
                   <span style="font-weight:700;color:var(--text-sub);min-width:70px;">Kosakata:</span>
                   <div style="display: flex; gap: 6px; flex-wrap: wrap;">
                     ${k.words.map(w => `
-                      <span style="background:var(--clay-surface);padding:2px 8px;border-radius:6px;border:1px solid var(--card-border);">
+                      <span class="vocab-pill">
                         <strong>${w.word}</strong> (${w.reading}): ${w.meaning}
+                        <button class="btn-voice-inline no-print" onclick="event.stopPropagation(); speakJapanese('${w.word}')" title="Dengarkan kata">🔊</button>
                       </span>
                     `).join('')}
                   </div>
@@ -760,7 +882,10 @@ function buildIndexApp() {
                 <div class="kanji-details-row" style="font-size:0.82rem;margin-bottom:10px;">
                   <span style="font-weight:700;color:var(--text-sub);min-width:70px;">Contoh:</span>
                   <div>
-                    <span style="font-weight:700;color:var(--text-main);">${k.sentenceFurigana}</span>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                      <span style="font-weight:700;color:var(--text-main);">${k.sentenceFurigana}</span>
+                      <button class="btn-voice-inline no-print" onclick="event.stopPropagation(); speakJapanese('${k.sentenceFurigana.replace(/\[.*?\]/g, '')}')" title="Dengarkan kalimat">🔊</button>
+                    </div>
                     <span style="font-style:italic;color:var(--text-sub);display:block;font-size:0.78rem;">"${k.sentenceId}"</span>
                   </div>
                 </div>
@@ -999,38 +1124,74 @@ function buildIndexApp() {
 
   </main>
 
-  <!-- AUTH MODAL -->
+    <!-- AUTH MODAL (FIREBASE) -->
   <div class="modal-backdrop" id="authModal">
-    <div class="modal-card">
+    <div class="modal-card" style="max-width:440px;">
       <button class="modal-close" onclick="closeAuthModal()">✕</button>
       <div style="display:flex;gap:8px;margin-bottom:18px;border-bottom:1px solid var(--card-border);padding-bottom:8px;">
         <button id="authTabLogin" class="tab-btn active" onclick="switchAuthMode('login')">🔑 Masuk Akun</button>
         <button id="authTabRegister" class="tab-btn" onclick="switchAuthMode('register')">📝 Daftar Siswa Baru</button>
       </div>
 
+      <!-- GOOGLE SIGN IN BUTTON -->
+      <button class="btn-google" onclick="handleGoogleSignIn()">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.55 10.79l7.98-6.2z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Masuk Cepat dengan Google
+      </button>
+
+      <div class="auth-divider"><span>atau dengan Email</span></div>
+
       <div id="loginFormSection">
-        <h3 style="font-size:1.15rem;font-weight:800;color:var(--text-main);margin-bottom:4px;">Selamat Datang!</h3>
-        <p style="font-size:0.82rem;color:var(--text-sub);margin-bottom:14px;">Masuk untuk membuka seluruh 18 Bab dan menyimpan riwayat belajar.</p>
-        <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Username</label>
-        <input type="text" id="loginUsername" class="input-field" placeholder="Ketik username...">
+        <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Alamat Email</label>
+        <input type="email" id="loginEmail" class="input-field" placeholder="nama@email.com">
         <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Password</label>
-        <input type="password" id="loginPassword" class="input-field" placeholder="Ketik password...">
-        <button class="btn-action btn-print" style="width:100%;justify-content:center;padding:10px;" onclick="handleLoginSubmit()">Masuk Sekarang</button>
-        <div style="font-size:0.75rem;color:var(--text-sub);margin-top:12px;background:var(--clay-surface);padding:8px 12px;border-radius:10px;">
-          💡 Akun Demo: <strong>siswa</strong> / <strong>siswa123</strong> (Siswa) atau <strong>sensei</strong> / <strong>irodori2026</strong> (Guru)
+        <input type="password" id="loginPassword" class="input-field" placeholder="Ketik password..." onkeydown="if(event.key==='Enter') handleLoginSubmit()">
+        <div style="display:flex;justify-content:flex-end;margin-top:-6px;margin-bottom:12px;">
+          <a href="javascript:void(0)" onclick="handleForgotPassword()" style="font-size:0.75rem;color:#2563eb;text-decoration:none;">Lupa password?</a>
         </div>
+        <button class="btn-action btn-print" style="width:100%;justify-content:center;padding:10px;" onclick="handleLoginSubmit()">Masuk Sekarang</button>
       </div>
 
       <div id="registerFormSection" style="display:none;">
-        <h3 style="font-size:1.15rem;font-weight:800;color:var(--text-main);margin-bottom:4px;">Buat Akun Siswa Baru</h3>
-        <p style="font-size:0.82rem;color:var(--text-sub);margin-bottom:14px;">Daftar gratis untuk mengakses seluruh kurikulum Bab 1 s.d. 18.</p>
-        <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Nama Lengkap</label>
+        <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Nama Lengkap Siswa</label>
         <input type="text" id="regFullName" class="input-field" placeholder="Contoh: Budi Pratama">
-        <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Username</label>
-        <input type="text" id="regUsername" class="input-field" placeholder="Pilih username...">
-        <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Password</label>
-        <input type="password" id="regPassword" class="input-field" placeholder="Buat password...">
-        <button class="btn-action btn-auth" style="width:100%;justify-content:center;padding:10px;" onclick="handleRegisterSubmit()">Daftar & Buka Seluruh Bab</button>
+        <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Alamat Email</label>
+        <input type="email" id="regEmail" class="input-field" placeholder="nama@email.com">
+        <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Password (Minimal 6 karakter)</label>
+        <input type="password" id="regPassword" class="input-field" placeholder="Buat password..." onkeydown="if(event.key==='Enter') handleRegisterSubmit()">
+        <button class="btn-action btn-auth" style="width:100%;justify-content:center;padding:10px;margin-top:6px;" onclick="handleRegisterSubmit()">Daftar Akun Siswa Baru</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SENSEI DASHBOARD MODAL -->
+  <div class="modal-backdrop" id="senseiModal">
+    <div class="modal-card" style="max-width:800px;width:95%;">
+      <button class="modal-close" onclick="closeSenseiDashboard()">✕</button>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+        <div>
+          <span class="curriculum-tag" style="background:#fef3c7;color:#92400e;">👑 Panel Pengajar</span>
+          <h3 style="font-size:1.3rem;font-weight:800;color:var(--text-main);margin-top:2px;">Rekap Data & Nilai Murid</h3>
+          <p style="font-size:0.82rem;color:var(--text-sub);">Data murid terdaftar di Cloud Firestore (Real-time).</p>
+        </div>
+        <span class="curriculum-tag" id="senseiTotalStudentCount" style="font-size:0.82rem;">0 Murid</span>
+      </div>
+
+      <div style="max-height:400px;overflow-y:auto;border:1px solid var(--card-border);border-radius:12px;">
+        <table class="sensei-table">
+          <thead>
+            <tr>
+              <th>Nama Siswa</th>
+              <th>Email</th>
+              <th style="text-align:center;">Bab Selesai</th>
+              <th style="text-align:center;">Rata-rata Skor</th>
+              <th style="text-align:center;">Status</th>
+            </tr>
+          </thead>
+          <tbody id="senseiStudentTableBody">
+            <tr><td colspan="5" style="text-align:center;padding:20px;">Memuat data...</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -1216,8 +1377,110 @@ function buildIndexApp() {
       startStrokePlay();
     }
 
-    // --- AUTHENTICATION & ACCESS RESTRICTION ---
+    // --- FIREBASE INITIALIZATION & CONFIGURATION ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyBfvKrdTOYX4T98wIJipFCQg_2hjss0o6g",
+      authDomain: "ikubarusenseinojyugyou.firebaseapp.com",
+      projectId: "ikubarusenseinojyugyou",
+      storageBucket: "ikubarusenseinojyugyou.firebasestorage.app",
+      messagingSenderId: "669942519776",
+      appId: "1:669942519776:web:0bb74a2dd61bdd4e3b7d85",
+      measurementId: "G-YY0525NJBE"
+    };
+
+    let firebaseApp = null;
+    let auth = null;
+    let db = null;
+
+    try {
+      if (typeof firebase !== 'undefined') {
+        firebaseApp = firebase.initializeApp(firebaseConfig);
+        auth = firebase.auth();
+        db = firebase.firestore();
+      }
+    } catch (e) {
+      console.warn('Firebase init:', e);
+    }
+
+    const SENSEI_EMAILS = [
+      'iqbalnurdiana10@gmail.com',
+      'ikubarusenseinojyugyou@gmail.com'
+    ];
+
+    // --- AUDIO NATIVE JAPANESE SPEECH SYNTHESIS (WEB SPEECH API) ---
+    function speakJapanese(text) {
+      if (!('speechSynthesis' in window)) {
+        alert('Fitur audio memerlukan browser modern seperti Chrome, Edge, atau Safari.');
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const clean = text.replace(/[\(\)\[\]「」\{\}]/g, '').trim();
+      const u = new SpeechSynthesisUtterance(clean);
+      u.lang = 'ja-JP';
+      u.rate = 0.85; // Sedikit lebih perlahan untuk kenyamanan menyimak
+      window.speechSynthesis.speak(u);
+    }
+
+    // --- AUTHENTICATION WITH FIREBASE ---
     function initAuth() {
+      if (!auth) {
+        console.warn('Firebase Auth SDK belum dimuat, fallback ke mode tamu.');
+        updateAuthUI();
+        applyContentLocks();
+        return;
+      }
+
+      auth.onAuthStateChanged(async (user) => {
+        if (user) {
+          const isSensei = SENSEI_EMAILS.includes((user.email || '').toLowerCase());
+          let studentData = null;
+
+          try {
+            if (db) {
+              const docRef = db.collection('students').doc(user.uid);
+              const docSnap = await docRef.get();
+              if (docSnap.exists) {
+                studentData = docSnap.data();
+                // update lastLogin
+                docRef.set({ lastLogin: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+              } else {
+                studentData = {
+                  uid: user.uid,
+                  name: user.displayName || (user.email ? user.email.split('@')[0] : 'Siswa'),
+                  email: user.email || '',
+                  role: isSensei ? 'sensei' : 'student',
+                  status: 'approved',
+                  joinedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                  lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+                  quizScores: {},
+                  masteredKanji: []
+                };
+                await docRef.set(studentData);
+              }
+            }
+          } catch (err) {
+            console.warn('Firestore fetch studentData error:', err);
+          }
+
+          currentUser = {
+            uid: user.uid,
+            email: user.email || '',
+            name: (studentData && studentData.name) || user.displayName || (user.email ? user.email.split('@')[0] : 'Siswa'),
+            role: isSensei ? 'sensei' : ((studentData && studentData.role) || 'student'),
+            quizScores: (studentData && studentData.quizScores) || {},
+            masteredKanji: (studentData && studentData.masteredKanji) || []
+          };
+
+          localStorage.setItem('irodori_active_user', JSON.stringify(currentUser));
+        } else {
+          currentUser = null;
+          localStorage.removeItem('irodori_active_user');
+        }
+
+        updateAuthUI();
+        applyContentLocks();
+      });
+    }
       if (!localStorage.getItem('irodori_users')) {
         const defaultUsers = [
           { username: 'sensei', password: 'irodori2026', name: 'Sensei (Guru)', role: 'admin', masteredKanji: [], quizScores: {} },
@@ -1299,61 +1562,148 @@ function buildIndexApp() {
       document.getElementById('authTabRegister').className = isLogin ? 'tab-btn' : 'tab-btn active';
     }
 
-    function handleLoginSubmit() {
-      const u = document.getElementById('loginUsername').value.trim();
-      const p = document.getElementById('loginPassword').value.trim();
-      if (!u || !p) { alert('Silakan isi username dan password!'); return; }
-
-      const users = JSON.parse(localStorage.getItem('irodori_users') || '[]');
-      const user = users.find(x => x.username.toLowerCase() === u.toLowerCase() && x.password === p);
-
-      if (user) {
-        currentUser = user;
-        localStorage.setItem('irodori_active_user', JSON.stringify(currentUser));
-        closeAuthModal();
-        updateAuthUI();
-        applyContentLocks();
-        alert('✨ Berhasil masuk sebagai: ' + user.name + '! Seluruh 18 Bab kini terbuka penuh.');
-      } else {
-        alert('❌ Username atau password salah. Silakan coba lagi atau daftar akun baru.');
-      }
-    }
-
-    function handleRegisterSubmit() {
-      const name = document.getElementById('regFullName').value.trim();
-      const u = document.getElementById('regUsername').value.trim();
-      const p = document.getElementById('regPassword').value.trim();
-      if (!name || !u || !p) { alert('Harap lengkapi semua kolom pendaftaran!'); return; }
-
-      const users = JSON.parse(localStorage.getItem('irodori_users') || '[]');
-      if (users.some(x => x.username.toLowerCase() === u.toLowerCase())) {
-        alert('⚠️ Username sudah digunakan. Silakan gunakan username lain!');
+    async function handleGoogleSignIn() {
+      if (!auth) {
+        alert('Firebase Auth belum siap.');
         return;
       }
-
-      const newUser = {
-        username: u, password: p, name: name, role: 'student',
-        masteredKanji: [], quizScores: {}
-      };
-
-      users.push(newUser);
-      localStorage.setItem('irodori_users', JSON.stringify(users));
-
-      currentUser = newUser;
-      localStorage.setItem('irodori_active_user', JSON.stringify(currentUser));
-      closeAuthModal();
-      updateAuthUI();
-      applyContentLocks();
-      alert('🎉 Selamat, akun berhasil dibuat! Seluruh materi Bab 1 s.d. 18 telah terbuka.');
+      const provider = new firebase.auth.GoogleAuthProvider();
+      try {
+        await auth.signInWithPopup(provider);
+        closeAuthModal();
+      } catch (err) {
+        console.error('Google Sign-in error:', err);
+        alert('Gagal masuk dengan Google: ' + err.message);
+      }
     }
 
-    function logoutUser() {
+    async function handleLoginSubmit() {
+      const email = document.getElementById('loginEmail').value.trim();
+      const pass = document.getElementById('loginPassword').value.trim();
+      if (!email || !pass) { alert('Silakan isi Email dan Password!'); return; }
+
+      if (!auth) { alert('Koneksi Firebase Auth belum terhubung.'); return; }
+
+      try {
+        await auth.signInWithEmailAndPassword(email, pass);
+        closeAuthModal();
+        alert('✨ Berhasil masuk! Seluruh Bab 1 s.d. 18 kini terbuka.');
+      } catch (err) {
+        let msg = 'Gagal masuk: ' + err.message;
+        if (err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
+          msg = '⚠️ Email atau password salah. Silakan periksa kembali.';
+        }
+        alert(msg);
+      }
+    }
+
+    async function handleRegisterSubmit() {
+      const name = document.getElementById('regFullName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const pass = document.getElementById('regPassword').value.trim();
+      if (!name || !email || !pass) { alert('Harap lengkapi semua kolom!'); return; }
+      if (pass.length < 6) { alert('Password minimal 6 karakter!'); return; }
+
+      if (!auth) { alert('Koneksi Firebase Auth belum terhubung.'); return; }
+
+      try {
+        const cred = await auth.createUserWithEmailAndPassword(email, pass);
+        await cred.user.updateProfile({ displayName: name });
+        const isSensei = SENSEI_EMAILS.includes(email.toLowerCase());
+
+        if (db) {
+          await db.collection('students').doc(cred.user.uid).set({
+            uid: cred.user.uid,
+            name: name,
+            email: email,
+            role: isSensei ? 'sensei' : 'student',
+            status: 'approved',
+            joinedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+            quizScores: {},
+            masteredKanji: []
+          });
+        }
+        closeAuthModal();
+        alert('🎉 Akun murid berhasil dibuat! Selamat belajar, seluruh Bab terbuka.');
+      } catch (err) {
+        let msg = 'Gagal mendaftar: ' + err.message;
+        if (err.code === 'auth/email-already-in-use') {
+          msg = '⚠️ Email sudah terdaftar. Silakan pilih tab Masuk Akun.';
+        }
+        alert(msg);
+      }
+    }
+
+    async function handleForgotPassword() {
+      const email = prompt('Masukkan email Anda untuk menerima link reset password:');
+      if (!email) return;
+      if (!auth) return;
+      try {
+        await auth.sendPasswordResetEmail(email.trim());
+        alert('📧 Link reset password telah dikirim ke ' + email + '. Silakan periksa email Anda.');
+      } catch (err) {
+        alert('Gagal mengirim link: ' + err.message);
+      }
+    }
+
+    async function logoutUser() {
       if (confirm('Apakah Anda yakin ingin keluar dari akun?')) {
+        if (auth) await auth.signOut();
         currentUser = null;
         localStorage.removeItem('irodori_active_user');
         updateAuthUI();
         applyContentLocks();
       }
+    }
+
+    // --- SENSEI DASHBOARD PANEL ---
+    async function openSenseiDashboard() {
+      if (!currentUser || currentUser.role !== 'sensei') {
+        alert('Akses ini hanya untuk akun Sensei / Guru.');
+        return;
+      }
+      document.getElementById('senseiModal').style.display = 'flex';
+      const tableBody = document.getElementById('senseiStudentTableBody');
+      tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;">Memuat data murid dari Cloud Firestore...</td></tr>';
+
+      try {
+        if (!db) throw new Error('Firestore belum siap.');
+        const snap = await db.collection('students').orderBy('joinedAt', 'desc').get();
+        if (snap.empty) {
+          tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;">Belum ada murid yang terdaftar.</td></tr>';
+          return;
+        }
+
+        let html = '';
+        let totalCount = 0;
+        snap.forEach(doc => {
+          totalCount++;
+          const s = doc.data();
+          const scores = s.quizScores || {};
+          const completedCount = Object.keys(scores).length;
+          let totalScore = 0;
+          Object.values(scores).forEach(v => totalScore += Number(v) || 0);
+          const avg = completedCount > 0 ? Math.round((totalScore / (completedCount * 20)) * 100) : 0;
+
+          html += '<tr>' +
+            '<td style="font-weight:700;">' + (s.name || '-') + '</td>' +
+            '<td style="color:var(--text-sub);">' + (s.email || '') + '</td>' +
+            '<td style="text-align:center;"><span class="curriculum-tag" style="background:var(--pastel-blue-bg);color:var(--pastel-blue-txt);">' + completedCount + ' / 18 Bab</span></td>' +
+            '<td style="text-align:center;font-weight:800;color:' + (avg >= 70 ? '#16a34a' : '#d97706') + ';">' + avg + '%</td>' +
+            '<td style="text-align:center;"><span style="font-size:0.75rem;padding:3px 8px;border-radius:6px;background:var(--pastel-sage-bg);color:var(--pastel-sage-txt);font-weight:700;">Aktif</span></td>' +
+          '</tr>';
+        });
+        tableBody.innerHTML = html;
+        document.getElementById('senseiTotalStudentCount').innerText = totalCount + ' Murid Terdaftar';
+      } catch (err) {
+        console.error('Error load students:', err);
+        tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:#dc2626;">Gagal memuat: ' + err.message + '</td></tr>';
+      }
+    }
+
+    function closeSenseiDashboard() {
+      document.getElementById('senseiModal').style.display = 'none';
     }
 
     // --- PASTEL DARK THEME ---
@@ -1516,12 +1866,15 @@ function buildIndexApp() {
     }
 
     function saveCurrentUserProfile() {
+      if (!currentUser) return;
       localStorage.setItem('irodori_active_user', JSON.stringify(currentUser));
-      const users = JSON.parse(localStorage.getItem('irodori_users') || '[]');
-      const idx = users.findIndex(x => x.username.toLowerCase() === currentUser.username.toLowerCase());
-      if (idx !== -1) {
-        users[idx] = currentUser;
-        localStorage.setItem('irodori_users', JSON.stringify(users));
+
+      // Realtime Cloud Firestore sync
+      if (db && currentUser.uid) {
+        db.collection('students').doc(currentUser.uid).set({
+          quizScores: currentUser.quizScores || {},
+          lastActive: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true }).catch(e => console.warn('Firestore quiz score sync:', e));
       }
     }
 

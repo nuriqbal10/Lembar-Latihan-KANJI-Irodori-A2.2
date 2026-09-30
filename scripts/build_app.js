@@ -1437,15 +1437,38 @@ function buildIndexApp() {
         return;
       }
       window.speechSynthesis.cancel();
-      // Hapus seluruh teks dalam tanda kurung (), （）, [], serta tag ruby/rt agar pelafalan murni alami
-      const clean = text
-        .replace(/\([^\)]*\)/g, '')
-        .replace(/（[^）]*）/g, '')
-        .replace(/\[[^\]]*\]/g, '')
-        .replace(/<rt>[\s\S]*?<\/rt>/gi, '')
-        .replace(/<[^>]+>/g, '')
-        .replace(/[「」『』]/g, '')
-        .trim();
+      let s = String(text || '');
+      // 1. Hapus tag <rt>...</rt> beserta isinya agar furigana di atas kanji tidak terbaca ganda
+      while (s.toLowerCase().indexOf('<rt') !== -1 && s.toLowerCase().indexOf('</rt>') !== -1) {
+        const start = s.toLowerCase().indexOf('<rt');
+        const end = s.toLowerCase().indexOf('</rt>', start);
+        s = s.substring(0, start) + s.substring(end + 5);
+      }
+      // 2. Hapus tag HTML lainnya
+      while (s.indexOf('<') !== -1 && s.indexOf('>') !== -1 && s.indexOf('<') < s.indexOf('>')) {
+        const start = s.indexOf('<');
+        const end = s.indexOf('>', start);
+        s = s.substring(0, start) + s.substring(end + 1);
+      }
+      // 3. Hapus teks dalam tanda kurung ASCII (...)
+      while (s.indexOf('(') !== -1 && s.indexOf(')') !== -1 && s.indexOf('(') < s.indexOf(')')) {
+        const start = s.indexOf('(');
+        const end = s.indexOf(')', start);
+        s = s.substring(0, start) + s.substring(end + 1);
+      }
+      // 4. Hapus teks dalam tanda kurung fullwidth （...）
+      while (s.indexOf('（') !== -1 && s.indexOf('）') !== -1 && s.indexOf('（') < s.indexOf('）')) {
+        const start = s.indexOf('（');
+        const end = s.indexOf('）', start);
+        s = s.substring(0, start) + s.substring(end + 1);
+      }
+      // 5. Hapus teks dalam tanda kurung siku [...]
+      while (s.indexOf('[') !== -1 && s.indexOf(']') !== -1 && s.indexOf('[') < s.indexOf(']')) {
+        const start = s.indexOf('[');
+        const end = s.indexOf(']', start);
+        s = s.substring(0, start) + s.substring(end + 1);
+      }
+      const clean = s.replace(/[「」『』]/g, '').trim();
       const u = new SpeechSynthesisUtterance(clean);
       u.lang = 'ja-JP';
       u.rate = 0.85; // Sedikit lebih perlahan untuk kenyamanan menyimak

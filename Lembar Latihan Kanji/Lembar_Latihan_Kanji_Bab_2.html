@@ -29,7 +29,6 @@
       --text-sub: #475569;
       --grid-border: #94a3b8;
       --grid-cross: #cbd5e1;
-      --trace-char: #cbd5e1;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -147,16 +146,7 @@
       margin-top: 10px;
       display: flex;
       flex-direction: column;
-      gap: 5px;
-    }
-
-    .grid-label-row {
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      font-size: 0.62rem;
-      font-weight: 800;
-      color: #64748b;
-      text-align: center;
+      gap: 6px;
     }
 
     .grid-boxes-row {
@@ -173,7 +163,26 @@
       display: flex; align-items: center; justify-content: center;
       background: #ffffff;
       user-select: none;
+      overflow: visible;
     }
+
+    .box-tag {
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      font-size: 0.52rem;
+      font-weight: 800;
+      line-height: 1;
+      padding: 1px 3px;
+      border-radius: 3px;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.9);
+      pointer-events: none;
+    }
+    .box-tag.tag-urutan { color: #dc2626; background: #fee2e2; }
+    .box-tag.tag-contoh { color: #1d4ed8; background: #dbeafe; }
+    .box-tag.tag-jiplak { color: #64748b; background: #f1f5f9; }
+    .box-tag.tag-latih { color: #94a3b8; }
 
     .tianzige-box::before {
       content: ''; position: absolute;
@@ -188,10 +197,14 @@
     }
 
     .guidance-box { border-color: #dc2626; border-width: 2px; }
-    .guidance-box svg { width: 90%; height: 90%; z-index: 2; }
     .model-box { border-color: #2563eb; border-width: 2px; }
-    .model-box span { font-size: 2rem; font-weight: 800; color: #0f172a; z-index: 2; }
-    .trace-box span { font-size: 2rem; font-weight: 700; color: #cbd5e1; z-index: 2; }
+
+    /* SVG inside box scaled identically to 90% */
+    .kanji-svg {
+      width: 90% !important;
+      height: 90% !important;
+      z-index: 2;
+    }
 
     /* Ruled Writing Line */
     .ruled-writing-row {
@@ -208,19 +221,26 @@
     .ruled-lbl { font-weight: 700; color: #475569; white-space: nowrap; font-size: 0.74rem; }
     .ruled-line { flex: 1; border-bottom: 1.5px dotted #94a3b8; height: 14px; }
 
-    /* Exercises */
-    .exercise-box {
+    /* Separated Exercises */
+    .page-exercise-a, .page-exercise-b {
       background: #fdfbf7;
       border: 1.5px solid #cbd5e1;
       border-radius: 16px;
-      padding: 16px 18px;
+      padding: 18px 22px;
       margin-top: 20px;
     }
 
-    .exercise-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 8px; }
-    .exercise-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    .exercise-item { background: #ffffff; border: 1px solid #cbd5e1; padding: 8px 12px; border-radius: 10px; font-size: 0.85rem; }
-    .answer-key { display: inline-block; font-size: 0.75rem; font-weight: 700; color: #9d174d; background: #fde8ef; padding: 2px 6px; border-radius: 6px; margin-top: 4px; }
+    .page-exercise-b {
+      margin-top: 28px;
+      page-break-before: always;
+      break-before: page;
+    }
+
+    .exercise-title { font-size: 1rem; font-weight: 800; margin-bottom: 12px; }
+    .exercise-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .exercise-item { background: #ffffff; border: 1.5px solid #e2e8f0; padding: 10px 14px; border-radius: 10px; font-size: 0.88rem; }
+    .exercise-item-q { font-weight: 600; line-height: 1.4; }
+    .answer-key { display: inline-block; font-size: 0.75rem; font-weight: 700; color: #9d174d; background: #fde8ef; padding: 2px 6px; border-radius: 6px; margin-top: 6px; }
 
     @page {
       size: A4 portrait;
@@ -233,7 +253,12 @@
       .container { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
       .worksheet-page { box-shadow: none !important; border: none !important; padding: 0 !important; margin-bottom: 10mm !important; }
       .kanji-unit { page-break-inside: avoid !important; }
-      .exercise-box { page-break-inside: avoid !important; }
+      .page-exercise-a { page-break-inside: avoid !important; }
+      .page-exercise-b { 
+        page-break-before: always !important; 
+        break-before: page !important; 
+        page-break-inside: avoid !important;
+      }
       .answer-key { display: none !important; }
     }
   </style>
@@ -242,7 +267,7 @@
 
   <div class="no-print-toolbar">
     <div style="font-weight: 800; font-size: 1rem;">
-      🎌 Lembar Latihan Kanji IRODORI A2.2 (20 Kotak Grid • UD Digi Kyokasho)
+      🎌 Lembar Latihan Kanji IRODORI A2.2 (20 Kotak Grid • SVG Identik • Halaman Latihan Terpisah)
     </div>
     <div>
       <button class="btn-print" onclick="window.print()">🖨️ Cetak A4 / Simpan PDF</button>
@@ -295,30 +320,19 @@
                 <strong>Contoh:</strong> <span>これは、だれの写真(しゃしん)ですか？</span> ➔ <em>"Ini foto siapa?"</em>
               </div>
 
-              <!-- 20 Kotak Grid (2 Baris) -->
+              <!-- 20 Kotak Grid (2 Baris x 10 Kotak) -->
               <div class="grid-20-wrapper">
                 
-                <!-- Baris 1: 10 Kotak -->
-                <div>
-                  <div class="grid-label-row">
-                    <span style="color:#dc2626;">① Urutan</span>
-                    <span style="color:#2563eb;">② Contoh</span>
-                    <span>③ Jiplak</span>
-                    <span>④ Jiplak</span>
-                    <span>⑤ Latih</span>
-                    <span>⑥ Latih</span>
-                    <span>⑦ Latih</span>
-                    <span>⑧ Latih</span>
-                    <span>⑨ Latih</span>
-                    <span>⑩ Latih</span>
-                  </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: Kotak 1 s/d 10 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box guidance-box">
+                    <span class="box-tag tag-urutan">① Urutan</span>
+                    <svg class="kanji-svg guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
   
-<g id="kvg:StrokePaths_05199" style="fill:none;stroke:#334155;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:StrokePaths_05199" style="fill:none;stroke:#1e293b;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
 <g id="kvg:05199" kvg:element="写">
 	<g id="kvg:05199-g1" kvg:element="冖" kvg:position="top" kvg:radical="general">
 		<path id="kvg:05199-s1" kvg:type="㇔" d="M19,16.62c-0.12,4.66-2.98,16.85-4,19.62"/>
@@ -341,45 +355,181 @@
 	<text transform="matrix(1 0 0 1 6.50 70.50)">5</text>
 </g>
 </svg>
-</div>
-                    <div class="tianzige-box model-box"><span>写</span></div>
-                    <div class="tianzige-box trace-box"><span>写</span></div>
-                    <div class="tianzige-box trace-box"><span>写</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+
                   </div>
+                  <div class="tianzige-box model-box">
+                    <span class="box-tag tag-contoh">② Contoh</span>
+                    <svg class="kanji-svg model-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_05199" style="fill:none;stroke:#0f172a;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:05199" kvg:element="写">
+	<g id="kvg:05199-g1" kvg:element="冖" kvg:position="top" kvg:radical="general">
+		<path id="kvg:05199-s1" kvg:type="㇔" d="M19,16.62c-0.12,4.66-2.98,16.85-4,19.62"/>
+		<path id="kvg:05199-s2" kvg:type="㇖b" d="M20.47,19.44c12.4-0.82,45.24-4.46,64.51-4.69c10.4-0.13,3.52,6.12-0.71,9.87"/>
+	</g>
+	<g id="kvg:05199-g2" kvg:element="与" kvg:position="bottom" kvg:phon="与/舄">
+		<path id="kvg:05199-s3" kvg:type="㇐b" d="M40,37c8-1,16.75-2.25,24.5-3.5c2.47-0.4,4-0.25,5.25,0"/>
+		<path id="kvg:05199-s4" kvg:type="㇉" d="M39.75,25.25c1,1.5,1.16,3.47,0.75,5.82c-1,5.68-2.62,10.93-4.25,17.4c-1.09,4.33-0.52,4.94,4.25,3.92c7.62-1.63,16.5-3.26,25.5-4.06c3-0.27,4.91,1.94,4.5,5.1c-2,15.33-6.25,30.58-11.25,37.54c-5.06,7.05-8.35,3.92-14-0.68"/>
+		<g id="kvg:05199-g3" kvg:element="一">
+			<path id="kvg:05199-s5" kvg:type="㇐" d="M13.25,68.45c4.88,1.05,8.87,0.83,13,0.31c16.25-2.01,38.75-5.44,55.49-5.7c4.38-0.07,8.28,0.18,12.01,0.98"/>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_05199" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">③ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_05199" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:05199" kvg:element="写">
+	<g id="kvg:05199-g1" kvg:element="冖" kvg:position="top" kvg:radical="general">
+		<path id="kvg:05199-s1" kvg:type="㇔" d="M19,16.62c-0.12,4.66-2.98,16.85-4,19.62"/>
+		<path id="kvg:05199-s2" kvg:type="㇖b" d="M20.47,19.44c12.4-0.82,45.24-4.46,64.51-4.69c10.4-0.13,3.52,6.12-0.71,9.87"/>
+	</g>
+	<g id="kvg:05199-g2" kvg:element="与" kvg:position="bottom" kvg:phon="与/舄">
+		<path id="kvg:05199-s3" kvg:type="㇐b" d="M40,37c8-1,16.75-2.25,24.5-3.5c2.47-0.4,4-0.25,5.25,0"/>
+		<path id="kvg:05199-s4" kvg:type="㇉" d="M39.75,25.25c1,1.5,1.16,3.47,0.75,5.82c-1,5.68-2.62,10.93-4.25,17.4c-1.09,4.33-0.52,4.94,4.25,3.92c7.62-1.63,16.5-3.26,25.5-4.06c3-0.27,4.91,1.94,4.5,5.1c-2,15.33-6.25,30.58-11.25,37.54c-5.06,7.05-8.35,3.92-14-0.68"/>
+		<g id="kvg:05199-g3" kvg:element="一">
+			<path id="kvg:05199-s5" kvg:type="㇐" d="M13.25,68.45c4.88,1.05,8.87,0.83,13,0.31c16.25-2.01,38.75-5.44,55.49-5.7c4.38-0.07,8.28,0.18,12.01,0.98"/>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_05199" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">④ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_05199" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:05199" kvg:element="写">
+	<g id="kvg:05199-g1" kvg:element="冖" kvg:position="top" kvg:radical="general">
+		<path id="kvg:05199-s1" kvg:type="㇔" d="M19,16.62c-0.12,4.66-2.98,16.85-4,19.62"/>
+		<path id="kvg:05199-s2" kvg:type="㇖b" d="M20.47,19.44c12.4-0.82,45.24-4.46,64.51-4.69c10.4-0.13,3.52,6.12-0.71,9.87"/>
+	</g>
+	<g id="kvg:05199-g2" kvg:element="与" kvg:position="bottom" kvg:phon="与/舄">
+		<path id="kvg:05199-s3" kvg:type="㇐b" d="M40,37c8-1,16.75-2.25,24.5-3.5c2.47-0.4,4-0.25,5.25,0"/>
+		<path id="kvg:05199-s4" kvg:type="㇉" d="M39.75,25.25c1,1.5,1.16,3.47,0.75,5.82c-1,5.68-2.62,10.93-4.25,17.4c-1.09,4.33-0.52,4.94,4.25,3.92c7.62-1.63,16.5-3.26,25.5-4.06c3-0.27,4.91,1.94,4.5,5.1c-2,15.33-6.25,30.58-11.25,37.54c-5.06,7.05-8.35,3.92-14-0.68"/>
+		<g id="kvg:05199-g3" kvg:element="一">
+			<path id="kvg:05199-s5" kvg:type="㇐" d="M13.25,68.45c4.88,1.05,8.87,0.83,13,0.31c16.25-2.01,38.75-5.44,55.49-5.7c4.38-0.07,8.28,0.18,12.01,0.98"/>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_05199" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑤ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑥ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑦ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑧ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑨ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑩ Latih</span></div>
                 </div>
 
-                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
-                <div style="margin-top: 4px;">
-                  <div class="grid-label-row">
-                    <span>⑪ Jiplak</span>
-                    <span>⑫ Jiplak</span>
-                    <span>⑬ Latih</span>
-                    <span>⑭ Latih</span>
-                    <span>⑮ Latih</span>
-                    <span>⑯ Latih</span>
-                    <span>⑰ Latih</span>
-                    <span>⑱ Latih</span>
-                    <span>⑲ Latih</span>
-                    <span>⑳ Latih</span>
+                <!-- Baris 2: Kotak 11 s/d 20 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑪ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_05199" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:05199" kvg:element="写">
+	<g id="kvg:05199-g1" kvg:element="冖" kvg:position="top" kvg:radical="general">
+		<path id="kvg:05199-s1" kvg:type="㇔" d="M19,16.62c-0.12,4.66-2.98,16.85-4,19.62"/>
+		<path id="kvg:05199-s2" kvg:type="㇖b" d="M20.47,19.44c12.4-0.82,45.24-4.46,64.51-4.69c10.4-0.13,3.52,6.12-0.71,9.87"/>
+	</g>
+	<g id="kvg:05199-g2" kvg:element="与" kvg:position="bottom" kvg:phon="与/舄">
+		<path id="kvg:05199-s3" kvg:type="㇐b" d="M40,37c8-1,16.75-2.25,24.5-3.5c2.47-0.4,4-0.25,5.25,0"/>
+		<path id="kvg:05199-s4" kvg:type="㇉" d="M39.75,25.25c1,1.5,1.16,3.47,0.75,5.82c-1,5.68-2.62,10.93-4.25,17.4c-1.09,4.33-0.52,4.94,4.25,3.92c7.62-1.63,16.5-3.26,25.5-4.06c3-0.27,4.91,1.94,4.5,5.1c-2,15.33-6.25,30.58-11.25,37.54c-5.06,7.05-8.35,3.92-14-0.68"/>
+		<g id="kvg:05199-g3" kvg:element="一">
+			<path id="kvg:05199-s5" kvg:type="㇐" d="M13.25,68.45c4.88,1.05,8.87,0.83,13,0.31c16.25-2.01,38.75-5.44,55.49-5.7c4.38-0.07,8.28,0.18,12.01,0.98"/>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_05199" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box trace-box"><span>写</span></div>
-                    <div class="tianzige-box trace-box"><span>写</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑫ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_05199" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:05199" kvg:element="写">
+	<g id="kvg:05199-g1" kvg:element="冖" kvg:position="top" kvg:radical="general">
+		<path id="kvg:05199-s1" kvg:type="㇔" d="M19,16.62c-0.12,4.66-2.98,16.85-4,19.62"/>
+		<path id="kvg:05199-s2" kvg:type="㇖b" d="M20.47,19.44c12.4-0.82,45.24-4.46,64.51-4.69c10.4-0.13,3.52,6.12-0.71,9.87"/>
+	</g>
+	<g id="kvg:05199-g2" kvg:element="与" kvg:position="bottom" kvg:phon="与/舄">
+		<path id="kvg:05199-s3" kvg:type="㇐b" d="M40,37c8-1,16.75-2.25,24.5-3.5c2.47-0.4,4-0.25,5.25,0"/>
+		<path id="kvg:05199-s4" kvg:type="㇉" d="M39.75,25.25c1,1.5,1.16,3.47,0.75,5.82c-1,5.68-2.62,10.93-4.25,17.4c-1.09,4.33-0.52,4.94,4.25,3.92c7.62-1.63,16.5-3.26,25.5-4.06c3-0.27,4.91,1.94,4.5,5.1c-2,15.33-6.25,30.58-11.25,37.54c-5.06,7.05-8.35,3.92-14-0.68"/>
+		<g id="kvg:05199-g3" kvg:element="一">
+			<path id="kvg:05199-s5" kvg:type="㇐" d="M13.25,68.45c4.88,1.05,8.87,0.83,13,0.31c16.25-2.01,38.75-5.44,55.49-5.7c4.38-0.07,8.28,0.18,12.01,0.98"/>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_05199" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑬ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑭ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑮ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑯ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑰ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑱ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑲ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑳ Latih</span></div>
                 </div>
 
                 <!-- Baris Menulis saat Dicetak -->
@@ -426,30 +576,19 @@
                 <strong>Contoh:</strong> <span>写真(しゃしん)を見(み)せてください。</span> ➔ <em>"Tolong perlihatkan fotonya."</em>
               </div>
 
-              <!-- 20 Kotak Grid (2 Baris) -->
+              <!-- 20 Kotak Grid (2 Baris x 10 Kotak) -->
               <div class="grid-20-wrapper">
                 
-                <!-- Baris 1: 10 Kotak -->
-                <div>
-                  <div class="grid-label-row">
-                    <span style="color:#dc2626;">① Urutan</span>
-                    <span style="color:#2563eb;">② Contoh</span>
-                    <span>③ Jiplak</span>
-                    <span>④ Jiplak</span>
-                    <span>⑤ Latih</span>
-                    <span>⑥ Latih</span>
-                    <span>⑦ Latih</span>
-                    <span>⑧ Latih</span>
-                    <span>⑨ Latih</span>
-                    <span>⑩ Latih</span>
-                  </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: Kotak 1 s/d 10 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box guidance-box">
+                    <span class="box-tag tag-urutan">① Urutan</span>
+                    <svg class="kanji-svg guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
   
-<g id="kvg:StrokePaths_0771f" style="fill:none;stroke:#334155;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:StrokePaths_0771f" style="fill:none;stroke:#1e293b;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
 <g id="kvg:0771f" kvg:element="真">
 	<g id="kvg:0771f-g1" kvg:element="十" kvg:position="top" kvg:radical="nelson">
 		<path id="kvg:0771f-s1" kvg:type="㇐" d="M23.63,23.92c3.25,0.33,6.04,0.35,8.62,0.08c12-1.25,32.73-3.03,43.75-3.46c2.8-0.11,5.9-0.1,8.63,0.58"/>
@@ -486,45 +625,251 @@
 	<text transform="matrix(1 0 0 1 56.50 88.50)">10</text>
 </g>
 </svg>
-</div>
-                    <div class="tianzige-box model-box"><span>真</span></div>
-                    <div class="tianzige-box trace-box"><span>真</span></div>
-                    <div class="tianzige-box trace-box"><span>真</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+
                   </div>
+                  <div class="tianzige-box model-box">
+                    <span class="box-tag tag-contoh">② Contoh</span>
+                    <svg class="kanji-svg model-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_0771f" style="fill:none;stroke:#0f172a;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:0771f" kvg:element="真">
+	<g id="kvg:0771f-g1" kvg:element="十" kvg:position="top" kvg:radical="nelson">
+		<path id="kvg:0771f-s1" kvg:type="㇐" d="M23.63,23.92c3.25,0.33,6.04,0.35,8.62,0.08c12-1.25,32.73-3.03,43.75-3.46c2.8-0.11,5.9-0.1,8.63,0.58"/>
+		<path id="kvg:0771f-s2" kvg:type="㇑a" d="M51.96,9c1.04,1,1.48,2.38,1.28,4.17C52.5,19.75,51.5,26.75,50.7,32.5"/>
+	</g>
+	<g id="kvg:0771f-g2" kvg:element="具" kvg:position="bottom">
+		<g id="kvg:0771f-g3" kvg:element="目" kvg:position="top" kvg:radical="tradit">
+			<path id="kvg:0771f-s3" kvg:type="㇑" d="M31.5,34.33c0.77,0.77,1.22,2.04,1.32,3.22c0.34,4.08,2.03,22.86,2.75,31.08c0.2,2.27,0.32,3.73,0.32,3.86"/>
+			<path id="kvg:0771f-s4" kvg:type="㇕a" d="M33.88,35.7c6.37-0.57,33.4-3.78,36.69-3.96c2.74-0.15,4.64,1.52,4.43,4.66c-0.5,7.35-1,16.35-1.81,30.22c-0.05,0.88-0.19,2.26-0.21,3.54"/>
+			<path id="kvg:0771f-s5" kvg:type="㇐a" d="M34.82,46.58C48.5,45.38,65,43.75,73.74,43.46"/>
+			<path id="kvg:0771f-s6" kvg:type="㇐a" d="M35.62,57.69c10.63-0.94,25.63-1.94,37.45-2.26"/>
+			<path id="kvg:0771f-s7" kvg:type="㇐a" d="M36.76,69.46c14.24-1.21,23.49-2.21,35.27-2.82"/>
+		</g>
+		<g id="kvg:0771f-g4" kvg:position="bottom">
+			<path id="kvg:0771f-s8" kvg:type="㇐" d="M16.25,80.12c2.18,0.62,6.17,0.75,8.35,0.62c13.52-0.85,41.03-3.11,62.65-3.72c3.63-0.1,5.81,0.3,7.62,0.61"/>
+			<g id="kvg:0771f-g5" kvg:element="八">
+				<path id="kvg:0771f-s9" kvg:type="㇒" d="M42,82.89c0.14,0.99,0.01,1.92-0.56,2.71c-2.82,3.9-9.19,10.02-18.38,15.37"/>
+				<path id="kvg:0771f-s10" kvg:type="㇔/㇏" d="M67.88,83.75C74.12,86.43,84,94.79,85.56,98.97"/>
+			</g>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_0771f" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">③ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_0771f" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:0771f" kvg:element="真">
+	<g id="kvg:0771f-g1" kvg:element="十" kvg:position="top" kvg:radical="nelson">
+		<path id="kvg:0771f-s1" kvg:type="㇐" d="M23.63,23.92c3.25,0.33,6.04,0.35,8.62,0.08c12-1.25,32.73-3.03,43.75-3.46c2.8-0.11,5.9-0.1,8.63,0.58"/>
+		<path id="kvg:0771f-s2" kvg:type="㇑a" d="M51.96,9c1.04,1,1.48,2.38,1.28,4.17C52.5,19.75,51.5,26.75,50.7,32.5"/>
+	</g>
+	<g id="kvg:0771f-g2" kvg:element="具" kvg:position="bottom">
+		<g id="kvg:0771f-g3" kvg:element="目" kvg:position="top" kvg:radical="tradit">
+			<path id="kvg:0771f-s3" kvg:type="㇑" d="M31.5,34.33c0.77,0.77,1.22,2.04,1.32,3.22c0.34,4.08,2.03,22.86,2.75,31.08c0.2,2.27,0.32,3.73,0.32,3.86"/>
+			<path id="kvg:0771f-s4" kvg:type="㇕a" d="M33.88,35.7c6.37-0.57,33.4-3.78,36.69-3.96c2.74-0.15,4.64,1.52,4.43,4.66c-0.5,7.35-1,16.35-1.81,30.22c-0.05,0.88-0.19,2.26-0.21,3.54"/>
+			<path id="kvg:0771f-s5" kvg:type="㇐a" d="M34.82,46.58C48.5,45.38,65,43.75,73.74,43.46"/>
+			<path id="kvg:0771f-s6" kvg:type="㇐a" d="M35.62,57.69c10.63-0.94,25.63-1.94,37.45-2.26"/>
+			<path id="kvg:0771f-s7" kvg:type="㇐a" d="M36.76,69.46c14.24-1.21,23.49-2.21,35.27-2.82"/>
+		</g>
+		<g id="kvg:0771f-g4" kvg:position="bottom">
+			<path id="kvg:0771f-s8" kvg:type="㇐" d="M16.25,80.12c2.18,0.62,6.17,0.75,8.35,0.62c13.52-0.85,41.03-3.11,62.65-3.72c3.63-0.1,5.81,0.3,7.62,0.61"/>
+			<g id="kvg:0771f-g5" kvg:element="八">
+				<path id="kvg:0771f-s9" kvg:type="㇒" d="M42,82.89c0.14,0.99,0.01,1.92-0.56,2.71c-2.82,3.9-9.19,10.02-18.38,15.37"/>
+				<path id="kvg:0771f-s10" kvg:type="㇔/㇏" d="M67.88,83.75C74.12,86.43,84,94.79,85.56,98.97"/>
+			</g>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_0771f" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">④ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_0771f" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:0771f" kvg:element="真">
+	<g id="kvg:0771f-g1" kvg:element="十" kvg:position="top" kvg:radical="nelson">
+		<path id="kvg:0771f-s1" kvg:type="㇐" d="M23.63,23.92c3.25,0.33,6.04,0.35,8.62,0.08c12-1.25,32.73-3.03,43.75-3.46c2.8-0.11,5.9-0.1,8.63,0.58"/>
+		<path id="kvg:0771f-s2" kvg:type="㇑a" d="M51.96,9c1.04,1,1.48,2.38,1.28,4.17C52.5,19.75,51.5,26.75,50.7,32.5"/>
+	</g>
+	<g id="kvg:0771f-g2" kvg:element="具" kvg:position="bottom">
+		<g id="kvg:0771f-g3" kvg:element="目" kvg:position="top" kvg:radical="tradit">
+			<path id="kvg:0771f-s3" kvg:type="㇑" d="M31.5,34.33c0.77,0.77,1.22,2.04,1.32,3.22c0.34,4.08,2.03,22.86,2.75,31.08c0.2,2.27,0.32,3.73,0.32,3.86"/>
+			<path id="kvg:0771f-s4" kvg:type="㇕a" d="M33.88,35.7c6.37-0.57,33.4-3.78,36.69-3.96c2.74-0.15,4.64,1.52,4.43,4.66c-0.5,7.35-1,16.35-1.81,30.22c-0.05,0.88-0.19,2.26-0.21,3.54"/>
+			<path id="kvg:0771f-s5" kvg:type="㇐a" d="M34.82,46.58C48.5,45.38,65,43.75,73.74,43.46"/>
+			<path id="kvg:0771f-s6" kvg:type="㇐a" d="M35.62,57.69c10.63-0.94,25.63-1.94,37.45-2.26"/>
+			<path id="kvg:0771f-s7" kvg:type="㇐a" d="M36.76,69.46c14.24-1.21,23.49-2.21,35.27-2.82"/>
+		</g>
+		<g id="kvg:0771f-g4" kvg:position="bottom">
+			<path id="kvg:0771f-s8" kvg:type="㇐" d="M16.25,80.12c2.18,0.62,6.17,0.75,8.35,0.62c13.52-0.85,41.03-3.11,62.65-3.72c3.63-0.1,5.81,0.3,7.62,0.61"/>
+			<g id="kvg:0771f-g5" kvg:element="八">
+				<path id="kvg:0771f-s9" kvg:type="㇒" d="M42,82.89c0.14,0.99,0.01,1.92-0.56,2.71c-2.82,3.9-9.19,10.02-18.38,15.37"/>
+				<path id="kvg:0771f-s10" kvg:type="㇔/㇏" d="M67.88,83.75C74.12,86.43,84,94.79,85.56,98.97"/>
+			</g>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_0771f" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑤ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑥ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑦ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑧ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑨ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑩ Latih</span></div>
                 </div>
 
-                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
-                <div style="margin-top: 4px;">
-                  <div class="grid-label-row">
-                    <span>⑪ Jiplak</span>
-                    <span>⑫ Jiplak</span>
-                    <span>⑬ Latih</span>
-                    <span>⑭ Latih</span>
-                    <span>⑮ Latih</span>
-                    <span>⑯ Latih</span>
-                    <span>⑰ Latih</span>
-                    <span>⑱ Latih</span>
-                    <span>⑲ Latih</span>
-                    <span>⑳ Latih</span>
+                <!-- Baris 2: Kotak 11 s/d 20 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑪ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_0771f" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:0771f" kvg:element="真">
+	<g id="kvg:0771f-g1" kvg:element="十" kvg:position="top" kvg:radical="nelson">
+		<path id="kvg:0771f-s1" kvg:type="㇐" d="M23.63,23.92c3.25,0.33,6.04,0.35,8.62,0.08c12-1.25,32.73-3.03,43.75-3.46c2.8-0.11,5.9-0.1,8.63,0.58"/>
+		<path id="kvg:0771f-s2" kvg:type="㇑a" d="M51.96,9c1.04,1,1.48,2.38,1.28,4.17C52.5,19.75,51.5,26.75,50.7,32.5"/>
+	</g>
+	<g id="kvg:0771f-g2" kvg:element="具" kvg:position="bottom">
+		<g id="kvg:0771f-g3" kvg:element="目" kvg:position="top" kvg:radical="tradit">
+			<path id="kvg:0771f-s3" kvg:type="㇑" d="M31.5,34.33c0.77,0.77,1.22,2.04,1.32,3.22c0.34,4.08,2.03,22.86,2.75,31.08c0.2,2.27,0.32,3.73,0.32,3.86"/>
+			<path id="kvg:0771f-s4" kvg:type="㇕a" d="M33.88,35.7c6.37-0.57,33.4-3.78,36.69-3.96c2.74-0.15,4.64,1.52,4.43,4.66c-0.5,7.35-1,16.35-1.81,30.22c-0.05,0.88-0.19,2.26-0.21,3.54"/>
+			<path id="kvg:0771f-s5" kvg:type="㇐a" d="M34.82,46.58C48.5,45.38,65,43.75,73.74,43.46"/>
+			<path id="kvg:0771f-s6" kvg:type="㇐a" d="M35.62,57.69c10.63-0.94,25.63-1.94,37.45-2.26"/>
+			<path id="kvg:0771f-s7" kvg:type="㇐a" d="M36.76,69.46c14.24-1.21,23.49-2.21,35.27-2.82"/>
+		</g>
+		<g id="kvg:0771f-g4" kvg:position="bottom">
+			<path id="kvg:0771f-s8" kvg:type="㇐" d="M16.25,80.12c2.18,0.62,6.17,0.75,8.35,0.62c13.52-0.85,41.03-3.11,62.65-3.72c3.63-0.1,5.81,0.3,7.62,0.61"/>
+			<g id="kvg:0771f-g5" kvg:element="八">
+				<path id="kvg:0771f-s9" kvg:type="㇒" d="M42,82.89c0.14,0.99,0.01,1.92-0.56,2.71c-2.82,3.9-9.19,10.02-18.38,15.37"/>
+				<path id="kvg:0771f-s10" kvg:type="㇔/㇏" d="M67.88,83.75C74.12,86.43,84,94.79,85.56,98.97"/>
+			</g>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_0771f" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box trace-box"><span>真</span></div>
-                    <div class="tianzige-box trace-box"><span>真</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑫ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_0771f" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:0771f" kvg:element="真">
+	<g id="kvg:0771f-g1" kvg:element="十" kvg:position="top" kvg:radical="nelson">
+		<path id="kvg:0771f-s1" kvg:type="㇐" d="M23.63,23.92c3.25,0.33,6.04,0.35,8.62,0.08c12-1.25,32.73-3.03,43.75-3.46c2.8-0.11,5.9-0.1,8.63,0.58"/>
+		<path id="kvg:0771f-s2" kvg:type="㇑a" d="M51.96,9c1.04,1,1.48,2.38,1.28,4.17C52.5,19.75,51.5,26.75,50.7,32.5"/>
+	</g>
+	<g id="kvg:0771f-g2" kvg:element="具" kvg:position="bottom">
+		<g id="kvg:0771f-g3" kvg:element="目" kvg:position="top" kvg:radical="tradit">
+			<path id="kvg:0771f-s3" kvg:type="㇑" d="M31.5,34.33c0.77,0.77,1.22,2.04,1.32,3.22c0.34,4.08,2.03,22.86,2.75,31.08c0.2,2.27,0.32,3.73,0.32,3.86"/>
+			<path id="kvg:0771f-s4" kvg:type="㇕a" d="M33.88,35.7c6.37-0.57,33.4-3.78,36.69-3.96c2.74-0.15,4.64,1.52,4.43,4.66c-0.5,7.35-1,16.35-1.81,30.22c-0.05,0.88-0.19,2.26-0.21,3.54"/>
+			<path id="kvg:0771f-s5" kvg:type="㇐a" d="M34.82,46.58C48.5,45.38,65,43.75,73.74,43.46"/>
+			<path id="kvg:0771f-s6" kvg:type="㇐a" d="M35.62,57.69c10.63-0.94,25.63-1.94,37.45-2.26"/>
+			<path id="kvg:0771f-s7" kvg:type="㇐a" d="M36.76,69.46c14.24-1.21,23.49-2.21,35.27-2.82"/>
+		</g>
+		<g id="kvg:0771f-g4" kvg:position="bottom">
+			<path id="kvg:0771f-s8" kvg:type="㇐" d="M16.25,80.12c2.18,0.62,6.17,0.75,8.35,0.62c13.52-0.85,41.03-3.11,62.65-3.72c3.63-0.1,5.81,0.3,7.62,0.61"/>
+			<g id="kvg:0771f-g5" kvg:element="八">
+				<path id="kvg:0771f-s9" kvg:type="㇒" d="M42,82.89c0.14,0.99,0.01,1.92-0.56,2.71c-2.82,3.9-9.19,10.02-18.38,15.37"/>
+				<path id="kvg:0771f-s10" kvg:type="㇔/㇏" d="M67.88,83.75C74.12,86.43,84,94.79,85.56,98.97"/>
+			</g>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_0771f" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑬ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑭ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑮ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑯ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑰ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑱ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑲ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑳ Latih</span></div>
                 </div>
 
                 <!-- Baris Menulis saat Dicetak -->
@@ -571,30 +916,19 @@
                 <strong>Contoh:</strong> <span>髪(かみ)が長(なが)い人(ひと)ですか？</span> ➔ <em>"Apakah orang yang berambut panjang?"</em>
               </div>
 
-              <!-- 20 Kotak Grid (2 Baris) -->
+              <!-- 20 Kotak Grid (2 Baris x 10 Kotak) -->
               <div class="grid-20-wrapper">
                 
-                <!-- Baris 1: 10 Kotak -->
-                <div>
-                  <div class="grid-label-row">
-                    <span style="color:#dc2626;">① Urutan</span>
-                    <span style="color:#2563eb;">② Contoh</span>
-                    <span>③ Jiplak</span>
-                    <span>④ Jiplak</span>
-                    <span>⑤ Latih</span>
-                    <span>⑥ Latih</span>
-                    <span>⑦ Latih</span>
-                    <span>⑧ Latih</span>
-                    <span>⑨ Latih</span>
-                    <span>⑩ Latih</span>
-                  </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: Kotak 1 s/d 10 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box guidance-box">
+                    <span class="box-tag tag-urutan">① Urutan</span>
+                    <svg class="kanji-svg guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
   
-<g id="kvg:StrokePaths_09577" style="fill:none;stroke:#334155;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:StrokePaths_09577" style="fill:none;stroke:#1e293b;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
 <g id="kvg:09577" kvg:element="長" kvg:radical="general">
 	<path id="kvg:09577-s1" kvg:type="㇑a" d="M34,14.75C35.25,16,36,18,36,19.5s0,33.5,0,35.75"/>
 	<path id="kvg:09577-s2" kvg:type="㇐b" d="M37.75,16c9.6-0.15,21.73-3.26,26.63-4.2c1.97-0.38,3.9-0.41,5.87,0.06"/>
@@ -617,45 +951,181 @@
 	<text transform="matrix(1 0 0 1 43.50 71.50)">8</text>
 </g>
 </svg>
-</div>
-                    <div class="tianzige-box model-box"><span>長</span></div>
-                    <div class="tianzige-box trace-box"><span>長</span></div>
-                    <div class="tianzige-box trace-box"><span>長</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+
                   </div>
+                  <div class="tianzige-box model-box">
+                    <span class="box-tag tag-contoh">② Contoh</span>
+                    <svg class="kanji-svg model-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_09577" style="fill:none;stroke:#0f172a;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:09577" kvg:element="長" kvg:radical="general">
+	<path id="kvg:09577-s1" kvg:type="㇑a" d="M34,14.75C35.25,16,36,18,36,19.5s0,33.5,0,35.75"/>
+	<path id="kvg:09577-s2" kvg:type="㇐b" d="M37.75,16c9.6-0.15,21.73-3.26,26.63-4.2c1.97-0.38,3.9-0.41,5.87,0.06"/>
+	<path id="kvg:09577-s3" kvg:type="㇐b" d="M37.25,29.5C48.12,28.25,57,27,64,25.72c1.96-0.36,3.76-0.25,5.25,0.06"/>
+	<path id="kvg:09577-s4" kvg:type="㇐b" d="M37.5,42.5c8.88-0.86,21.62-2.62,26.75-3.53c1.97-0.35,3.88-0.32,5.75,0"/>
+	<path id="kvg:09577-s5" kvg:type="㇐" d="M10.88,58.23c3.14,0.86,6.44,0.68,9.62,0.29c19.73-2.35,44.86-6.1,65-7.61c2.97-0.22,5.7-0.08,8.63,0.4"/>
+	<path id="kvg:09577-s6" kvg:type="㇙" d="M31.25,60.25c0.94,0.94,1.39,2.38,1.39,4c0,11.82-0.7,28.19-0.7,30.19s1.65,3.14,3.74,1.64c2.09-1.5,17.25-11.09,20.03-12.59"/>
+	<path id="kvg:09577-s7" kvg:type="㇒" d="M76.52,55.25c0.23,1.25-0.33,2.45-1.05,3.41C73.5,61.25,69.62,65,64.62,68.75"/>
+	<path id="kvg:09577-s8" kvg:type="㇏" d="M46.5,62.25c8.21,0,34.52,25.9,44.28,29.5C93.12,92.61,94.51,93,97,93.5"/>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_09577" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">③ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_09577" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:09577" kvg:element="長" kvg:radical="general">
+	<path id="kvg:09577-s1" kvg:type="㇑a" d="M34,14.75C35.25,16,36,18,36,19.5s0,33.5,0,35.75"/>
+	<path id="kvg:09577-s2" kvg:type="㇐b" d="M37.75,16c9.6-0.15,21.73-3.26,26.63-4.2c1.97-0.38,3.9-0.41,5.87,0.06"/>
+	<path id="kvg:09577-s3" kvg:type="㇐b" d="M37.25,29.5C48.12,28.25,57,27,64,25.72c1.96-0.36,3.76-0.25,5.25,0.06"/>
+	<path id="kvg:09577-s4" kvg:type="㇐b" d="M37.5,42.5c8.88-0.86,21.62-2.62,26.75-3.53c1.97-0.35,3.88-0.32,5.75,0"/>
+	<path id="kvg:09577-s5" kvg:type="㇐" d="M10.88,58.23c3.14,0.86,6.44,0.68,9.62,0.29c19.73-2.35,44.86-6.1,65-7.61c2.97-0.22,5.7-0.08,8.63,0.4"/>
+	<path id="kvg:09577-s6" kvg:type="㇙" d="M31.25,60.25c0.94,0.94,1.39,2.38,1.39,4c0,11.82-0.7,28.19-0.7,30.19s1.65,3.14,3.74,1.64c2.09-1.5,17.25-11.09,20.03-12.59"/>
+	<path id="kvg:09577-s7" kvg:type="㇒" d="M76.52,55.25c0.23,1.25-0.33,2.45-1.05,3.41C73.5,61.25,69.62,65,64.62,68.75"/>
+	<path id="kvg:09577-s8" kvg:type="㇏" d="M46.5,62.25c8.21,0,34.52,25.9,44.28,29.5C93.12,92.61,94.51,93,97,93.5"/>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_09577" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">④ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_09577" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:09577" kvg:element="長" kvg:radical="general">
+	<path id="kvg:09577-s1" kvg:type="㇑a" d="M34,14.75C35.25,16,36,18,36,19.5s0,33.5,0,35.75"/>
+	<path id="kvg:09577-s2" kvg:type="㇐b" d="M37.75,16c9.6-0.15,21.73-3.26,26.63-4.2c1.97-0.38,3.9-0.41,5.87,0.06"/>
+	<path id="kvg:09577-s3" kvg:type="㇐b" d="M37.25,29.5C48.12,28.25,57,27,64,25.72c1.96-0.36,3.76-0.25,5.25,0.06"/>
+	<path id="kvg:09577-s4" kvg:type="㇐b" d="M37.5,42.5c8.88-0.86,21.62-2.62,26.75-3.53c1.97-0.35,3.88-0.32,5.75,0"/>
+	<path id="kvg:09577-s5" kvg:type="㇐" d="M10.88,58.23c3.14,0.86,6.44,0.68,9.62,0.29c19.73-2.35,44.86-6.1,65-7.61c2.97-0.22,5.7-0.08,8.63,0.4"/>
+	<path id="kvg:09577-s6" kvg:type="㇙" d="M31.25,60.25c0.94,0.94,1.39,2.38,1.39,4c0,11.82-0.7,28.19-0.7,30.19s1.65,3.14,3.74,1.64c2.09-1.5,17.25-11.09,20.03-12.59"/>
+	<path id="kvg:09577-s7" kvg:type="㇒" d="M76.52,55.25c0.23,1.25-0.33,2.45-1.05,3.41C73.5,61.25,69.62,65,64.62,68.75"/>
+	<path id="kvg:09577-s8" kvg:type="㇏" d="M46.5,62.25c8.21,0,34.52,25.9,44.28,29.5C93.12,92.61,94.51,93,97,93.5"/>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_09577" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑤ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑥ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑦ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑧ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑨ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑩ Latih</span></div>
                 </div>
 
-                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
-                <div style="margin-top: 4px;">
-                  <div class="grid-label-row">
-                    <span>⑪ Jiplak</span>
-                    <span>⑫ Jiplak</span>
-                    <span>⑬ Latih</span>
-                    <span>⑭ Latih</span>
-                    <span>⑮ Latih</span>
-                    <span>⑯ Latih</span>
-                    <span>⑰ Latih</span>
-                    <span>⑱ Latih</span>
-                    <span>⑲ Latih</span>
-                    <span>⑳ Latih</span>
+                <!-- Baris 2: Kotak 11 s/d 20 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑪ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_09577" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:09577" kvg:element="長" kvg:radical="general">
+	<path id="kvg:09577-s1" kvg:type="㇑a" d="M34,14.75C35.25,16,36,18,36,19.5s0,33.5,0,35.75"/>
+	<path id="kvg:09577-s2" kvg:type="㇐b" d="M37.75,16c9.6-0.15,21.73-3.26,26.63-4.2c1.97-0.38,3.9-0.41,5.87,0.06"/>
+	<path id="kvg:09577-s3" kvg:type="㇐b" d="M37.25,29.5C48.12,28.25,57,27,64,25.72c1.96-0.36,3.76-0.25,5.25,0.06"/>
+	<path id="kvg:09577-s4" kvg:type="㇐b" d="M37.5,42.5c8.88-0.86,21.62-2.62,26.75-3.53c1.97-0.35,3.88-0.32,5.75,0"/>
+	<path id="kvg:09577-s5" kvg:type="㇐" d="M10.88,58.23c3.14,0.86,6.44,0.68,9.62,0.29c19.73-2.35,44.86-6.1,65-7.61c2.97-0.22,5.7-0.08,8.63,0.4"/>
+	<path id="kvg:09577-s6" kvg:type="㇙" d="M31.25,60.25c0.94,0.94,1.39,2.38,1.39,4c0,11.82-0.7,28.19-0.7,30.19s1.65,3.14,3.74,1.64c2.09-1.5,17.25-11.09,20.03-12.59"/>
+	<path id="kvg:09577-s7" kvg:type="㇒" d="M76.52,55.25c0.23,1.25-0.33,2.45-1.05,3.41C73.5,61.25,69.62,65,64.62,68.75"/>
+	<path id="kvg:09577-s8" kvg:type="㇏" d="M46.5,62.25c8.21,0,34.52,25.9,44.28,29.5C93.12,92.61,94.51,93,97,93.5"/>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_09577" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box trace-box"><span>長</span></div>
-                    <div class="tianzige-box trace-box"><span>長</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑫ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_09577" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:09577" kvg:element="長" kvg:radical="general">
+	<path id="kvg:09577-s1" kvg:type="㇑a" d="M34,14.75C35.25,16,36,18,36,19.5s0,33.5,0,35.75"/>
+	<path id="kvg:09577-s2" kvg:type="㇐b" d="M37.75,16c9.6-0.15,21.73-3.26,26.63-4.2c1.97-0.38,3.9-0.41,5.87,0.06"/>
+	<path id="kvg:09577-s3" kvg:type="㇐b" d="M37.25,29.5C48.12,28.25,57,27,64,25.72c1.96-0.36,3.76-0.25,5.25,0.06"/>
+	<path id="kvg:09577-s4" kvg:type="㇐b" d="M37.5,42.5c8.88-0.86,21.62-2.62,26.75-3.53c1.97-0.35,3.88-0.32,5.75,0"/>
+	<path id="kvg:09577-s5" kvg:type="㇐" d="M10.88,58.23c3.14,0.86,6.44,0.68,9.62,0.29c19.73-2.35,44.86-6.1,65-7.61c2.97-0.22,5.7-0.08,8.63,0.4"/>
+	<path id="kvg:09577-s6" kvg:type="㇙" d="M31.25,60.25c0.94,0.94,1.39,2.38,1.39,4c0,11.82-0.7,28.19-0.7,30.19s1.65,3.14,3.74,1.64c2.09-1.5,17.25-11.09,20.03-12.59"/>
+	<path id="kvg:09577-s7" kvg:type="㇒" d="M76.52,55.25c0.23,1.25-0.33,2.45-1.05,3.41C73.5,61.25,69.62,65,64.62,68.75"/>
+	<path id="kvg:09577-s8" kvg:type="㇏" d="M46.5,62.25c8.21,0,34.52,25.9,44.28,29.5C93.12,92.61,94.51,93,97,93.5"/>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_09577" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑬ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑭ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑮ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑯ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑰ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑱ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑲ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑳ Latih</span></div>
                 </div>
 
                 <!-- Baris Menulis saat Dicetak -->
@@ -702,30 +1172,19 @@
                 <strong>Contoh:</strong> <span>髪(かみ)が短(みじか)い人(ひと)ですか？</span> ➔ <em>"Apakah orang yang berambut pendek?"</em>
               </div>
 
-              <!-- 20 Kotak Grid (2 Baris) -->
+              <!-- 20 Kotak Grid (2 Baris x 10 Kotak) -->
               <div class="grid-20-wrapper">
                 
-                <!-- Baris 1: 10 Kotak -->
-                <div>
-                  <div class="grid-label-row">
-                    <span style="color:#dc2626;">① Urutan</span>
-                    <span style="color:#2563eb;">② Contoh</span>
-                    <span>③ Jiplak</span>
-                    <span>④ Jiplak</span>
-                    <span>⑤ Latih</span>
-                    <span>⑥ Latih</span>
-                    <span>⑦ Latih</span>
-                    <span>⑧ Latih</span>
-                    <span>⑨ Latih</span>
-                    <span>⑩ Latih</span>
-                  </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: Kotak 1 s/d 10 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box guidance-box">
+                    <span class="box-tag tag-urutan">① Urutan</span>
+                    <svg class="kanji-svg guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
   
-<g id="kvg:StrokePaths_077ed" style="fill:none;stroke:#334155;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:StrokePaths_077ed" style="fill:none;stroke:#1e293b;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
 <g id="kvg:077ed" kvg:element="短">
 	<g id="kvg:077ed-g1" kvg:element="矢" kvg:variant="true" kvg:position="left" kvg:radical="general">
 		<path id="kvg:077ed-s1" kvg:type="㇒" d="M25.84,17c0.29,0.75,0.32,1.95,0.18,2.9c-0.79,5.58-6.77,19.35-12.25,26.4"/>
@@ -770,45 +1229,291 @@
 	<text transform="matrix(1 0 0 1 35.50 90.50)">12</text>
 </g>
 </svg>
-</div>
-                    <div class="tianzige-box model-box"><span>短</span></div>
-                    <div class="tianzige-box trace-box"><span>短</span></div>
-                    <div class="tianzige-box trace-box"><span>短</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+
                   </div>
+                  <div class="tianzige-box model-box">
+                    <span class="box-tag tag-contoh">② Contoh</span>
+                    <svg class="kanji-svg model-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_077ed" style="fill:none;stroke:#0f172a;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:077ed" kvg:element="短">
+	<g id="kvg:077ed-g1" kvg:element="矢" kvg:variant="true" kvg:position="left" kvg:radical="general">
+		<path id="kvg:077ed-s1" kvg:type="㇒" d="M25.84,17c0.29,0.75,0.32,1.95,0.18,2.9c-0.79,5.58-6.77,19.35-12.25,26.4"/>
+		<g id="kvg:077ed-g2" kvg:element="天" kvg:variant="true">
+			<path id="kvg:077ed-s2" kvg:type="㇐" d="M22.07,35.68c0.93,0.32,2.05,0.23,2.79,0.16c3.18-0.32,8.07-0.97,13.69-2.11c1.09-0.22,3.08-0.48,4.17-0.25"/>
+			<g id="kvg:077ed-g3" kvg:element="大" kvg:variant="true">
+				<path id="kvg:077ed-s3" kvg:type="㇐" d="M10.32,55.34c2.43,0.41,4.64,0.24,6.44-0.01c6.54-0.88,16.6-2.41,23.88-3.19c2.44-0.26,4.49-0.27,6.69,0.33"/>
+				<path id="kvg:077ed-s4" kvg:type="㇒" d="M29.94,37.28c0.95,0.95,1.49,2.47,1.48,4.19c-0.17,27.28-7.55,43.41-19.67,51.17"/>
+				<path id="kvg:077ed-s5" kvg:type="㇔/㇏" d="M32.25,67.25c3.74,2.49,8.5,7.25,11,12.25"/>
+			</g>
+		</g>
+	</g>
+	<g id="kvg:077ed-g4" kvg:element="豆" kvg:position="right">
+		<g id="kvg:077ed-g5" kvg:position="top">
+			<path id="kvg:077ed-s6" kvg:type="㇐" d="M52.24,25.14c2.01,0.36,3.83,0.38,5.52,0.23c8.62-0.75,18.07-2.45,26.49-3.06c1.89-0.14,3.68-0.24,5.54,0.19"/>
+		</g>
+		<g id="kvg:077ed-g6" kvg:position="bottom">
+			<g id="kvg:077ed-g7" kvg:element="口">
+				<path id="kvg:077ed-s7" kvg:type="㇑" d="M52.79,39.53c1.08,0.72,1.89,1.96,2.17,3.14c0.99,4.18,1.87,9.68,2.83,15.68c0.18,1.11,0.35,2.21,0.51,3.31"/>
+				<path id="kvg:077ed-s8" kvg:type="㇕b" d="M55.37,40.88c6.67-0.66,22.19-2.89,28.39-3.32c3.41-0.23,4.81,0.88,3.94,4.32c-0.66,2.6-1.27,4.16-3.25,13.66"/>
+				<path id="kvg:077ed-s9" kvg:type="㇐b" d="M58.95,59.1c6.39-0.62,16.13-1.6,23.68-2.17c1.38-0.1,2.69-0.19,3.89-0.26"/>
+			</g>
+			<path id="kvg:077ed-s10" kvg:type="㇔" d="M56.38,67.75c2.2,2.46,5.69,10.1,6.25,13.93"/>
+			<path id="kvg:077ed-s11" kvg:type="㇒" d="M82.95,64.34c0.18,0.78,0.12,1.86-0.05,2.59C81.75,71.88,78.88,79,74.88,85.2"/>
+			<path id="kvg:077ed-s12" kvg:type="㇐" d="M45.73,88.76c2.06,0.69,5.84,0.82,7.9,0.69c16.54-1.08,26.21-2.2,39.17-2.31c3.44-0.03,5.5,0.33,7.22,0.67"/>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_077ed" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">③ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_077ed" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:077ed" kvg:element="短">
+	<g id="kvg:077ed-g1" kvg:element="矢" kvg:variant="true" kvg:position="left" kvg:radical="general">
+		<path id="kvg:077ed-s1" kvg:type="㇒" d="M25.84,17c0.29,0.75,0.32,1.95,0.18,2.9c-0.79,5.58-6.77,19.35-12.25,26.4"/>
+		<g id="kvg:077ed-g2" kvg:element="天" kvg:variant="true">
+			<path id="kvg:077ed-s2" kvg:type="㇐" d="M22.07,35.68c0.93,0.32,2.05,0.23,2.79,0.16c3.18-0.32,8.07-0.97,13.69-2.11c1.09-0.22,3.08-0.48,4.17-0.25"/>
+			<g id="kvg:077ed-g3" kvg:element="大" kvg:variant="true">
+				<path id="kvg:077ed-s3" kvg:type="㇐" d="M10.32,55.34c2.43,0.41,4.64,0.24,6.44-0.01c6.54-0.88,16.6-2.41,23.88-3.19c2.44-0.26,4.49-0.27,6.69,0.33"/>
+				<path id="kvg:077ed-s4" kvg:type="㇒" d="M29.94,37.28c0.95,0.95,1.49,2.47,1.48,4.19c-0.17,27.28-7.55,43.41-19.67,51.17"/>
+				<path id="kvg:077ed-s5" kvg:type="㇔/㇏" d="M32.25,67.25c3.74,2.49,8.5,7.25,11,12.25"/>
+			</g>
+		</g>
+	</g>
+	<g id="kvg:077ed-g4" kvg:element="豆" kvg:position="right">
+		<g id="kvg:077ed-g5" kvg:position="top">
+			<path id="kvg:077ed-s6" kvg:type="㇐" d="M52.24,25.14c2.01,0.36,3.83,0.38,5.52,0.23c8.62-0.75,18.07-2.45,26.49-3.06c1.89-0.14,3.68-0.24,5.54,0.19"/>
+		</g>
+		<g id="kvg:077ed-g6" kvg:position="bottom">
+			<g id="kvg:077ed-g7" kvg:element="口">
+				<path id="kvg:077ed-s7" kvg:type="㇑" d="M52.79,39.53c1.08,0.72,1.89,1.96,2.17,3.14c0.99,4.18,1.87,9.68,2.83,15.68c0.18,1.11,0.35,2.21,0.51,3.31"/>
+				<path id="kvg:077ed-s8" kvg:type="㇕b" d="M55.37,40.88c6.67-0.66,22.19-2.89,28.39-3.32c3.41-0.23,4.81,0.88,3.94,4.32c-0.66,2.6-1.27,4.16-3.25,13.66"/>
+				<path id="kvg:077ed-s9" kvg:type="㇐b" d="M58.95,59.1c6.39-0.62,16.13-1.6,23.68-2.17c1.38-0.1,2.69-0.19,3.89-0.26"/>
+			</g>
+			<path id="kvg:077ed-s10" kvg:type="㇔" d="M56.38,67.75c2.2,2.46,5.69,10.1,6.25,13.93"/>
+			<path id="kvg:077ed-s11" kvg:type="㇒" d="M82.95,64.34c0.18,0.78,0.12,1.86-0.05,2.59C81.75,71.88,78.88,79,74.88,85.2"/>
+			<path id="kvg:077ed-s12" kvg:type="㇐" d="M45.73,88.76c2.06,0.69,5.84,0.82,7.9,0.69c16.54-1.08,26.21-2.2,39.17-2.31c3.44-0.03,5.5,0.33,7.22,0.67"/>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_077ed" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">④ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_077ed" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:077ed" kvg:element="短">
+	<g id="kvg:077ed-g1" kvg:element="矢" kvg:variant="true" kvg:position="left" kvg:radical="general">
+		<path id="kvg:077ed-s1" kvg:type="㇒" d="M25.84,17c0.29,0.75,0.32,1.95,0.18,2.9c-0.79,5.58-6.77,19.35-12.25,26.4"/>
+		<g id="kvg:077ed-g2" kvg:element="天" kvg:variant="true">
+			<path id="kvg:077ed-s2" kvg:type="㇐" d="M22.07,35.68c0.93,0.32,2.05,0.23,2.79,0.16c3.18-0.32,8.07-0.97,13.69-2.11c1.09-0.22,3.08-0.48,4.17-0.25"/>
+			<g id="kvg:077ed-g3" kvg:element="大" kvg:variant="true">
+				<path id="kvg:077ed-s3" kvg:type="㇐" d="M10.32,55.34c2.43,0.41,4.64,0.24,6.44-0.01c6.54-0.88,16.6-2.41,23.88-3.19c2.44-0.26,4.49-0.27,6.69,0.33"/>
+				<path id="kvg:077ed-s4" kvg:type="㇒" d="M29.94,37.28c0.95,0.95,1.49,2.47,1.48,4.19c-0.17,27.28-7.55,43.41-19.67,51.17"/>
+				<path id="kvg:077ed-s5" kvg:type="㇔/㇏" d="M32.25,67.25c3.74,2.49,8.5,7.25,11,12.25"/>
+			</g>
+		</g>
+	</g>
+	<g id="kvg:077ed-g4" kvg:element="豆" kvg:position="right">
+		<g id="kvg:077ed-g5" kvg:position="top">
+			<path id="kvg:077ed-s6" kvg:type="㇐" d="M52.24,25.14c2.01,0.36,3.83,0.38,5.52,0.23c8.62-0.75,18.07-2.45,26.49-3.06c1.89-0.14,3.68-0.24,5.54,0.19"/>
+		</g>
+		<g id="kvg:077ed-g6" kvg:position="bottom">
+			<g id="kvg:077ed-g7" kvg:element="口">
+				<path id="kvg:077ed-s7" kvg:type="㇑" d="M52.79,39.53c1.08,0.72,1.89,1.96,2.17,3.14c0.99,4.18,1.87,9.68,2.83,15.68c0.18,1.11,0.35,2.21,0.51,3.31"/>
+				<path id="kvg:077ed-s8" kvg:type="㇕b" d="M55.37,40.88c6.67-0.66,22.19-2.89,28.39-3.32c3.41-0.23,4.81,0.88,3.94,4.32c-0.66,2.6-1.27,4.16-3.25,13.66"/>
+				<path id="kvg:077ed-s9" kvg:type="㇐b" d="M58.95,59.1c6.39-0.62,16.13-1.6,23.68-2.17c1.38-0.1,2.69-0.19,3.89-0.26"/>
+			</g>
+			<path id="kvg:077ed-s10" kvg:type="㇔" d="M56.38,67.75c2.2,2.46,5.69,10.1,6.25,13.93"/>
+			<path id="kvg:077ed-s11" kvg:type="㇒" d="M82.95,64.34c0.18,0.78,0.12,1.86-0.05,2.59C81.75,71.88,78.88,79,74.88,85.2"/>
+			<path id="kvg:077ed-s12" kvg:type="㇐" d="M45.73,88.76c2.06,0.69,5.84,0.82,7.9,0.69c16.54-1.08,26.21-2.2,39.17-2.31c3.44-0.03,5.5,0.33,7.22,0.67"/>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_077ed" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑤ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑥ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑦ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑧ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑨ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑩ Latih</span></div>
                 </div>
 
-                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
-                <div style="margin-top: 4px;">
-                  <div class="grid-label-row">
-                    <span>⑪ Jiplak</span>
-                    <span>⑫ Jiplak</span>
-                    <span>⑬ Latih</span>
-                    <span>⑭ Latih</span>
-                    <span>⑮ Latih</span>
-                    <span>⑯ Latih</span>
-                    <span>⑰ Latih</span>
-                    <span>⑱ Latih</span>
-                    <span>⑲ Latih</span>
-                    <span>⑳ Latih</span>
+                <!-- Baris 2: Kotak 11 s/d 20 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑪ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_077ed" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:077ed" kvg:element="短">
+	<g id="kvg:077ed-g1" kvg:element="矢" kvg:variant="true" kvg:position="left" kvg:radical="general">
+		<path id="kvg:077ed-s1" kvg:type="㇒" d="M25.84,17c0.29,0.75,0.32,1.95,0.18,2.9c-0.79,5.58-6.77,19.35-12.25,26.4"/>
+		<g id="kvg:077ed-g2" kvg:element="天" kvg:variant="true">
+			<path id="kvg:077ed-s2" kvg:type="㇐" d="M22.07,35.68c0.93,0.32,2.05,0.23,2.79,0.16c3.18-0.32,8.07-0.97,13.69-2.11c1.09-0.22,3.08-0.48,4.17-0.25"/>
+			<g id="kvg:077ed-g3" kvg:element="大" kvg:variant="true">
+				<path id="kvg:077ed-s3" kvg:type="㇐" d="M10.32,55.34c2.43,0.41,4.64,0.24,6.44-0.01c6.54-0.88,16.6-2.41,23.88-3.19c2.44-0.26,4.49-0.27,6.69,0.33"/>
+				<path id="kvg:077ed-s4" kvg:type="㇒" d="M29.94,37.28c0.95,0.95,1.49,2.47,1.48,4.19c-0.17,27.28-7.55,43.41-19.67,51.17"/>
+				<path id="kvg:077ed-s5" kvg:type="㇔/㇏" d="M32.25,67.25c3.74,2.49,8.5,7.25,11,12.25"/>
+			</g>
+		</g>
+	</g>
+	<g id="kvg:077ed-g4" kvg:element="豆" kvg:position="right">
+		<g id="kvg:077ed-g5" kvg:position="top">
+			<path id="kvg:077ed-s6" kvg:type="㇐" d="M52.24,25.14c2.01,0.36,3.83,0.38,5.52,0.23c8.62-0.75,18.07-2.45,26.49-3.06c1.89-0.14,3.68-0.24,5.54,0.19"/>
+		</g>
+		<g id="kvg:077ed-g6" kvg:position="bottom">
+			<g id="kvg:077ed-g7" kvg:element="口">
+				<path id="kvg:077ed-s7" kvg:type="㇑" d="M52.79,39.53c1.08,0.72,1.89,1.96,2.17,3.14c0.99,4.18,1.87,9.68,2.83,15.68c0.18,1.11,0.35,2.21,0.51,3.31"/>
+				<path id="kvg:077ed-s8" kvg:type="㇕b" d="M55.37,40.88c6.67-0.66,22.19-2.89,28.39-3.32c3.41-0.23,4.81,0.88,3.94,4.32c-0.66,2.6-1.27,4.16-3.25,13.66"/>
+				<path id="kvg:077ed-s9" kvg:type="㇐b" d="M58.95,59.1c6.39-0.62,16.13-1.6,23.68-2.17c1.38-0.1,2.69-0.19,3.89-0.26"/>
+			</g>
+			<path id="kvg:077ed-s10" kvg:type="㇔" d="M56.38,67.75c2.2,2.46,5.69,10.1,6.25,13.93"/>
+			<path id="kvg:077ed-s11" kvg:type="㇒" d="M82.95,64.34c0.18,0.78,0.12,1.86-0.05,2.59C81.75,71.88,78.88,79,74.88,85.2"/>
+			<path id="kvg:077ed-s12" kvg:type="㇐" d="M45.73,88.76c2.06,0.69,5.84,0.82,7.9,0.69c16.54-1.08,26.21-2.2,39.17-2.31c3.44-0.03,5.5,0.33,7.22,0.67"/>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_077ed" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box trace-box"><span>短</span></div>
-                    <div class="tianzige-box trace-box"><span>短</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑫ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_077ed" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:077ed" kvg:element="短">
+	<g id="kvg:077ed-g1" kvg:element="矢" kvg:variant="true" kvg:position="left" kvg:radical="general">
+		<path id="kvg:077ed-s1" kvg:type="㇒" d="M25.84,17c0.29,0.75,0.32,1.95,0.18,2.9c-0.79,5.58-6.77,19.35-12.25,26.4"/>
+		<g id="kvg:077ed-g2" kvg:element="天" kvg:variant="true">
+			<path id="kvg:077ed-s2" kvg:type="㇐" d="M22.07,35.68c0.93,0.32,2.05,0.23,2.79,0.16c3.18-0.32,8.07-0.97,13.69-2.11c1.09-0.22,3.08-0.48,4.17-0.25"/>
+			<g id="kvg:077ed-g3" kvg:element="大" kvg:variant="true">
+				<path id="kvg:077ed-s3" kvg:type="㇐" d="M10.32,55.34c2.43,0.41,4.64,0.24,6.44-0.01c6.54-0.88,16.6-2.41,23.88-3.19c2.44-0.26,4.49-0.27,6.69,0.33"/>
+				<path id="kvg:077ed-s4" kvg:type="㇒" d="M29.94,37.28c0.95,0.95,1.49,2.47,1.48,4.19c-0.17,27.28-7.55,43.41-19.67,51.17"/>
+				<path id="kvg:077ed-s5" kvg:type="㇔/㇏" d="M32.25,67.25c3.74,2.49,8.5,7.25,11,12.25"/>
+			</g>
+		</g>
+	</g>
+	<g id="kvg:077ed-g4" kvg:element="豆" kvg:position="right">
+		<g id="kvg:077ed-g5" kvg:position="top">
+			<path id="kvg:077ed-s6" kvg:type="㇐" d="M52.24,25.14c2.01,0.36,3.83,0.38,5.52,0.23c8.62-0.75,18.07-2.45,26.49-3.06c1.89-0.14,3.68-0.24,5.54,0.19"/>
+		</g>
+		<g id="kvg:077ed-g6" kvg:position="bottom">
+			<g id="kvg:077ed-g7" kvg:element="口">
+				<path id="kvg:077ed-s7" kvg:type="㇑" d="M52.79,39.53c1.08,0.72,1.89,1.96,2.17,3.14c0.99,4.18,1.87,9.68,2.83,15.68c0.18,1.11,0.35,2.21,0.51,3.31"/>
+				<path id="kvg:077ed-s8" kvg:type="㇕b" d="M55.37,40.88c6.67-0.66,22.19-2.89,28.39-3.32c3.41-0.23,4.81,0.88,3.94,4.32c-0.66,2.6-1.27,4.16-3.25,13.66"/>
+				<path id="kvg:077ed-s9" kvg:type="㇐b" d="M58.95,59.1c6.39-0.62,16.13-1.6,23.68-2.17c1.38-0.1,2.69-0.19,3.89-0.26"/>
+			</g>
+			<path id="kvg:077ed-s10" kvg:type="㇔" d="M56.38,67.75c2.2,2.46,5.69,10.1,6.25,13.93"/>
+			<path id="kvg:077ed-s11" kvg:type="㇒" d="M82.95,64.34c0.18,0.78,0.12,1.86-0.05,2.59C81.75,71.88,78.88,79,74.88,85.2"/>
+			<path id="kvg:077ed-s12" kvg:type="㇐" d="M45.73,88.76c2.06,0.69,5.84,0.82,7.9,0.69c16.54-1.08,26.21-2.2,39.17-2.31c3.44-0.03,5.5,0.33,7.22,0.67"/>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_077ed" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑬ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑭ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑮ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑯ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑰ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑱ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑲ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑳ Latih</span></div>
                 </div>
 
                 <!-- Baris Menulis saat Dicetak -->
@@ -855,30 +1560,19 @@
                 <strong>Contoh:</strong> <span>歌(うた)が上(じょう)手(ず)ですね。</span> ➔ <em>"Pandai bernyanyi ya."</em>
               </div>
 
-              <!-- 20 Kotak Grid (2 Baris) -->
+              <!-- 20 Kotak Grid (2 Baris x 10 Kotak) -->
               <div class="grid-20-wrapper">
                 
-                <!-- Baris 1: 10 Kotak -->
-                <div>
-                  <div class="grid-label-row">
-                    <span style="color:#dc2626;">① Urutan</span>
-                    <span style="color:#2563eb;">② Contoh</span>
-                    <span>③ Jiplak</span>
-                    <span>④ Jiplak</span>
-                    <span>⑤ Latih</span>
-                    <span>⑥ Latih</span>
-                    <span>⑦ Latih</span>
-                    <span>⑧ Latih</span>
-                    <span>⑨ Latih</span>
-                    <span>⑩ Latih</span>
-                  </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: Kotak 1 s/d 10 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box guidance-box">
+                    <span class="box-tag tag-urutan">① Urutan</span>
+                    <svg class="kanji-svg guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
   
-<g id="kvg:StrokePaths_06b4c" style="fill:none;stroke:#334155;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:StrokePaths_06b4c" style="fill:none;stroke:#1e293b;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
 <g id="kvg:06b4c" kvg:element="歌">
 	<g id="kvg:06b4c-g1" kvg:position="left">
 		<g id="kvg:06b4c-g2" kvg:element="哥" kvg:position="top" kvg:phon="哥">
@@ -943,45 +1637,391 @@
 	<text transform="matrix(1 0 0 1 73.50 64.50)">14</text>
 </g>
 </svg>
-</div>
-                    <div class="tianzige-box model-box"><span>歌</span></div>
-                    <div class="tianzige-box trace-box"><span>歌</span></div>
-                    <div class="tianzige-box trace-box"><span>歌</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+
                   </div>
+                  <div class="tianzige-box model-box">
+                    <span class="box-tag tag-contoh">② Contoh</span>
+                    <svg class="kanji-svg model-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_06b4c" style="fill:none;stroke:#0f172a;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:06b4c" kvg:element="歌">
+	<g id="kvg:06b4c-g1" kvg:position="left">
+		<g id="kvg:06b4c-g2" kvg:element="哥" kvg:position="top" kvg:phon="哥">
+			<g id="kvg:06b4c-g3" kvg:element="可">
+				<g id="kvg:06b4c-g4" kvg:element="丁" kvg:part="1">
+					<g id="kvg:06b4c-g5" kvg:element="一">
+						<path id="kvg:06b4c-s1" kvg:type="㇐" d="M12.87,22.32c1.62,0.38,4.57,0.57,6.21,0.38c8.42-0.95,18.04-2.45,27.39-3.16c2.68-0.2,4.32,0.18,5.67,0.37"/>
+					</g>
+				</g>
+				<g id="kvg:06b4c-g6" kvg:element="口">
+					<path id="kvg:06b4c-s2" kvg:type="㇑" d="M16.65,32.85c0.56,0.41,0.88,0.96,0.97,1.65c0.62,2.03,1.31,5.53,1.85,8.42c0.19,1,0.35,1.96,0.49,2.84"/>
+					<path id="kvg:06b4c-s3" kvg:type="㇕b" d="M18.75,34.28c4.65-0.96,11.62-2.38,14.17-2.62c1.1-0.1,1.76,0.61,1.6,1.22c-0.5,1.92-1.31,5.39-1.98,7.88"/>
+					<path id="kvg:06b4c-s4" kvg:type="㇐b" d="M20.83,43.36c2.68-0.24,5.82-0.99,9.42-1.31c1.15-0.1,2.32-0.21,3.49-0.33"/>
+				</g>
+				<g id="kvg:06b4c-g7" kvg:element="丁" kvg:part="2" kvg:position="bottom">
+					<g id="kvg:06b4c-g8" kvg:element="亅" kvg:variant="true">
+						<path id="kvg:06b4c-s5" kvg:type="㇑/㇚" d="M44,21.37c0.03,0.26,0.98,1.35,1.01,3c0.12,5.81,0.06,14.91-0.02,20.39c-0.03,1.96-0.06,3.46-0.08,4.17"/>
+					</g>
+				</g>
+			</g>
+			<g id="kvg:06b4c-g9" kvg:element="可">
+				<g id="kvg:06b4c-g10" kvg:element="丁" kvg:part="1">
+					<g id="kvg:06b4c-g11" kvg:element="一">
+						<path id="kvg:06b4c-s6" kvg:type="㇐" d="M9.63,54.68c1.45,0.39,4.92,0.56,6.39,0.39C25.38,54,36.5,52,47.8,50.96c2.4-0.22,3.87,0.19,5.08,0.39"/>
+					</g>
+				</g>
+				<g id="kvg:06b4c-g12" kvg:element="口">
+					<path id="kvg:06b4c-s7" kvg:type="㇑" d="M13.93,64.82c0.61,0.45,0.97,1.05,1.08,1.8c0.67,2.09,1.17,5.73,1.75,8.83c0.2,1.06,0.37,2.08,0.52,3.01"/>
+					<path id="kvg:06b4c-s8" kvg:type="㇕b" d="M16.31,66.05c5-1.02,12.81-2.25,15.54-2.51c1.2-0.11,1.91,0.66,1.74,1.32c-0.52,2-1.86,6.32-2.56,8.9"/>
+					<path id="kvg:06b4c-s9" kvg:type="㇐b" d="M18.16,76.42c3.18-0.29,7.53-1.08,11.84-1.48c0.89-0.08,1.79-0.17,2.69-0.26"/>
+				</g>
+				<g id="kvg:06b4c-g13" kvg:element="丁" kvg:part="2">
+					<g id="kvg:06b4c-g14" kvg:element="亅">
+						<path id="kvg:06b4c-s10" kvg:type="㇚" d="M43.91,54.26c0.06,0.26,0.79,1.35,0.85,3c0.27,7.9-0.17,31.89-0.17,34.59c0,4.66-4.25-0.98-6.35-2.12"/>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+	<g id="kvg:06b4c-g15" kvg:element="欠" kvg:position="right" kvg:radical="general">
+		<path id="kvg:06b4c-s11" kvg:type="㇒" d="M66.24,13c0.5,1.67,0.52,3.33,0.09,4.95C64.43,25.07,61,36.25,56.45,44"/>
+		<path id="kvg:06b4c-s12" kvg:type="㇖" d="M62.88,37.4c0.81,0.35,2.59,0.37,3.82,0.1c7.3-1.62,13.36-2.99,19.42-4.35c7.82-1.76-0.89,10.41-2.12,12.1"/>
+		<path id="kvg:06b4c-s13" kvg:type="㇒" d="M68,44.38c0.37,1.12,0.53,2.34,0.41,3.96C67.6,58.43,63.5,80.33,51.25,91"/>
+		<path id="kvg:06b4c-s14" kvg:type="㇏" d="M68.5,61c3.45,4.84,14.8,18.55,21.86,25.13c1.64,1.53,3.42,3.24,5.64,3.87"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_06b4c" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">③ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_06b4c" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:06b4c" kvg:element="歌">
+	<g id="kvg:06b4c-g1" kvg:position="left">
+		<g id="kvg:06b4c-g2" kvg:element="哥" kvg:position="top" kvg:phon="哥">
+			<g id="kvg:06b4c-g3" kvg:element="可">
+				<g id="kvg:06b4c-g4" kvg:element="丁" kvg:part="1">
+					<g id="kvg:06b4c-g5" kvg:element="一">
+						<path id="kvg:06b4c-s1" kvg:type="㇐" d="M12.87,22.32c1.62,0.38,4.57,0.57,6.21,0.38c8.42-0.95,18.04-2.45,27.39-3.16c2.68-0.2,4.32,0.18,5.67,0.37"/>
+					</g>
+				</g>
+				<g id="kvg:06b4c-g6" kvg:element="口">
+					<path id="kvg:06b4c-s2" kvg:type="㇑" d="M16.65,32.85c0.56,0.41,0.88,0.96,0.97,1.65c0.62,2.03,1.31,5.53,1.85,8.42c0.19,1,0.35,1.96,0.49,2.84"/>
+					<path id="kvg:06b4c-s3" kvg:type="㇕b" d="M18.75,34.28c4.65-0.96,11.62-2.38,14.17-2.62c1.1-0.1,1.76,0.61,1.6,1.22c-0.5,1.92-1.31,5.39-1.98,7.88"/>
+					<path id="kvg:06b4c-s4" kvg:type="㇐b" d="M20.83,43.36c2.68-0.24,5.82-0.99,9.42-1.31c1.15-0.1,2.32-0.21,3.49-0.33"/>
+				</g>
+				<g id="kvg:06b4c-g7" kvg:element="丁" kvg:part="2" kvg:position="bottom">
+					<g id="kvg:06b4c-g8" kvg:element="亅" kvg:variant="true">
+						<path id="kvg:06b4c-s5" kvg:type="㇑/㇚" d="M44,21.37c0.03,0.26,0.98,1.35,1.01,3c0.12,5.81,0.06,14.91-0.02,20.39c-0.03,1.96-0.06,3.46-0.08,4.17"/>
+					</g>
+				</g>
+			</g>
+			<g id="kvg:06b4c-g9" kvg:element="可">
+				<g id="kvg:06b4c-g10" kvg:element="丁" kvg:part="1">
+					<g id="kvg:06b4c-g11" kvg:element="一">
+						<path id="kvg:06b4c-s6" kvg:type="㇐" d="M9.63,54.68c1.45,0.39,4.92,0.56,6.39,0.39C25.38,54,36.5,52,47.8,50.96c2.4-0.22,3.87,0.19,5.08,0.39"/>
+					</g>
+				</g>
+				<g id="kvg:06b4c-g12" kvg:element="口">
+					<path id="kvg:06b4c-s7" kvg:type="㇑" d="M13.93,64.82c0.61,0.45,0.97,1.05,1.08,1.8c0.67,2.09,1.17,5.73,1.75,8.83c0.2,1.06,0.37,2.08,0.52,3.01"/>
+					<path id="kvg:06b4c-s8" kvg:type="㇕b" d="M16.31,66.05c5-1.02,12.81-2.25,15.54-2.51c1.2-0.11,1.91,0.66,1.74,1.32c-0.52,2-1.86,6.32-2.56,8.9"/>
+					<path id="kvg:06b4c-s9" kvg:type="㇐b" d="M18.16,76.42c3.18-0.29,7.53-1.08,11.84-1.48c0.89-0.08,1.79-0.17,2.69-0.26"/>
+				</g>
+				<g id="kvg:06b4c-g13" kvg:element="丁" kvg:part="2">
+					<g id="kvg:06b4c-g14" kvg:element="亅">
+						<path id="kvg:06b4c-s10" kvg:type="㇚" d="M43.91,54.26c0.06,0.26,0.79,1.35,0.85,3c0.27,7.9-0.17,31.89-0.17,34.59c0,4.66-4.25-0.98-6.35-2.12"/>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+	<g id="kvg:06b4c-g15" kvg:element="欠" kvg:position="right" kvg:radical="general">
+		<path id="kvg:06b4c-s11" kvg:type="㇒" d="M66.24,13c0.5,1.67,0.52,3.33,0.09,4.95C64.43,25.07,61,36.25,56.45,44"/>
+		<path id="kvg:06b4c-s12" kvg:type="㇖" d="M62.88,37.4c0.81,0.35,2.59,0.37,3.82,0.1c7.3-1.62,13.36-2.99,19.42-4.35c7.82-1.76-0.89,10.41-2.12,12.1"/>
+		<path id="kvg:06b4c-s13" kvg:type="㇒" d="M68,44.38c0.37,1.12,0.53,2.34,0.41,3.96C67.6,58.43,63.5,80.33,51.25,91"/>
+		<path id="kvg:06b4c-s14" kvg:type="㇏" d="M68.5,61c3.45,4.84,14.8,18.55,21.86,25.13c1.64,1.53,3.42,3.24,5.64,3.87"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_06b4c" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">④ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_06b4c" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:06b4c" kvg:element="歌">
+	<g id="kvg:06b4c-g1" kvg:position="left">
+		<g id="kvg:06b4c-g2" kvg:element="哥" kvg:position="top" kvg:phon="哥">
+			<g id="kvg:06b4c-g3" kvg:element="可">
+				<g id="kvg:06b4c-g4" kvg:element="丁" kvg:part="1">
+					<g id="kvg:06b4c-g5" kvg:element="一">
+						<path id="kvg:06b4c-s1" kvg:type="㇐" d="M12.87,22.32c1.62,0.38,4.57,0.57,6.21,0.38c8.42-0.95,18.04-2.45,27.39-3.16c2.68-0.2,4.32,0.18,5.67,0.37"/>
+					</g>
+				</g>
+				<g id="kvg:06b4c-g6" kvg:element="口">
+					<path id="kvg:06b4c-s2" kvg:type="㇑" d="M16.65,32.85c0.56,0.41,0.88,0.96,0.97,1.65c0.62,2.03,1.31,5.53,1.85,8.42c0.19,1,0.35,1.96,0.49,2.84"/>
+					<path id="kvg:06b4c-s3" kvg:type="㇕b" d="M18.75,34.28c4.65-0.96,11.62-2.38,14.17-2.62c1.1-0.1,1.76,0.61,1.6,1.22c-0.5,1.92-1.31,5.39-1.98,7.88"/>
+					<path id="kvg:06b4c-s4" kvg:type="㇐b" d="M20.83,43.36c2.68-0.24,5.82-0.99,9.42-1.31c1.15-0.1,2.32-0.21,3.49-0.33"/>
+				</g>
+				<g id="kvg:06b4c-g7" kvg:element="丁" kvg:part="2" kvg:position="bottom">
+					<g id="kvg:06b4c-g8" kvg:element="亅" kvg:variant="true">
+						<path id="kvg:06b4c-s5" kvg:type="㇑/㇚" d="M44,21.37c0.03,0.26,0.98,1.35,1.01,3c0.12,5.81,0.06,14.91-0.02,20.39c-0.03,1.96-0.06,3.46-0.08,4.17"/>
+					</g>
+				</g>
+			</g>
+			<g id="kvg:06b4c-g9" kvg:element="可">
+				<g id="kvg:06b4c-g10" kvg:element="丁" kvg:part="1">
+					<g id="kvg:06b4c-g11" kvg:element="一">
+						<path id="kvg:06b4c-s6" kvg:type="㇐" d="M9.63,54.68c1.45,0.39,4.92,0.56,6.39,0.39C25.38,54,36.5,52,47.8,50.96c2.4-0.22,3.87,0.19,5.08,0.39"/>
+					</g>
+				</g>
+				<g id="kvg:06b4c-g12" kvg:element="口">
+					<path id="kvg:06b4c-s7" kvg:type="㇑" d="M13.93,64.82c0.61,0.45,0.97,1.05,1.08,1.8c0.67,2.09,1.17,5.73,1.75,8.83c0.2,1.06,0.37,2.08,0.52,3.01"/>
+					<path id="kvg:06b4c-s8" kvg:type="㇕b" d="M16.31,66.05c5-1.02,12.81-2.25,15.54-2.51c1.2-0.11,1.91,0.66,1.74,1.32c-0.52,2-1.86,6.32-2.56,8.9"/>
+					<path id="kvg:06b4c-s9" kvg:type="㇐b" d="M18.16,76.42c3.18-0.29,7.53-1.08,11.84-1.48c0.89-0.08,1.79-0.17,2.69-0.26"/>
+				</g>
+				<g id="kvg:06b4c-g13" kvg:element="丁" kvg:part="2">
+					<g id="kvg:06b4c-g14" kvg:element="亅">
+						<path id="kvg:06b4c-s10" kvg:type="㇚" d="M43.91,54.26c0.06,0.26,0.79,1.35,0.85,3c0.27,7.9-0.17,31.89-0.17,34.59c0,4.66-4.25-0.98-6.35-2.12"/>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+	<g id="kvg:06b4c-g15" kvg:element="欠" kvg:position="right" kvg:radical="general">
+		<path id="kvg:06b4c-s11" kvg:type="㇒" d="M66.24,13c0.5,1.67,0.52,3.33,0.09,4.95C64.43,25.07,61,36.25,56.45,44"/>
+		<path id="kvg:06b4c-s12" kvg:type="㇖" d="M62.88,37.4c0.81,0.35,2.59,0.37,3.82,0.1c7.3-1.62,13.36-2.99,19.42-4.35c7.82-1.76-0.89,10.41-2.12,12.1"/>
+		<path id="kvg:06b4c-s13" kvg:type="㇒" d="M68,44.38c0.37,1.12,0.53,2.34,0.41,3.96C67.6,58.43,63.5,80.33,51.25,91"/>
+		<path id="kvg:06b4c-s14" kvg:type="㇏" d="M68.5,61c3.45,4.84,14.8,18.55,21.86,25.13c1.64,1.53,3.42,3.24,5.64,3.87"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_06b4c" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑤ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑥ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑦ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑧ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑨ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑩ Latih</span></div>
                 </div>
 
-                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
-                <div style="margin-top: 4px;">
-                  <div class="grid-label-row">
-                    <span>⑪ Jiplak</span>
-                    <span>⑫ Jiplak</span>
-                    <span>⑬ Latih</span>
-                    <span>⑭ Latih</span>
-                    <span>⑮ Latih</span>
-                    <span>⑯ Latih</span>
-                    <span>⑰ Latih</span>
-                    <span>⑱ Latih</span>
-                    <span>⑲ Latih</span>
-                    <span>⑳ Latih</span>
+                <!-- Baris 2: Kotak 11 s/d 20 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑪ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_06b4c" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:06b4c" kvg:element="歌">
+	<g id="kvg:06b4c-g1" kvg:position="left">
+		<g id="kvg:06b4c-g2" kvg:element="哥" kvg:position="top" kvg:phon="哥">
+			<g id="kvg:06b4c-g3" kvg:element="可">
+				<g id="kvg:06b4c-g4" kvg:element="丁" kvg:part="1">
+					<g id="kvg:06b4c-g5" kvg:element="一">
+						<path id="kvg:06b4c-s1" kvg:type="㇐" d="M12.87,22.32c1.62,0.38,4.57,0.57,6.21,0.38c8.42-0.95,18.04-2.45,27.39-3.16c2.68-0.2,4.32,0.18,5.67,0.37"/>
+					</g>
+				</g>
+				<g id="kvg:06b4c-g6" kvg:element="口">
+					<path id="kvg:06b4c-s2" kvg:type="㇑" d="M16.65,32.85c0.56,0.41,0.88,0.96,0.97,1.65c0.62,2.03,1.31,5.53,1.85,8.42c0.19,1,0.35,1.96,0.49,2.84"/>
+					<path id="kvg:06b4c-s3" kvg:type="㇕b" d="M18.75,34.28c4.65-0.96,11.62-2.38,14.17-2.62c1.1-0.1,1.76,0.61,1.6,1.22c-0.5,1.92-1.31,5.39-1.98,7.88"/>
+					<path id="kvg:06b4c-s4" kvg:type="㇐b" d="M20.83,43.36c2.68-0.24,5.82-0.99,9.42-1.31c1.15-0.1,2.32-0.21,3.49-0.33"/>
+				</g>
+				<g id="kvg:06b4c-g7" kvg:element="丁" kvg:part="2" kvg:position="bottom">
+					<g id="kvg:06b4c-g8" kvg:element="亅" kvg:variant="true">
+						<path id="kvg:06b4c-s5" kvg:type="㇑/㇚" d="M44,21.37c0.03,0.26,0.98,1.35,1.01,3c0.12,5.81,0.06,14.91-0.02,20.39c-0.03,1.96-0.06,3.46-0.08,4.17"/>
+					</g>
+				</g>
+			</g>
+			<g id="kvg:06b4c-g9" kvg:element="可">
+				<g id="kvg:06b4c-g10" kvg:element="丁" kvg:part="1">
+					<g id="kvg:06b4c-g11" kvg:element="一">
+						<path id="kvg:06b4c-s6" kvg:type="㇐" d="M9.63,54.68c1.45,0.39,4.92,0.56,6.39,0.39C25.38,54,36.5,52,47.8,50.96c2.4-0.22,3.87,0.19,5.08,0.39"/>
+					</g>
+				</g>
+				<g id="kvg:06b4c-g12" kvg:element="口">
+					<path id="kvg:06b4c-s7" kvg:type="㇑" d="M13.93,64.82c0.61,0.45,0.97,1.05,1.08,1.8c0.67,2.09,1.17,5.73,1.75,8.83c0.2,1.06,0.37,2.08,0.52,3.01"/>
+					<path id="kvg:06b4c-s8" kvg:type="㇕b" d="M16.31,66.05c5-1.02,12.81-2.25,15.54-2.51c1.2-0.11,1.91,0.66,1.74,1.32c-0.52,2-1.86,6.32-2.56,8.9"/>
+					<path id="kvg:06b4c-s9" kvg:type="㇐b" d="M18.16,76.42c3.18-0.29,7.53-1.08,11.84-1.48c0.89-0.08,1.79-0.17,2.69-0.26"/>
+				</g>
+				<g id="kvg:06b4c-g13" kvg:element="丁" kvg:part="2">
+					<g id="kvg:06b4c-g14" kvg:element="亅">
+						<path id="kvg:06b4c-s10" kvg:type="㇚" d="M43.91,54.26c0.06,0.26,0.79,1.35,0.85,3c0.27,7.9-0.17,31.89-0.17,34.59c0,4.66-4.25-0.98-6.35-2.12"/>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+	<g id="kvg:06b4c-g15" kvg:element="欠" kvg:position="right" kvg:radical="general">
+		<path id="kvg:06b4c-s11" kvg:type="㇒" d="M66.24,13c0.5,1.67,0.52,3.33,0.09,4.95C64.43,25.07,61,36.25,56.45,44"/>
+		<path id="kvg:06b4c-s12" kvg:type="㇖" d="M62.88,37.4c0.81,0.35,2.59,0.37,3.82,0.1c7.3-1.62,13.36-2.99,19.42-4.35c7.82-1.76-0.89,10.41-2.12,12.1"/>
+		<path id="kvg:06b4c-s13" kvg:type="㇒" d="M68,44.38c0.37,1.12,0.53,2.34,0.41,3.96C67.6,58.43,63.5,80.33,51.25,91"/>
+		<path id="kvg:06b4c-s14" kvg:type="㇏" d="M68.5,61c3.45,4.84,14.8,18.55,21.86,25.13c1.64,1.53,3.42,3.24,5.64,3.87"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_06b4c" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box trace-box"><span>歌</span></div>
-                    <div class="tianzige-box trace-box"><span>歌</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑫ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_06b4c" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:06b4c" kvg:element="歌">
+	<g id="kvg:06b4c-g1" kvg:position="left">
+		<g id="kvg:06b4c-g2" kvg:element="哥" kvg:position="top" kvg:phon="哥">
+			<g id="kvg:06b4c-g3" kvg:element="可">
+				<g id="kvg:06b4c-g4" kvg:element="丁" kvg:part="1">
+					<g id="kvg:06b4c-g5" kvg:element="一">
+						<path id="kvg:06b4c-s1" kvg:type="㇐" d="M12.87,22.32c1.62,0.38,4.57,0.57,6.21,0.38c8.42-0.95,18.04-2.45,27.39-3.16c2.68-0.2,4.32,0.18,5.67,0.37"/>
+					</g>
+				</g>
+				<g id="kvg:06b4c-g6" kvg:element="口">
+					<path id="kvg:06b4c-s2" kvg:type="㇑" d="M16.65,32.85c0.56,0.41,0.88,0.96,0.97,1.65c0.62,2.03,1.31,5.53,1.85,8.42c0.19,1,0.35,1.96,0.49,2.84"/>
+					<path id="kvg:06b4c-s3" kvg:type="㇕b" d="M18.75,34.28c4.65-0.96,11.62-2.38,14.17-2.62c1.1-0.1,1.76,0.61,1.6,1.22c-0.5,1.92-1.31,5.39-1.98,7.88"/>
+					<path id="kvg:06b4c-s4" kvg:type="㇐b" d="M20.83,43.36c2.68-0.24,5.82-0.99,9.42-1.31c1.15-0.1,2.32-0.21,3.49-0.33"/>
+				</g>
+				<g id="kvg:06b4c-g7" kvg:element="丁" kvg:part="2" kvg:position="bottom">
+					<g id="kvg:06b4c-g8" kvg:element="亅" kvg:variant="true">
+						<path id="kvg:06b4c-s5" kvg:type="㇑/㇚" d="M44,21.37c0.03,0.26,0.98,1.35,1.01,3c0.12,5.81,0.06,14.91-0.02,20.39c-0.03,1.96-0.06,3.46-0.08,4.17"/>
+					</g>
+				</g>
+			</g>
+			<g id="kvg:06b4c-g9" kvg:element="可">
+				<g id="kvg:06b4c-g10" kvg:element="丁" kvg:part="1">
+					<g id="kvg:06b4c-g11" kvg:element="一">
+						<path id="kvg:06b4c-s6" kvg:type="㇐" d="M9.63,54.68c1.45,0.39,4.92,0.56,6.39,0.39C25.38,54,36.5,52,47.8,50.96c2.4-0.22,3.87,0.19,5.08,0.39"/>
+					</g>
+				</g>
+				<g id="kvg:06b4c-g12" kvg:element="口">
+					<path id="kvg:06b4c-s7" kvg:type="㇑" d="M13.93,64.82c0.61,0.45,0.97,1.05,1.08,1.8c0.67,2.09,1.17,5.73,1.75,8.83c0.2,1.06,0.37,2.08,0.52,3.01"/>
+					<path id="kvg:06b4c-s8" kvg:type="㇕b" d="M16.31,66.05c5-1.02,12.81-2.25,15.54-2.51c1.2-0.11,1.91,0.66,1.74,1.32c-0.52,2-1.86,6.32-2.56,8.9"/>
+					<path id="kvg:06b4c-s9" kvg:type="㇐b" d="M18.16,76.42c3.18-0.29,7.53-1.08,11.84-1.48c0.89-0.08,1.79-0.17,2.69-0.26"/>
+				</g>
+				<g id="kvg:06b4c-g13" kvg:element="丁" kvg:part="2">
+					<g id="kvg:06b4c-g14" kvg:element="亅">
+						<path id="kvg:06b4c-s10" kvg:type="㇚" d="M43.91,54.26c0.06,0.26,0.79,1.35,0.85,3c0.27,7.9-0.17,31.89-0.17,34.59c0,4.66-4.25-0.98-6.35-2.12"/>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+	<g id="kvg:06b4c-g15" kvg:element="欠" kvg:position="right" kvg:radical="general">
+		<path id="kvg:06b4c-s11" kvg:type="㇒" d="M66.24,13c0.5,1.67,0.52,3.33,0.09,4.95C64.43,25.07,61,36.25,56.45,44"/>
+		<path id="kvg:06b4c-s12" kvg:type="㇖" d="M62.88,37.4c0.81,0.35,2.59,0.37,3.82,0.1c7.3-1.62,13.36-2.99,19.42-4.35c7.82-1.76-0.89,10.41-2.12,12.1"/>
+		<path id="kvg:06b4c-s13" kvg:type="㇒" d="M68,44.38c0.37,1.12,0.53,2.34,0.41,3.96C67.6,58.43,63.5,80.33,51.25,91"/>
+		<path id="kvg:06b4c-s14" kvg:type="㇏" d="M68.5,61c3.45,4.84,14.8,18.55,21.86,25.13c1.64,1.53,3.42,3.24,5.64,3.87"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_06b4c" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑬ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑭ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑮ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑯ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑰ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑱ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑲ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑳ Latih</span></div>
                 </div>
 
                 <!-- Baris Menulis saat Dicetak -->
@@ -1028,30 +2068,19 @@
                 <strong>Contoh:</strong> <span>好(す)きな歌(か)手(しゅ)がいますか？</span> ➔ <em>"Apakah Anda punya penyanyi favorit?"</em>
               </div>
 
-              <!-- 20 Kotak Grid (2 Baris) -->
+              <!-- 20 Kotak Grid (2 Baris x 10 Kotak) -->
               <div class="grid-20-wrapper">
                 
-                <!-- Baris 1: 10 Kotak -->
-                <div>
-                  <div class="grid-label-row">
-                    <span style="color:#dc2626;">① Urutan</span>
-                    <span style="color:#2563eb;">② Contoh</span>
-                    <span>③ Jiplak</span>
-                    <span>④ Jiplak</span>
-                    <span>⑤ Latih</span>
-                    <span>⑥ Latih</span>
-                    <span>⑦ Latih</span>
-                    <span>⑧ Latih</span>
-                    <span>⑨ Latih</span>
-                    <span>⑩ Latih</span>
-                  </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: Kotak 1 s/d 10 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box guidance-box">
+                    <span class="box-tag tag-urutan">① Urutan</span>
+                    <svg class="kanji-svg guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
   
-<g id="kvg:StrokePaths_0624b" style="fill:none;stroke:#334155;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:StrokePaths_0624b" style="fill:none;stroke:#1e293b;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
 <g id="kvg:0624b" kvg:element="手" kvg:radical="general">
 	<path id="kvg:0624b-s1" kvg:type="㇒" d="M61.48,11.5c0.02,1-0.61,1.88-1.67,2.9c-3.27,3.15-13.69,8.23-28.57,11.85"/>
 	<path id="kvg:0624b-s2" kvg:type="㇐" d="M26.38,42.92c1.8,0.46,3.61,0.67,5.68,0.38C46,41.38,58.4,39,71.37,37.75c1.92-0.19,4.62-0.38,7.25,0.04"/>
@@ -1066,45 +2095,141 @@
 	<text transform="matrix(1 0 0 1 44.50 32.50)">4</text>
 </g>
 </svg>
-</div>
-                    <div class="tianzige-box model-box"><span>手</span></div>
-                    <div class="tianzige-box trace-box"><span>手</span></div>
-                    <div class="tianzige-box trace-box"><span>手</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+
                   </div>
+                  <div class="tianzige-box model-box">
+                    <span class="box-tag tag-contoh">② Contoh</span>
+                    <svg class="kanji-svg model-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_0624b" style="fill:none;stroke:#0f172a;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:0624b" kvg:element="手" kvg:radical="general">
+	<path id="kvg:0624b-s1" kvg:type="㇒" d="M61.48,11.5c0.02,1-0.61,1.88-1.67,2.9c-3.27,3.15-13.69,8.23-28.57,11.85"/>
+	<path id="kvg:0624b-s2" kvg:type="㇐" d="M26.38,42.92c1.8,0.46,3.61,0.67,5.68,0.38C46,41.38,58.4,39,71.37,37.75c1.92-0.19,4.62-0.38,7.25,0.04"/>
+	<path id="kvg:0624b-s3" kvg:type="㇐" d="M13.27,62.87c2.71,0.63,4.86,0.6,7.22,0.38c22.63-2.12,46.13-5.62,67.7-7c2.01-0.13,4.83,0,7.46,0.37"/>
+	<path id="kvg:0624b-s4" kvg:type="㇁" d="M48.88,23.55C60.38,31,62.73,63.66,57.83,89.87c-2.08,11.13-8.64,2.34-9.89,1.17"/>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_0624b" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">③ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_0624b" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:0624b" kvg:element="手" kvg:radical="general">
+	<path id="kvg:0624b-s1" kvg:type="㇒" d="M61.48,11.5c0.02,1-0.61,1.88-1.67,2.9c-3.27,3.15-13.69,8.23-28.57,11.85"/>
+	<path id="kvg:0624b-s2" kvg:type="㇐" d="M26.38,42.92c1.8,0.46,3.61,0.67,5.68,0.38C46,41.38,58.4,39,71.37,37.75c1.92-0.19,4.62-0.38,7.25,0.04"/>
+	<path id="kvg:0624b-s3" kvg:type="㇐" d="M13.27,62.87c2.71,0.63,4.86,0.6,7.22,0.38c22.63-2.12,46.13-5.62,67.7-7c2.01-0.13,4.83,0,7.46,0.37"/>
+	<path id="kvg:0624b-s4" kvg:type="㇁" d="M48.88,23.55C60.38,31,62.73,63.66,57.83,89.87c-2.08,11.13-8.64,2.34-9.89,1.17"/>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_0624b" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">④ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_0624b" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:0624b" kvg:element="手" kvg:radical="general">
+	<path id="kvg:0624b-s1" kvg:type="㇒" d="M61.48,11.5c0.02,1-0.61,1.88-1.67,2.9c-3.27,3.15-13.69,8.23-28.57,11.85"/>
+	<path id="kvg:0624b-s2" kvg:type="㇐" d="M26.38,42.92c1.8,0.46,3.61,0.67,5.68,0.38C46,41.38,58.4,39,71.37,37.75c1.92-0.19,4.62-0.38,7.25,0.04"/>
+	<path id="kvg:0624b-s3" kvg:type="㇐" d="M13.27,62.87c2.71,0.63,4.86,0.6,7.22,0.38c22.63-2.12,46.13-5.62,67.7-7c2.01-0.13,4.83,0,7.46,0.37"/>
+	<path id="kvg:0624b-s4" kvg:type="㇁" d="M48.88,23.55C60.38,31,62.73,63.66,57.83,89.87c-2.08,11.13-8.64,2.34-9.89,1.17"/>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_0624b" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑤ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑥ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑦ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑧ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑨ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑩ Latih</span></div>
                 </div>
 
-                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
-                <div style="margin-top: 4px;">
-                  <div class="grid-label-row">
-                    <span>⑪ Jiplak</span>
-                    <span>⑫ Jiplak</span>
-                    <span>⑬ Latih</span>
-                    <span>⑭ Latih</span>
-                    <span>⑮ Latih</span>
-                    <span>⑯ Latih</span>
-                    <span>⑰ Latih</span>
-                    <span>⑱ Latih</span>
-                    <span>⑲ Latih</span>
-                    <span>⑳ Latih</span>
+                <!-- Baris 2: Kotak 11 s/d 20 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑪ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_0624b" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:0624b" kvg:element="手" kvg:radical="general">
+	<path id="kvg:0624b-s1" kvg:type="㇒" d="M61.48,11.5c0.02,1-0.61,1.88-1.67,2.9c-3.27,3.15-13.69,8.23-28.57,11.85"/>
+	<path id="kvg:0624b-s2" kvg:type="㇐" d="M26.38,42.92c1.8,0.46,3.61,0.67,5.68,0.38C46,41.38,58.4,39,71.37,37.75c1.92-0.19,4.62-0.38,7.25,0.04"/>
+	<path id="kvg:0624b-s3" kvg:type="㇐" d="M13.27,62.87c2.71,0.63,4.86,0.6,7.22,0.38c22.63-2.12,46.13-5.62,67.7-7c2.01-0.13,4.83,0,7.46,0.37"/>
+	<path id="kvg:0624b-s4" kvg:type="㇁" d="M48.88,23.55C60.38,31,62.73,63.66,57.83,89.87c-2.08,11.13-8.64,2.34-9.89,1.17"/>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_0624b" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box trace-box"><span>手</span></div>
-                    <div class="tianzige-box trace-box"><span>手</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑫ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_0624b" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:0624b" kvg:element="手" kvg:radical="general">
+	<path id="kvg:0624b-s1" kvg:type="㇒" d="M61.48,11.5c0.02,1-0.61,1.88-1.67,2.9c-3.27,3.15-13.69,8.23-28.57,11.85"/>
+	<path id="kvg:0624b-s2" kvg:type="㇐" d="M26.38,42.92c1.8,0.46,3.61,0.67,5.68,0.38C46,41.38,58.4,39,71.37,37.75c1.92-0.19,4.62-0.38,7.25,0.04"/>
+	<path id="kvg:0624b-s3" kvg:type="㇐" d="M13.27,62.87c2.71,0.63,4.86,0.6,7.22,0.38c22.63-2.12,46.13-5.62,67.7-7c2.01-0.13,4.83,0,7.46,0.37"/>
+	<path id="kvg:0624b-s4" kvg:type="㇁" d="M48.88,23.55C60.38,31,62.73,63.66,57.83,89.87c-2.08,11.13-8.64,2.34-9.89,1.17"/>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_0624b" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑬ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑭ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑮ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑯ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑰ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑱ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑲ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑳ Latih</span></div>
                 </div>
 
                 <!-- Baris Menulis saat Dicetak -->
@@ -1151,30 +2276,19 @@
                 <strong>Contoh:</strong> <span>田(た)中(なか)さんは黒(くろ)い服(ふく)を着(き)ています。</span> ➔ <em>"Tanaka-san mengenakan pakaian hitam."</em>
               </div>
 
-              <!-- 20 Kotak Grid (2 Baris) -->
+              <!-- 20 Kotak Grid (2 Baris x 10 Kotak) -->
               <div class="grid-20-wrapper">
                 
-                <!-- Baris 1: 10 Kotak -->
-                <div>
-                  <div class="grid-label-row">
-                    <span style="color:#dc2626;">① Urutan</span>
-                    <span style="color:#2563eb;">② Contoh</span>
-                    <span>③ Jiplak</span>
-                    <span>④ Jiplak</span>
-                    <span>⑤ Latih</span>
-                    <span>⑥ Latih</span>
-                    <span>⑦ Latih</span>
-                    <span>⑧ Latih</span>
-                    <span>⑨ Latih</span>
-                    <span>⑩ Latih</span>
-                  </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: Kotak 1 s/d 10 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box guidance-box">
+                    <span class="box-tag tag-urutan">① Urutan</span>
+                    <svg class="kanji-svg guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
   
-<g id="kvg:StrokePaths_07740" style="fill:none;stroke:#334155;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:StrokePaths_07740" style="fill:none;stroke:#1e293b;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
 <g id="kvg:07740" kvg:element="着">
 	<g id="kvg:07740-g1" kvg:position="tare">
 		<g id="kvg:07740-g2" kvg:element="羊" kvg:variant="true" kvg:radical="nelson">
@@ -1215,45 +2329,271 @@
 	<text transform="matrix(1 0 0 1 46.50 94.50)">12</text>
 </g>
 </svg>
-</div>
-                    <div class="tianzige-box model-box"><span>着</span></div>
-                    <div class="tianzige-box trace-box"><span>着</span></div>
-                    <div class="tianzige-box trace-box"><span>着</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+
                   </div>
+                  <div class="tianzige-box model-box">
+                    <span class="box-tag tag-contoh">② Contoh</span>
+                    <svg class="kanji-svg model-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_07740" style="fill:none;stroke:#0f172a;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:07740" kvg:element="着">
+	<g id="kvg:07740-g1" kvg:position="tare">
+		<g id="kvg:07740-g2" kvg:element="羊" kvg:variant="true" kvg:radical="nelson">
+			<path id="kvg:07740-s1" kvg:type="㇔" d="M35.88,12.25c2.96,1.71,7.66,7.03,8.4,9.7"/>
+			<path id="kvg:07740-s2" kvg:type="㇒" d="M71.06,10.27c0.19,0.86,0.04,1.98-0.26,2.65c-1.3,2.95-3.18,5.58-6.68,9.95"/>
+			<path id="kvg:07740-s3" kvg:type="㇐" d="M30.6,28.43c1.46,0.34,4.12,0.43,5.58,0.34c10.07-0.64,25.82-2.64,37.96-3.43c2.42-0.16,4.13-0.09,5.34,0.08"/>
+			<g id="kvg:07740-g3" kvg:phon="者1V">
+				<path id="kvg:07740-s4" kvg:type="㇑a" d="M52.98,29.18c0.73,0.73,1.5,1.98,1.5,2.9c0,3.93,0.03,10.8,0.03,16.93"/>
+				<path id="kvg:07740-s5" kvg:type="㇐" d="M31.86,39.49c1.52,0.39,3.61,0.68,4.89,0.57c9.38-0.81,23.88-2.56,34.95-3.71c2.11-0.22,3.9-0.1,4.97,0.06"/>
+				<path id="kvg:07740-s6" kvg:type="㇐" d="M17.8,52.62c2.1,0.48,5.96,0.43,8.06,0.23c13.27-1.23,42.52-4.23,62.12-5.41c3.5-0.21,5.61-0.02,7.36,0.22"/>
+			</g>
+		</g>
+		<g id="kvg:07740-g4" kvg:element="丿">
+			<path id="kvg:07740-s7" kvg:type="㇒" d="M40.77,53.77c0.07,0.63-0.17,1.7-0.64,2.52C37,61.75,28.5,72.25,15.57,80.65"/>
+		</g>
+	</g>
+	<g id="kvg:07740-g5" kvg:element="目" kvg:position="tarec" kvg:radical="tradit" kvg:phon="者2V">
+		<path id="kvg:07740-s8" kvg:type="㇑" d="M41.79,60.32c0.88,0.88,1.28,2.28,1.28,3.45c0,1.17-0.1,32.39-0.1,32.98c0,0.81,0.1,2.88,0.1,3.75"/>
+		<path id="kvg:07740-s9" kvg:type="㇕a" d="M43.93,61.93c2.94-0.15,24.57-2.77,27.24-2.94c2.23-0.15,3.8,0.76,3.8,3.15c0,3.49,0.13,20.14,0.14,33c0,1.32,0,3.41-0.17,4.28"/>
+		<path id="kvg:07740-s10" kvg:type="㇐a" d="M44.13,73.74c5.79-0.2,24.89-2.11,29.6-2.11"/>
+		<path id="kvg:07740-s11" kvg:type="㇐a" d="M44.37,85.28c7.78-0.49,21.88-1.91,29.26-2.25"/>
+		<path id="kvg:07740-s12" kvg:type="㇐a" d="M44.29,97.47c6.96-0.34,21.89-1.56,29.45-1.56"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_07740" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">③ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_07740" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:07740" kvg:element="着">
+	<g id="kvg:07740-g1" kvg:position="tare">
+		<g id="kvg:07740-g2" kvg:element="羊" kvg:variant="true" kvg:radical="nelson">
+			<path id="kvg:07740-s1" kvg:type="㇔" d="M35.88,12.25c2.96,1.71,7.66,7.03,8.4,9.7"/>
+			<path id="kvg:07740-s2" kvg:type="㇒" d="M71.06,10.27c0.19,0.86,0.04,1.98-0.26,2.65c-1.3,2.95-3.18,5.58-6.68,9.95"/>
+			<path id="kvg:07740-s3" kvg:type="㇐" d="M30.6,28.43c1.46,0.34,4.12,0.43,5.58,0.34c10.07-0.64,25.82-2.64,37.96-3.43c2.42-0.16,4.13-0.09,5.34,0.08"/>
+			<g id="kvg:07740-g3" kvg:phon="者1V">
+				<path id="kvg:07740-s4" kvg:type="㇑a" d="M52.98,29.18c0.73,0.73,1.5,1.98,1.5,2.9c0,3.93,0.03,10.8,0.03,16.93"/>
+				<path id="kvg:07740-s5" kvg:type="㇐" d="M31.86,39.49c1.52,0.39,3.61,0.68,4.89,0.57c9.38-0.81,23.88-2.56,34.95-3.71c2.11-0.22,3.9-0.1,4.97,0.06"/>
+				<path id="kvg:07740-s6" kvg:type="㇐" d="M17.8,52.62c2.1,0.48,5.96,0.43,8.06,0.23c13.27-1.23,42.52-4.23,62.12-5.41c3.5-0.21,5.61-0.02,7.36,0.22"/>
+			</g>
+		</g>
+		<g id="kvg:07740-g4" kvg:element="丿">
+			<path id="kvg:07740-s7" kvg:type="㇒" d="M40.77,53.77c0.07,0.63-0.17,1.7-0.64,2.52C37,61.75,28.5,72.25,15.57,80.65"/>
+		</g>
+	</g>
+	<g id="kvg:07740-g5" kvg:element="目" kvg:position="tarec" kvg:radical="tradit" kvg:phon="者2V">
+		<path id="kvg:07740-s8" kvg:type="㇑" d="M41.79,60.32c0.88,0.88,1.28,2.28,1.28,3.45c0,1.17-0.1,32.39-0.1,32.98c0,0.81,0.1,2.88,0.1,3.75"/>
+		<path id="kvg:07740-s9" kvg:type="㇕a" d="M43.93,61.93c2.94-0.15,24.57-2.77,27.24-2.94c2.23-0.15,3.8,0.76,3.8,3.15c0,3.49,0.13,20.14,0.14,33c0,1.32,0,3.41-0.17,4.28"/>
+		<path id="kvg:07740-s10" kvg:type="㇐a" d="M44.13,73.74c5.79-0.2,24.89-2.11,29.6-2.11"/>
+		<path id="kvg:07740-s11" kvg:type="㇐a" d="M44.37,85.28c7.78-0.49,21.88-1.91,29.26-2.25"/>
+		<path id="kvg:07740-s12" kvg:type="㇐a" d="M44.29,97.47c6.96-0.34,21.89-1.56,29.45-1.56"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_07740" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">④ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_07740" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:07740" kvg:element="着">
+	<g id="kvg:07740-g1" kvg:position="tare">
+		<g id="kvg:07740-g2" kvg:element="羊" kvg:variant="true" kvg:radical="nelson">
+			<path id="kvg:07740-s1" kvg:type="㇔" d="M35.88,12.25c2.96,1.71,7.66,7.03,8.4,9.7"/>
+			<path id="kvg:07740-s2" kvg:type="㇒" d="M71.06,10.27c0.19,0.86,0.04,1.98-0.26,2.65c-1.3,2.95-3.18,5.58-6.68,9.95"/>
+			<path id="kvg:07740-s3" kvg:type="㇐" d="M30.6,28.43c1.46,0.34,4.12,0.43,5.58,0.34c10.07-0.64,25.82-2.64,37.96-3.43c2.42-0.16,4.13-0.09,5.34,0.08"/>
+			<g id="kvg:07740-g3" kvg:phon="者1V">
+				<path id="kvg:07740-s4" kvg:type="㇑a" d="M52.98,29.18c0.73,0.73,1.5,1.98,1.5,2.9c0,3.93,0.03,10.8,0.03,16.93"/>
+				<path id="kvg:07740-s5" kvg:type="㇐" d="M31.86,39.49c1.52,0.39,3.61,0.68,4.89,0.57c9.38-0.81,23.88-2.56,34.95-3.71c2.11-0.22,3.9-0.1,4.97,0.06"/>
+				<path id="kvg:07740-s6" kvg:type="㇐" d="M17.8,52.62c2.1,0.48,5.96,0.43,8.06,0.23c13.27-1.23,42.52-4.23,62.12-5.41c3.5-0.21,5.61-0.02,7.36,0.22"/>
+			</g>
+		</g>
+		<g id="kvg:07740-g4" kvg:element="丿">
+			<path id="kvg:07740-s7" kvg:type="㇒" d="M40.77,53.77c0.07,0.63-0.17,1.7-0.64,2.52C37,61.75,28.5,72.25,15.57,80.65"/>
+		</g>
+	</g>
+	<g id="kvg:07740-g5" kvg:element="目" kvg:position="tarec" kvg:radical="tradit" kvg:phon="者2V">
+		<path id="kvg:07740-s8" kvg:type="㇑" d="M41.79,60.32c0.88,0.88,1.28,2.28,1.28,3.45c0,1.17-0.1,32.39-0.1,32.98c0,0.81,0.1,2.88,0.1,3.75"/>
+		<path id="kvg:07740-s9" kvg:type="㇕a" d="M43.93,61.93c2.94-0.15,24.57-2.77,27.24-2.94c2.23-0.15,3.8,0.76,3.8,3.15c0,3.49,0.13,20.14,0.14,33c0,1.32,0,3.41-0.17,4.28"/>
+		<path id="kvg:07740-s10" kvg:type="㇐a" d="M44.13,73.74c5.79-0.2,24.89-2.11,29.6-2.11"/>
+		<path id="kvg:07740-s11" kvg:type="㇐a" d="M44.37,85.28c7.78-0.49,21.88-1.91,29.26-2.25"/>
+		<path id="kvg:07740-s12" kvg:type="㇐a" d="M44.29,97.47c6.96-0.34,21.89-1.56,29.45-1.56"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_07740" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑤ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑥ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑦ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑧ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑨ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑩ Latih</span></div>
                 </div>
 
-                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
-                <div style="margin-top: 4px;">
-                  <div class="grid-label-row">
-                    <span>⑪ Jiplak</span>
-                    <span>⑫ Jiplak</span>
-                    <span>⑬ Latih</span>
-                    <span>⑭ Latih</span>
-                    <span>⑮ Latih</span>
-                    <span>⑯ Latih</span>
-                    <span>⑰ Latih</span>
-                    <span>⑱ Latih</span>
-                    <span>⑲ Latih</span>
-                    <span>⑳ Latih</span>
+                <!-- Baris 2: Kotak 11 s/d 20 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑪ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_07740" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:07740" kvg:element="着">
+	<g id="kvg:07740-g1" kvg:position="tare">
+		<g id="kvg:07740-g2" kvg:element="羊" kvg:variant="true" kvg:radical="nelson">
+			<path id="kvg:07740-s1" kvg:type="㇔" d="M35.88,12.25c2.96,1.71,7.66,7.03,8.4,9.7"/>
+			<path id="kvg:07740-s2" kvg:type="㇒" d="M71.06,10.27c0.19,0.86,0.04,1.98-0.26,2.65c-1.3,2.95-3.18,5.58-6.68,9.95"/>
+			<path id="kvg:07740-s3" kvg:type="㇐" d="M30.6,28.43c1.46,0.34,4.12,0.43,5.58,0.34c10.07-0.64,25.82-2.64,37.96-3.43c2.42-0.16,4.13-0.09,5.34,0.08"/>
+			<g id="kvg:07740-g3" kvg:phon="者1V">
+				<path id="kvg:07740-s4" kvg:type="㇑a" d="M52.98,29.18c0.73,0.73,1.5,1.98,1.5,2.9c0,3.93,0.03,10.8,0.03,16.93"/>
+				<path id="kvg:07740-s5" kvg:type="㇐" d="M31.86,39.49c1.52,0.39,3.61,0.68,4.89,0.57c9.38-0.81,23.88-2.56,34.95-3.71c2.11-0.22,3.9-0.1,4.97,0.06"/>
+				<path id="kvg:07740-s6" kvg:type="㇐" d="M17.8,52.62c2.1,0.48,5.96,0.43,8.06,0.23c13.27-1.23,42.52-4.23,62.12-5.41c3.5-0.21,5.61-0.02,7.36,0.22"/>
+			</g>
+		</g>
+		<g id="kvg:07740-g4" kvg:element="丿">
+			<path id="kvg:07740-s7" kvg:type="㇒" d="M40.77,53.77c0.07,0.63-0.17,1.7-0.64,2.52C37,61.75,28.5,72.25,15.57,80.65"/>
+		</g>
+	</g>
+	<g id="kvg:07740-g5" kvg:element="目" kvg:position="tarec" kvg:radical="tradit" kvg:phon="者2V">
+		<path id="kvg:07740-s8" kvg:type="㇑" d="M41.79,60.32c0.88,0.88,1.28,2.28,1.28,3.45c0,1.17-0.1,32.39-0.1,32.98c0,0.81,0.1,2.88,0.1,3.75"/>
+		<path id="kvg:07740-s9" kvg:type="㇕a" d="M43.93,61.93c2.94-0.15,24.57-2.77,27.24-2.94c2.23-0.15,3.8,0.76,3.8,3.15c0,3.49,0.13,20.14,0.14,33c0,1.32,0,3.41-0.17,4.28"/>
+		<path id="kvg:07740-s10" kvg:type="㇐a" d="M44.13,73.74c5.79-0.2,24.89-2.11,29.6-2.11"/>
+		<path id="kvg:07740-s11" kvg:type="㇐a" d="M44.37,85.28c7.78-0.49,21.88-1.91,29.26-2.25"/>
+		<path id="kvg:07740-s12" kvg:type="㇐a" d="M44.29,97.47c6.96-0.34,21.89-1.56,29.45-1.56"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_07740" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box trace-box"><span>着</span></div>
-                    <div class="tianzige-box trace-box"><span>着</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑫ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_07740" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:07740" kvg:element="着">
+	<g id="kvg:07740-g1" kvg:position="tare">
+		<g id="kvg:07740-g2" kvg:element="羊" kvg:variant="true" kvg:radical="nelson">
+			<path id="kvg:07740-s1" kvg:type="㇔" d="M35.88,12.25c2.96,1.71,7.66,7.03,8.4,9.7"/>
+			<path id="kvg:07740-s2" kvg:type="㇒" d="M71.06,10.27c0.19,0.86,0.04,1.98-0.26,2.65c-1.3,2.95-3.18,5.58-6.68,9.95"/>
+			<path id="kvg:07740-s3" kvg:type="㇐" d="M30.6,28.43c1.46,0.34,4.12,0.43,5.58,0.34c10.07-0.64,25.82-2.64,37.96-3.43c2.42-0.16,4.13-0.09,5.34,0.08"/>
+			<g id="kvg:07740-g3" kvg:phon="者1V">
+				<path id="kvg:07740-s4" kvg:type="㇑a" d="M52.98,29.18c0.73,0.73,1.5,1.98,1.5,2.9c0,3.93,0.03,10.8,0.03,16.93"/>
+				<path id="kvg:07740-s5" kvg:type="㇐" d="M31.86,39.49c1.52,0.39,3.61,0.68,4.89,0.57c9.38-0.81,23.88-2.56,34.95-3.71c2.11-0.22,3.9-0.1,4.97,0.06"/>
+				<path id="kvg:07740-s6" kvg:type="㇐" d="M17.8,52.62c2.1,0.48,5.96,0.43,8.06,0.23c13.27-1.23,42.52-4.23,62.12-5.41c3.5-0.21,5.61-0.02,7.36,0.22"/>
+			</g>
+		</g>
+		<g id="kvg:07740-g4" kvg:element="丿">
+			<path id="kvg:07740-s7" kvg:type="㇒" d="M40.77,53.77c0.07,0.63-0.17,1.7-0.64,2.52C37,61.75,28.5,72.25,15.57,80.65"/>
+		</g>
+	</g>
+	<g id="kvg:07740-g5" kvg:element="目" kvg:position="tarec" kvg:radical="tradit" kvg:phon="者2V">
+		<path id="kvg:07740-s8" kvg:type="㇑" d="M41.79,60.32c0.88,0.88,1.28,2.28,1.28,3.45c0,1.17-0.1,32.39-0.1,32.98c0,0.81,0.1,2.88,0.1,3.75"/>
+		<path id="kvg:07740-s9" kvg:type="㇕a" d="M43.93,61.93c2.94-0.15,24.57-2.77,27.24-2.94c2.23-0.15,3.8,0.76,3.8,3.15c0,3.49,0.13,20.14,0.14,33c0,1.32,0,3.41-0.17,4.28"/>
+		<path id="kvg:07740-s10" kvg:type="㇐a" d="M44.13,73.74c5.79-0.2,24.89-2.11,29.6-2.11"/>
+		<path id="kvg:07740-s11" kvg:type="㇐a" d="M44.37,85.28c7.78-0.49,21.88-1.91,29.26-2.25"/>
+		<path id="kvg:07740-s12" kvg:type="㇐a" d="M44.29,97.47c6.96-0.34,21.89-1.56,29.45-1.56"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_07740" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑬ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑭ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑮ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑯ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑰ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑱ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑲ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑳ Latih</span></div>
                 </div>
 
                 <!-- Baris Menulis saat Dicetak -->
@@ -1300,63 +2640,53 @@
                 <strong>Contoh:</strong> <span>アニタさんは歌(うた)が上(じょう)手(ず)です。</span> ➔ <em>"Anita-san pandai bernyanyi."</em>
               </div>
 
-              <!-- 20 Kotak Grid (2 Baris) -->
+              <!-- 20 Kotak Grid (2 Baris x 10 Kotak) -->
               <div class="grid-20-wrapper">
                 
-                <!-- Baris 1: 10 Kotak -->
-                <div>
-                  <div class="grid-label-row">
-                    <span style="color:#dc2626;">① Urutan</span>
-                    <span style="color:#2563eb;">② Contoh</span>
-                    <span>③ Jiplak</span>
-                    <span>④ Jiplak</span>
-                    <span>⑤ Latih</span>
-                    <span>⑥ Latih</span>
-                    <span>⑦ Latih</span>
-                    <span>⑧ Latih</span>
-                    <span>⑨ Latih</span>
-                    <span>⑩ Latih</span>
+                <!-- Baris 1: Kotak 1 s/d 10 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box guidance-box">
+                    <span class="box-tag tag-urutan">① Urutan</span>
+                    <div style="font-size:24px;font-weight:bold;color:#334155;">上</div>
                   </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box guidance-box"><div style="font-size:24px;font-weight:bold;color:#334155;">上</div></div>
-                    <div class="tianzige-box model-box"><span>上</span></div>
-                    <div class="tianzige-box trace-box"><span>上</span></div>
-                    <div class="tianzige-box trace-box"><span>上</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+                  <div class="tianzige-box model-box">
+                    <span class="box-tag tag-contoh">② Contoh</span>
+                    <div style="font-size:24px;font-weight:bold;color:#0f172a;">上</div>
                   </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">③ Jiplak</span>
+                    <div style="font-size:24px;font-weight:bold;color:#cbd5e1;">上</div>
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">④ Jiplak</span>
+                    <div style="font-size:24px;font-weight:bold;color:#cbd5e1;">上</div>
+                  </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑤ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑥ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑦ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑧ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑨ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑩ Latih</span></div>
                 </div>
 
-                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
-                <div style="margin-top: 4px;">
-                  <div class="grid-label-row">
-                    <span>⑪ Jiplak</span>
-                    <span>⑫ Jiplak</span>
-                    <span>⑬ Latih</span>
-                    <span>⑭ Latih</span>
-                    <span>⑮ Latih</span>
-                    <span>⑯ Latih</span>
-                    <span>⑰ Latih</span>
-                    <span>⑱ Latih</span>
-                    <span>⑲ Latih</span>
-                    <span>⑳ Latih</span>
+                <!-- Baris 2: Kotak 11 s/d 20 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑪ Jiplak</span>
+                    <div style="font-size:24px;font-weight:bold;color:#cbd5e1;">上</div>
                   </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box trace-box"><span>上</span></div>
-                    <div class="tianzige-box trace-box"><span>上</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑫ Jiplak</span>
+                    <div style="font-size:24px;font-weight:bold;color:#cbd5e1;">上</div>
                   </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑬ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑭ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑮ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑯ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑰ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑱ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑲ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑳ Latih</span></div>
                 </div>
 
                 <!-- Baris Menulis saat Dicetak -->
@@ -1403,30 +2733,19 @@
                 <strong>Contoh:</strong> <span>あそこで立(た)って話(はな)している人(ひと)はだれですか？</span> ➔ <em>"Siapakah orang yang sedang berdiri dan mengobrol di sana?"</em>
               </div>
 
-              <!-- 20 Kotak Grid (2 Baris) -->
+              <!-- 20 Kotak Grid (2 Baris x 10 Kotak) -->
               <div class="grid-20-wrapper">
                 
-                <!-- Baris 1: 10 Kotak -->
-                <div>
-                  <div class="grid-label-row">
-                    <span style="color:#dc2626;">① Urutan</span>
-                    <span style="color:#2563eb;">② Contoh</span>
-                    <span>③ Jiplak</span>
-                    <span>④ Jiplak</span>
-                    <span>⑤ Latih</span>
-                    <span>⑥ Latih</span>
-                    <span>⑦ Latih</span>
-                    <span>⑧ Latih</span>
-                    <span>⑨ Latih</span>
-                    <span>⑩ Latih</span>
-                  </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: Kotak 1 s/d 10 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box guidance-box">
+                    <span class="box-tag tag-urutan">① Urutan</span>
+                    <svg class="kanji-svg guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
   
-<g id="kvg:StrokePaths_07acb" style="fill:none;stroke:#334155;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:StrokePaths_07acb" style="fill:none;stroke:#1e293b;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
 <g id="kvg:07acb" kvg:element="立" kvg:radical="general">
 	<g id="kvg:07acb-g1" kvg:element="亠" kvg:position="top">
 		<path id="kvg:07acb-s1" kvg:type="㇑a" d="M51.51,15c1.43,1.43,2.24,3.25,2.24,5.81c0,4.06,0,9.56,0,13.69"/>
@@ -1447,45 +2766,171 @@
 	<text transform="matrix(1 0 0 1 7.50 91.50)">5</text>
 </g>
 </svg>
-</div>
-                    <div class="tianzige-box model-box"><span>立</span></div>
-                    <div class="tianzige-box trace-box"><span>立</span></div>
-                    <div class="tianzige-box trace-box"><span>立</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+
                   </div>
+                  <div class="tianzige-box model-box">
+                    <span class="box-tag tag-contoh">② Contoh</span>
+                    <svg class="kanji-svg model-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_07acb" style="fill:none;stroke:#0f172a;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:07acb" kvg:element="立" kvg:radical="general">
+	<g id="kvg:07acb-g1" kvg:element="亠" kvg:position="top">
+		<path id="kvg:07acb-s1" kvg:type="㇑a" d="M51.51,15c1.43,1.43,2.24,3.25,2.24,5.81c0,4.06,0,9.56,0,13.69"/>
+		<path id="kvg:07acb-s2" kvg:type="㇐" d="M22,37.86c2.62,0.51,4.75,0.34,7,0.16c11.38-0.9,36.13-3.4,50.65-4.26c2.38-0.14,4.86-0.01,6.86,0.4"/>
+	</g>
+	<g id="kvg:07acb-g2" kvg:position="bottom">
+		<path id="kvg:07acb-s3" kvg:type="㇔" d="M32,49c4.75,9.75,8.25,22.5,9.5,31.5"/>
+		<path id="kvg:07acb-s4" kvg:type="㇒" d="M74,39c0.75,1.38,0.81,3.29,0.5,4.5c-2.88,11.12-8.5,30.38-12.75,42"/>
+		<path id="kvg:07acb-s5" kvg:type="㇐" d="M15.25,88.8c2.33,0.45,5.89,0.53,7.82,0.39c18.3-1.32,40.31-1.94,64.83-2.75c3.24-0.11,6.14,0.05,8.47,0.88"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_07acb" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">③ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_07acb" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:07acb" kvg:element="立" kvg:radical="general">
+	<g id="kvg:07acb-g1" kvg:element="亠" kvg:position="top">
+		<path id="kvg:07acb-s1" kvg:type="㇑a" d="M51.51,15c1.43,1.43,2.24,3.25,2.24,5.81c0,4.06,0,9.56,0,13.69"/>
+		<path id="kvg:07acb-s2" kvg:type="㇐" d="M22,37.86c2.62,0.51,4.75,0.34,7,0.16c11.38-0.9,36.13-3.4,50.65-4.26c2.38-0.14,4.86-0.01,6.86,0.4"/>
+	</g>
+	<g id="kvg:07acb-g2" kvg:position="bottom">
+		<path id="kvg:07acb-s3" kvg:type="㇔" d="M32,49c4.75,9.75,8.25,22.5,9.5,31.5"/>
+		<path id="kvg:07acb-s4" kvg:type="㇒" d="M74,39c0.75,1.38,0.81,3.29,0.5,4.5c-2.88,11.12-8.5,30.38-12.75,42"/>
+		<path id="kvg:07acb-s5" kvg:type="㇐" d="M15.25,88.8c2.33,0.45,5.89,0.53,7.82,0.39c18.3-1.32,40.31-1.94,64.83-2.75c3.24-0.11,6.14,0.05,8.47,0.88"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_07acb" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">④ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_07acb" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:07acb" kvg:element="立" kvg:radical="general">
+	<g id="kvg:07acb-g1" kvg:element="亠" kvg:position="top">
+		<path id="kvg:07acb-s1" kvg:type="㇑a" d="M51.51,15c1.43,1.43,2.24,3.25,2.24,5.81c0,4.06,0,9.56,0,13.69"/>
+		<path id="kvg:07acb-s2" kvg:type="㇐" d="M22,37.86c2.62,0.51,4.75,0.34,7,0.16c11.38-0.9,36.13-3.4,50.65-4.26c2.38-0.14,4.86-0.01,6.86,0.4"/>
+	</g>
+	<g id="kvg:07acb-g2" kvg:position="bottom">
+		<path id="kvg:07acb-s3" kvg:type="㇔" d="M32,49c4.75,9.75,8.25,22.5,9.5,31.5"/>
+		<path id="kvg:07acb-s4" kvg:type="㇒" d="M74,39c0.75,1.38,0.81,3.29,0.5,4.5c-2.88,11.12-8.5,30.38-12.75,42"/>
+		<path id="kvg:07acb-s5" kvg:type="㇐" d="M15.25,88.8c2.33,0.45,5.89,0.53,7.82,0.39c18.3-1.32,40.31-1.94,64.83-2.75c3.24-0.11,6.14,0.05,8.47,0.88"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_07acb" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑤ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑥ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑦ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑧ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑨ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑩ Latih</span></div>
                 </div>
 
-                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
-                <div style="margin-top: 4px;">
-                  <div class="grid-label-row">
-                    <span>⑪ Jiplak</span>
-                    <span>⑫ Jiplak</span>
-                    <span>⑬ Latih</span>
-                    <span>⑭ Latih</span>
-                    <span>⑮ Latih</span>
-                    <span>⑯ Latih</span>
-                    <span>⑰ Latih</span>
-                    <span>⑱ Latih</span>
-                    <span>⑲ Latih</span>
-                    <span>⑳ Latih</span>
+                <!-- Baris 2: Kotak 11 s/d 20 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑪ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_07acb" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:07acb" kvg:element="立" kvg:radical="general">
+	<g id="kvg:07acb-g1" kvg:element="亠" kvg:position="top">
+		<path id="kvg:07acb-s1" kvg:type="㇑a" d="M51.51,15c1.43,1.43,2.24,3.25,2.24,5.81c0,4.06,0,9.56,0,13.69"/>
+		<path id="kvg:07acb-s2" kvg:type="㇐" d="M22,37.86c2.62,0.51,4.75,0.34,7,0.16c11.38-0.9,36.13-3.4,50.65-4.26c2.38-0.14,4.86-0.01,6.86,0.4"/>
+	</g>
+	<g id="kvg:07acb-g2" kvg:position="bottom">
+		<path id="kvg:07acb-s3" kvg:type="㇔" d="M32,49c4.75,9.75,8.25,22.5,9.5,31.5"/>
+		<path id="kvg:07acb-s4" kvg:type="㇒" d="M74,39c0.75,1.38,0.81,3.29,0.5,4.5c-2.88,11.12-8.5,30.38-12.75,42"/>
+		<path id="kvg:07acb-s5" kvg:type="㇐" d="M15.25,88.8c2.33,0.45,5.89,0.53,7.82,0.39c18.3-1.32,40.31-1.94,64.83-2.75c3.24-0.11,6.14,0.05,8.47,0.88"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_07acb" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box trace-box"><span>立</span></div>
-                    <div class="tianzige-box trace-box"><span>立</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑫ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_07acb" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:07acb" kvg:element="立" kvg:radical="general">
+	<g id="kvg:07acb-g1" kvg:element="亠" kvg:position="top">
+		<path id="kvg:07acb-s1" kvg:type="㇑a" d="M51.51,15c1.43,1.43,2.24,3.25,2.24,5.81c0,4.06,0,9.56,0,13.69"/>
+		<path id="kvg:07acb-s2" kvg:type="㇐" d="M22,37.86c2.62,0.51,4.75,0.34,7,0.16c11.38-0.9,36.13-3.4,50.65-4.26c2.38-0.14,4.86-0.01,6.86,0.4"/>
+	</g>
+	<g id="kvg:07acb-g2" kvg:position="bottom">
+		<path id="kvg:07acb-s3" kvg:type="㇔" d="M32,49c4.75,9.75,8.25,22.5,9.5,31.5"/>
+		<path id="kvg:07acb-s4" kvg:type="㇒" d="M74,39c0.75,1.38,0.81,3.29,0.5,4.5c-2.88,11.12-8.5,30.38-12.75,42"/>
+		<path id="kvg:07acb-s5" kvg:type="㇐" d="M15.25,88.8c2.33,0.45,5.89,0.53,7.82,0.39c18.3-1.32,40.31-1.94,64.83-2.75c3.24-0.11,6.14,0.05,8.47,0.88"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_07acb" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑬ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑭ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑮ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑯ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑰ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑱ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑲ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑳ Latih</span></div>
                 </div>
 
                 <!-- Baris Menulis saat Dicetak -->
@@ -1532,30 +2977,19 @@
                 <strong>Contoh:</strong> <span>アニタさんはとても明(あか)るい人(ひと)です。</span> ➔ <em>"Anita-san adalah orang yang sangat ceria."</em>
               </div>
 
-              <!-- 20 Kotak Grid (2 Baris) -->
+              <!-- 20 Kotak Grid (2 Baris x 10 Kotak) -->
               <div class="grid-20-wrapper">
                 
-                <!-- Baris 1: 10 Kotak -->
-                <div>
-                  <div class="grid-label-row">
-                    <span style="color:#dc2626;">① Urutan</span>
-                    <span style="color:#2563eb;">② Contoh</span>
-                    <span>③ Jiplak</span>
-                    <span>④ Jiplak</span>
-                    <span>⑤ Latih</span>
-                    <span>⑥ Latih</span>
-                    <span>⑦ Latih</span>
-                    <span>⑧ Latih</span>
-                    <span>⑨ Latih</span>
-                    <span>⑩ Latih</span>
-                  </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: Kotak 1 s/d 10 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box guidance-box">
+                    <span class="box-tag tag-urutan">① Urutan</span>
+                    <svg class="kanji-svg guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
   
-<g id="kvg:StrokePaths_0660e" style="fill:none;stroke:#334155;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:StrokePaths_0660e" style="fill:none;stroke:#1e293b;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
 <g id="kvg:0660e" kvg:element="明">
 	<g id="kvg:0660e-g1" kvg:element="日" kvg:position="left" kvg:radical="general">
 		<path id="kvg:0660e-s1" kvg:type="㇑" d="M16.75,25.22c0.89,0.89,1.32,2.29,1.32,3.66c0,1.11,0.07,27.44,0,37.63c-0.02,2.32-0.02,3.78-0.02,3.91"/>
@@ -1582,45 +3016,201 @@
 	<text transform="matrix(1 0 0 1 63.50 54.50)">8</text>
 </g>
 </svg>
-</div>
-                    <div class="tianzige-box model-box"><span>明</span></div>
-                    <div class="tianzige-box trace-box"><span>明</span></div>
-                    <div class="tianzige-box trace-box"><span>明</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+
                   </div>
+                  <div class="tianzige-box model-box">
+                    <span class="box-tag tag-contoh">② Contoh</span>
+                    <svg class="kanji-svg model-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_0660e" style="fill:none;stroke:#0f172a;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:0660e" kvg:element="明">
+	<g id="kvg:0660e-g1" kvg:element="日" kvg:position="left" kvg:radical="general">
+		<path id="kvg:0660e-s1" kvg:type="㇑" d="M16.75,25.22c0.89,0.89,1.32,2.29,1.32,3.66c0,1.11,0.07,27.44,0,37.63c-0.02,2.32-0.02,3.78-0.02,3.91"/>
+		<path id="kvg:0660e-s2" kvg:type="㇕a" d="M19.29,27.75c5.66-0.81,19.54-2.59,21.22-2.75c1.76-0.17,2.89,1.89,2.75,2.91c-0.23,1.7-0.45,27.34-0.52,36.6c-0.01,1.9-0.02,3.11-0.02,3.29"/>
+		<path id="kvg:0660e-s3" kvg:type="㇐a" d="M19.16,46.97C23.5,46.5,37,45.12,41.77,44.76"/>
+		<path id="kvg:0660e-s4" kvg:type="㇐a" d="M19,66.59c8.5-0.97,14.37-1.59,22.49-2.11"/>
+	</g>
+	<g id="kvg:0660e-g2" kvg:element="月" kvg:position="right">
+		<path id="kvg:0660e-s5" kvg:type="㇓" d="M57.55,16c0.95,1.25,1.09,2.48,1.11,3.5c1.09,49.25-4.41,64.75-17.41,75.75"/>
+		<path id="kvg:0660e-s6" kvg:type="㇆a" d="M59.5,17.98c6.56-1.04,21.76-3.51,23.07-3.73c2.97-0.5,5.21,0.62,5.21,4.5c0,1.49,0.19,50.25,0.19,70.5c0,11.88-7.22,3.5-8.3,2.5"/>
+		<path id="kvg:0660e-s7" kvg:type="㇐a" d="M59.77,39c7.85-1,19.73-2.25,26.95-2.75"/>
+		<path id="kvg:0660e-s8" kvg:type="㇐a" d="M59.25,57.75c6.62-0.62,20-1.5,27.36-2"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_0660e" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">③ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_0660e" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:0660e" kvg:element="明">
+	<g id="kvg:0660e-g1" kvg:element="日" kvg:position="left" kvg:radical="general">
+		<path id="kvg:0660e-s1" kvg:type="㇑" d="M16.75,25.22c0.89,0.89,1.32,2.29,1.32,3.66c0,1.11,0.07,27.44,0,37.63c-0.02,2.32-0.02,3.78-0.02,3.91"/>
+		<path id="kvg:0660e-s2" kvg:type="㇕a" d="M19.29,27.75c5.66-0.81,19.54-2.59,21.22-2.75c1.76-0.17,2.89,1.89,2.75,2.91c-0.23,1.7-0.45,27.34-0.52,36.6c-0.01,1.9-0.02,3.11-0.02,3.29"/>
+		<path id="kvg:0660e-s3" kvg:type="㇐a" d="M19.16,46.97C23.5,46.5,37,45.12,41.77,44.76"/>
+		<path id="kvg:0660e-s4" kvg:type="㇐a" d="M19,66.59c8.5-0.97,14.37-1.59,22.49-2.11"/>
+	</g>
+	<g id="kvg:0660e-g2" kvg:element="月" kvg:position="right">
+		<path id="kvg:0660e-s5" kvg:type="㇓" d="M57.55,16c0.95,1.25,1.09,2.48,1.11,3.5c1.09,49.25-4.41,64.75-17.41,75.75"/>
+		<path id="kvg:0660e-s6" kvg:type="㇆a" d="M59.5,17.98c6.56-1.04,21.76-3.51,23.07-3.73c2.97-0.5,5.21,0.62,5.21,4.5c0,1.49,0.19,50.25,0.19,70.5c0,11.88-7.22,3.5-8.3,2.5"/>
+		<path id="kvg:0660e-s7" kvg:type="㇐a" d="M59.77,39c7.85-1,19.73-2.25,26.95-2.75"/>
+		<path id="kvg:0660e-s8" kvg:type="㇐a" d="M59.25,57.75c6.62-0.62,20-1.5,27.36-2"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_0660e" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">④ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_0660e" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:0660e" kvg:element="明">
+	<g id="kvg:0660e-g1" kvg:element="日" kvg:position="left" kvg:radical="general">
+		<path id="kvg:0660e-s1" kvg:type="㇑" d="M16.75,25.22c0.89,0.89,1.32,2.29,1.32,3.66c0,1.11,0.07,27.44,0,37.63c-0.02,2.32-0.02,3.78-0.02,3.91"/>
+		<path id="kvg:0660e-s2" kvg:type="㇕a" d="M19.29,27.75c5.66-0.81,19.54-2.59,21.22-2.75c1.76-0.17,2.89,1.89,2.75,2.91c-0.23,1.7-0.45,27.34-0.52,36.6c-0.01,1.9-0.02,3.11-0.02,3.29"/>
+		<path id="kvg:0660e-s3" kvg:type="㇐a" d="M19.16,46.97C23.5,46.5,37,45.12,41.77,44.76"/>
+		<path id="kvg:0660e-s4" kvg:type="㇐a" d="M19,66.59c8.5-0.97,14.37-1.59,22.49-2.11"/>
+	</g>
+	<g id="kvg:0660e-g2" kvg:element="月" kvg:position="right">
+		<path id="kvg:0660e-s5" kvg:type="㇓" d="M57.55,16c0.95,1.25,1.09,2.48,1.11,3.5c1.09,49.25-4.41,64.75-17.41,75.75"/>
+		<path id="kvg:0660e-s6" kvg:type="㇆a" d="M59.5,17.98c6.56-1.04,21.76-3.51,23.07-3.73c2.97-0.5,5.21,0.62,5.21,4.5c0,1.49,0.19,50.25,0.19,70.5c0,11.88-7.22,3.5-8.3,2.5"/>
+		<path id="kvg:0660e-s7" kvg:type="㇐a" d="M59.77,39c7.85-1,19.73-2.25,26.95-2.75"/>
+		<path id="kvg:0660e-s8" kvg:type="㇐a" d="M59.25,57.75c6.62-0.62,20-1.5,27.36-2"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_0660e" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑤ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑥ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑦ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑧ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑨ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑩ Latih</span></div>
                 </div>
 
-                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
-                <div style="margin-top: 4px;">
-                  <div class="grid-label-row">
-                    <span>⑪ Jiplak</span>
-                    <span>⑫ Jiplak</span>
-                    <span>⑬ Latih</span>
-                    <span>⑭ Latih</span>
-                    <span>⑮ Latih</span>
-                    <span>⑯ Latih</span>
-                    <span>⑰ Latih</span>
-                    <span>⑱ Latih</span>
-                    <span>⑲ Latih</span>
-                    <span>⑳ Latih</span>
+                <!-- Baris 2: Kotak 11 s/d 20 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑪ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_0660e" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:0660e" kvg:element="明">
+	<g id="kvg:0660e-g1" kvg:element="日" kvg:position="left" kvg:radical="general">
+		<path id="kvg:0660e-s1" kvg:type="㇑" d="M16.75,25.22c0.89,0.89,1.32,2.29,1.32,3.66c0,1.11,0.07,27.44,0,37.63c-0.02,2.32-0.02,3.78-0.02,3.91"/>
+		<path id="kvg:0660e-s2" kvg:type="㇕a" d="M19.29,27.75c5.66-0.81,19.54-2.59,21.22-2.75c1.76-0.17,2.89,1.89,2.75,2.91c-0.23,1.7-0.45,27.34-0.52,36.6c-0.01,1.9-0.02,3.11-0.02,3.29"/>
+		<path id="kvg:0660e-s3" kvg:type="㇐a" d="M19.16,46.97C23.5,46.5,37,45.12,41.77,44.76"/>
+		<path id="kvg:0660e-s4" kvg:type="㇐a" d="M19,66.59c8.5-0.97,14.37-1.59,22.49-2.11"/>
+	</g>
+	<g id="kvg:0660e-g2" kvg:element="月" kvg:position="right">
+		<path id="kvg:0660e-s5" kvg:type="㇓" d="M57.55,16c0.95,1.25,1.09,2.48,1.11,3.5c1.09,49.25-4.41,64.75-17.41,75.75"/>
+		<path id="kvg:0660e-s6" kvg:type="㇆a" d="M59.5,17.98c6.56-1.04,21.76-3.51,23.07-3.73c2.97-0.5,5.21,0.62,5.21,4.5c0,1.49,0.19,50.25,0.19,70.5c0,11.88-7.22,3.5-8.3,2.5"/>
+		<path id="kvg:0660e-s7" kvg:type="㇐a" d="M59.77,39c7.85-1,19.73-2.25,26.95-2.75"/>
+		<path id="kvg:0660e-s8" kvg:type="㇐a" d="M59.25,57.75c6.62-0.62,20-1.5,27.36-2"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_0660e" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box trace-box"><span>明</span></div>
-                    <div class="tianzige-box trace-box"><span>明</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑫ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_0660e" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:0660e" kvg:element="明">
+	<g id="kvg:0660e-g1" kvg:element="日" kvg:position="left" kvg:radical="general">
+		<path id="kvg:0660e-s1" kvg:type="㇑" d="M16.75,25.22c0.89,0.89,1.32,2.29,1.32,3.66c0,1.11,0.07,27.44,0,37.63c-0.02,2.32-0.02,3.78-0.02,3.91"/>
+		<path id="kvg:0660e-s2" kvg:type="㇕a" d="M19.29,27.75c5.66-0.81,19.54-2.59,21.22-2.75c1.76-0.17,2.89,1.89,2.75,2.91c-0.23,1.7-0.45,27.34-0.52,36.6c-0.01,1.9-0.02,3.11-0.02,3.29"/>
+		<path id="kvg:0660e-s3" kvg:type="㇐a" d="M19.16,46.97C23.5,46.5,37,45.12,41.77,44.76"/>
+		<path id="kvg:0660e-s4" kvg:type="㇐a" d="M19,66.59c8.5-0.97,14.37-1.59,22.49-2.11"/>
+	</g>
+	<g id="kvg:0660e-g2" kvg:element="月" kvg:position="right">
+		<path id="kvg:0660e-s5" kvg:type="㇓" d="M57.55,16c0.95,1.25,1.09,2.48,1.11,3.5c1.09,49.25-4.41,64.75-17.41,75.75"/>
+		<path id="kvg:0660e-s6" kvg:type="㇆a" d="M59.5,17.98c6.56-1.04,21.76-3.51,23.07-3.73c2.97-0.5,5.21,0.62,5.21,4.5c0,1.49,0.19,50.25,0.19,70.5c0,11.88-7.22,3.5-8.3,2.5"/>
+		<path id="kvg:0660e-s7" kvg:type="㇐a" d="M59.77,39c7.85-1,19.73-2.25,26.95-2.75"/>
+		<path id="kvg:0660e-s8" kvg:type="㇐a" d="M59.25,57.75c6.62-0.62,20-1.5,27.36-2"/>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_0660e" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑬ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑭ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑮ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑯ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑰ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑱ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑲ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑳ Latih</span></div>
                 </div>
 
                 <!-- Baris Menulis saat Dicetak -->
@@ -1667,30 +3257,19 @@
                 <strong>Contoh:</strong> <span>孫(まご)はかわいいですが、よく泣(な)きます。</span> ➔ <em>"Cucu saya lucu, tapi sering menangis."</em>
               </div>
 
-              <!-- 20 Kotak Grid (2 Baris) -->
+              <!-- 20 Kotak Grid (2 Baris x 10 Kotak) -->
               <div class="grid-20-wrapper">
                 
-                <!-- Baris 1: 10 Kotak -->
-                <div>
-                  <div class="grid-label-row">
-                    <span style="color:#dc2626;">① Urutan</span>
-                    <span style="color:#2563eb;">② Contoh</span>
-                    <span>③ Jiplak</span>
-                    <span>④ Jiplak</span>
-                    <span>⑤ Latih</span>
-                    <span>⑥ Latih</span>
-                    <span>⑦ Latih</span>
-                    <span>⑧ Latih</span>
-                    <span>⑨ Latih</span>
-                    <span>⑩ Latih</span>
-                  </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: Kotak 1 s/d 10 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box guidance-box">
+                    <span class="box-tag tag-urutan">① Urutan</span>
+                    <svg class="kanji-svg guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
   
-<g id="kvg:StrokePaths_06ce3" style="fill:none;stroke:#334155;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:StrokePaths_06ce3" style="fill:none;stroke:#1e293b;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
 <g id="kvg:06ce3" kvg:element="泣">
 	<g id="kvg:06ce3-g1" kvg:element="氵" kvg:variant="true" kvg:original="水" kvg:position="left" kvg:radical="general">
 		<path id="kvg:06ce3-s1" kvg:type="㇔" d="M21.88,17.88c4.28,1.45,11.05,5.96,12.12,8.22"/>
@@ -1721,45 +3300,221 @@
 	<text transform="matrix(1 0 0 1 36.49 82.10)">8</text>
 </g>
 </svg>
-</div>
-                    <div class="tianzige-box model-box"><span>泣</span></div>
-                    <div class="tianzige-box trace-box"><span>泣</span></div>
-                    <div class="tianzige-box trace-box"><span>泣</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+
                   </div>
+                  <div class="tianzige-box model-box">
+                    <span class="box-tag tag-contoh">② Contoh</span>
+                    <svg class="kanji-svg model-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_06ce3" style="fill:none;stroke:#0f172a;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:06ce3" kvg:element="泣">
+	<g id="kvg:06ce3-g1" kvg:element="氵" kvg:variant="true" kvg:original="水" kvg:position="left" kvg:radical="general">
+		<path id="kvg:06ce3-s1" kvg:type="㇔" d="M21.88,17.88c4.28,1.45,11.05,5.96,12.12,8.22"/>
+		<path id="kvg:06ce3-s2" kvg:type="㇔" d="M15.25,43.25c4.32,1.23,11.17,5.08,12.25,7"/>
+		<path id="kvg:06ce3-s3" kvg:type="㇀" d="M16.75,87.21c1.5,1.31,3.31,1.36,4.25-0.25c2.75-4.7,5.5-10.45,8-16.45"/>
+	</g>
+	<g id="kvg:06ce3-g2" kvg:element="立" kvg:position="right">
+		<g id="kvg:06ce3-g3" kvg:element="亠" kvg:position="top">
+			<path id="kvg:06ce3-s4" kvg:type="㇑a" d="M62.5,17c1,0.75,1.75,2,1.75,3.75s0,12.25,0,17"/>
+			<path id="kvg:06ce3-s5" kvg:type="㇐" d="M41.25,40.95c2.11,0.59,4.38,0.32,6.52,0.1c7.96-0.81,24.5-3.43,34.23-4.13c2.44-0.18,4.83-0.25,7.25,0.16"/>
+		</g>
+		<g id="kvg:06ce3-g4" kvg:position="bottom">
+			<path id="kvg:06ce3-s6" kvg:type="㇔" d="M49.25,49.75c3.71,9.23,5.86,20.47,6.79,28.32"/>
+			<path id="kvg:06ce3-s7" kvg:type="㇒" d="M78.38,43c0.8,1.31,0.79,3.03,0.55,4.09c-2.34,10.34-6.83,29.12-8.43,34.79"/>
+			<path id="kvg:06ce3-s8" kvg:type="㇐" d="M37.5,85.8c2.86,0.77,6.2,0.47,9.12,0.17c13.36-1.36,27.41-2.62,42.63-3.37c2.88-0.14,5.64,0.01,8.5,0.47"/>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_06ce3" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">③ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_06ce3" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:06ce3" kvg:element="泣">
+	<g id="kvg:06ce3-g1" kvg:element="氵" kvg:variant="true" kvg:original="水" kvg:position="left" kvg:radical="general">
+		<path id="kvg:06ce3-s1" kvg:type="㇔" d="M21.88,17.88c4.28,1.45,11.05,5.96,12.12,8.22"/>
+		<path id="kvg:06ce3-s2" kvg:type="㇔" d="M15.25,43.25c4.32,1.23,11.17,5.08,12.25,7"/>
+		<path id="kvg:06ce3-s3" kvg:type="㇀" d="M16.75,87.21c1.5,1.31,3.31,1.36,4.25-0.25c2.75-4.7,5.5-10.45,8-16.45"/>
+	</g>
+	<g id="kvg:06ce3-g2" kvg:element="立" kvg:position="right">
+		<g id="kvg:06ce3-g3" kvg:element="亠" kvg:position="top">
+			<path id="kvg:06ce3-s4" kvg:type="㇑a" d="M62.5,17c1,0.75,1.75,2,1.75,3.75s0,12.25,0,17"/>
+			<path id="kvg:06ce3-s5" kvg:type="㇐" d="M41.25,40.95c2.11,0.59,4.38,0.32,6.52,0.1c7.96-0.81,24.5-3.43,34.23-4.13c2.44-0.18,4.83-0.25,7.25,0.16"/>
+		</g>
+		<g id="kvg:06ce3-g4" kvg:position="bottom">
+			<path id="kvg:06ce3-s6" kvg:type="㇔" d="M49.25,49.75c3.71,9.23,5.86,20.47,6.79,28.32"/>
+			<path id="kvg:06ce3-s7" kvg:type="㇒" d="M78.38,43c0.8,1.31,0.79,3.03,0.55,4.09c-2.34,10.34-6.83,29.12-8.43,34.79"/>
+			<path id="kvg:06ce3-s8" kvg:type="㇐" d="M37.5,85.8c2.86,0.77,6.2,0.47,9.12,0.17c13.36-1.36,27.41-2.62,42.63-3.37c2.88-0.14,5.64,0.01,8.5,0.47"/>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_06ce3" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">④ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_06ce3" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:06ce3" kvg:element="泣">
+	<g id="kvg:06ce3-g1" kvg:element="氵" kvg:variant="true" kvg:original="水" kvg:position="left" kvg:radical="general">
+		<path id="kvg:06ce3-s1" kvg:type="㇔" d="M21.88,17.88c4.28,1.45,11.05,5.96,12.12,8.22"/>
+		<path id="kvg:06ce3-s2" kvg:type="㇔" d="M15.25,43.25c4.32,1.23,11.17,5.08,12.25,7"/>
+		<path id="kvg:06ce3-s3" kvg:type="㇀" d="M16.75,87.21c1.5,1.31,3.31,1.36,4.25-0.25c2.75-4.7,5.5-10.45,8-16.45"/>
+	</g>
+	<g id="kvg:06ce3-g2" kvg:element="立" kvg:position="right">
+		<g id="kvg:06ce3-g3" kvg:element="亠" kvg:position="top">
+			<path id="kvg:06ce3-s4" kvg:type="㇑a" d="M62.5,17c1,0.75,1.75,2,1.75,3.75s0,12.25,0,17"/>
+			<path id="kvg:06ce3-s5" kvg:type="㇐" d="M41.25,40.95c2.11,0.59,4.38,0.32,6.52,0.1c7.96-0.81,24.5-3.43,34.23-4.13c2.44-0.18,4.83-0.25,7.25,0.16"/>
+		</g>
+		<g id="kvg:06ce3-g4" kvg:position="bottom">
+			<path id="kvg:06ce3-s6" kvg:type="㇔" d="M49.25,49.75c3.71,9.23,5.86,20.47,6.79,28.32"/>
+			<path id="kvg:06ce3-s7" kvg:type="㇒" d="M78.38,43c0.8,1.31,0.79,3.03,0.55,4.09c-2.34,10.34-6.83,29.12-8.43,34.79"/>
+			<path id="kvg:06ce3-s8" kvg:type="㇐" d="M37.5,85.8c2.86,0.77,6.2,0.47,9.12,0.17c13.36-1.36,27.41-2.62,42.63-3.37c2.88-0.14,5.64,0.01,8.5,0.47"/>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_06ce3" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
+                  </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑤ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑥ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑦ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑧ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑨ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑩ Latih</span></div>
                 </div>
 
-                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
-                <div style="margin-top: 4px;">
-                  <div class="grid-label-row">
-                    <span>⑪ Jiplak</span>
-                    <span>⑫ Jiplak</span>
-                    <span>⑬ Latih</span>
-                    <span>⑭ Latih</span>
-                    <span>⑮ Latih</span>
-                    <span>⑯ Latih</span>
-                    <span>⑰ Latih</span>
-                    <span>⑱ Latih</span>
-                    <span>⑲ Latih</span>
-                    <span>⑳ Latih</span>
+                <!-- Baris 2: Kotak 11 s/d 20 -->
+                <div class="grid-boxes-row">
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑪ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_06ce3" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:06ce3" kvg:element="泣">
+	<g id="kvg:06ce3-g1" kvg:element="氵" kvg:variant="true" kvg:original="水" kvg:position="left" kvg:radical="general">
+		<path id="kvg:06ce3-s1" kvg:type="㇔" d="M21.88,17.88c4.28,1.45,11.05,5.96,12.12,8.22"/>
+		<path id="kvg:06ce3-s2" kvg:type="㇔" d="M15.25,43.25c4.32,1.23,11.17,5.08,12.25,7"/>
+		<path id="kvg:06ce3-s3" kvg:type="㇀" d="M16.75,87.21c1.5,1.31,3.31,1.36,4.25-0.25c2.75-4.7,5.5-10.45,8-16.45"/>
+	</g>
+	<g id="kvg:06ce3-g2" kvg:element="立" kvg:position="right">
+		<g id="kvg:06ce3-g3" kvg:element="亠" kvg:position="top">
+			<path id="kvg:06ce3-s4" kvg:type="㇑a" d="M62.5,17c1,0.75,1.75,2,1.75,3.75s0,12.25,0,17"/>
+			<path id="kvg:06ce3-s5" kvg:type="㇐" d="M41.25,40.95c2.11,0.59,4.38,0.32,6.52,0.1c7.96-0.81,24.5-3.43,34.23-4.13c2.44-0.18,4.83-0.25,7.25,0.16"/>
+		</g>
+		<g id="kvg:06ce3-g4" kvg:position="bottom">
+			<path id="kvg:06ce3-s6" kvg:type="㇔" d="M49.25,49.75c3.71,9.23,5.86,20.47,6.79,28.32"/>
+			<path id="kvg:06ce3-s7" kvg:type="㇒" d="M78.38,43c0.8,1.31,0.79,3.03,0.55,4.09c-2.34,10.34-6.83,29.12-8.43,34.79"/>
+			<path id="kvg:06ce3-s8" kvg:type="㇐" d="M37.5,85.8c2.86,0.77,6.2,0.47,9.12,0.17c13.36-1.36,27.41-2.62,42.63-3.37c2.88-0.14,5.64,0.01,8.5,0.47"/>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_06ce3" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
-                  <div class="grid-boxes-row">
-                    <div class="tianzige-box trace-box"><span>泣</span></div>
-                    <div class="tianzige-box trace-box"><span>泣</span></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
-                    <div class="tianzige-box"></div>
+                  <div class="tianzige-box trace-box">
+                    <span class="box-tag tag-jiplak">⑫ Jiplak</span>
+                    <svg class="kanji-svg trace-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  
+<g id="kvg:StrokePaths_06ce3" style="fill:none;stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;stroke-linecap:round;stroke-linejoin:round;">
+<g id="kvg:06ce3" kvg:element="泣">
+	<g id="kvg:06ce3-g1" kvg:element="氵" kvg:variant="true" kvg:original="水" kvg:position="left" kvg:radical="general">
+		<path id="kvg:06ce3-s1" kvg:type="㇔" d="M21.88,17.88c4.28,1.45,11.05,5.96,12.12,8.22"/>
+		<path id="kvg:06ce3-s2" kvg:type="㇔" d="M15.25,43.25c4.32,1.23,11.17,5.08,12.25,7"/>
+		<path id="kvg:06ce3-s3" kvg:type="㇀" d="M16.75,87.21c1.5,1.31,3.31,1.36,4.25-0.25c2.75-4.7,5.5-10.45,8-16.45"/>
+	</g>
+	<g id="kvg:06ce3-g2" kvg:element="立" kvg:position="right">
+		<g id="kvg:06ce3-g3" kvg:element="亠" kvg:position="top">
+			<path id="kvg:06ce3-s4" kvg:type="㇑a" d="M62.5,17c1,0.75,1.75,2,1.75,3.75s0,12.25,0,17"/>
+			<path id="kvg:06ce3-s5" kvg:type="㇐" d="M41.25,40.95c2.11,0.59,4.38,0.32,6.52,0.1c7.96-0.81,24.5-3.43,34.23-4.13c2.44-0.18,4.83-0.25,7.25,0.16"/>
+		</g>
+		<g id="kvg:06ce3-g4" kvg:position="bottom">
+			<path id="kvg:06ce3-s6" kvg:type="㇔" d="M49.25,49.75c3.71,9.23,5.86,20.47,6.79,28.32"/>
+			<path id="kvg:06ce3-s7" kvg:type="㇒" d="M78.38,43c0.8,1.31,0.79,3.03,0.55,4.09c-2.34,10.34-6.83,29.12-8.43,34.79"/>
+			<path id="kvg:06ce3-s8" kvg:type="㇐" d="M37.5,85.8c2.86,0.77,6.2,0.47,9.12,0.17c13.36-1.36,27.41-2.62,42.63-3.37c2.88-0.14,5.64,0.01,8.5,0.47"/>
+		</g>
+	</g>
+</g>
+</g>
+<g id="kvg:StrokeNumbers_06ce3" style="font-size:8;fill:#808080">
+	
+	
+	
+	
+	
+	
+	
+	
+</g>
+</svg>
+
                   </div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑬ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑭ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑮ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑯ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑰ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑱ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑲ Latih</span></div>
+                  <div class="tianzige-box"><span class="box-tag tag-latih">⑳ Latih</span></div>
                 </div>
 
                 <!-- Baris Menulis saat Dicetak -->
@@ -1781,117 +3536,116 @@
           
         </div>
 
-        <!-- Latihan Soal -->
-        <div class="exercise-box">
-          <div style="font-weight: 800; font-size: 1.05rem; margin-bottom: 10px;">
-            📝 Latihan Soal Evaluasi Bab 2 (20 Soal)
-          </div>
-
-          <div class="exercise-title">📖 A. Latihan Membaca (Hiragana):</div>
+        <!-- Latihan A (Halaman Terpisah) -->
+        <div class="page-exercise-a">
+          <div class="exercise-title">📖 A. Latihan Membaca (Hiragana) — Bab 2 (10 Soal)</div>
           <div class="exercise-grid">
             
               <div class="exercise-item">
-                <div>① 孫はかわいいですが、よく[泣]きます。</div>
+                <div class="exercise-item-q">① 孫はかわいいですが、よく[泣]きます。</div>
                 <div class="answer-key">な</div>
               </div>
             
               <div class="exercise-item">
-                <div>② アニタさんはとても[明]るい人です。</div>
+                <div class="exercise-item-q">② アニタさんはとても[明]るい人です。</div>
                 <div class="answer-key">あか</div>
               </div>
             
               <div class="exercise-item">
-                <div>③ 歌がとても[上手]ですね。</div>
+                <div class="exercise-item-q">③ 歌がとても[上手]ですね。</div>
                 <div class="answer-key">じょうず</div>
               </div>
             
               <div class="exercise-item">
-                <div>④ 田中さんは、いつも黒い服を[着]ています。</div>
+                <div class="exercise-item-q">④ 田中さんは、いつも黒い服を[着]ています。</div>
                 <div class="answer-key">き</div>
               </div>
             
               <div class="exercise-item">
-                <div>⑤ これは、だれの[写真]ですか？</div>
+                <div class="exercise-item-q">⑤ これは、だれの[写真]ですか？</div>
                 <div class="answer-key">しゃしん</div>
               </div>
             
               <div class="exercise-item">
-                <div>⑥ 日本で、好きな[歌手]がいますか？</div>
+                <div class="exercise-item-q">⑥ 日本で、好きな[歌手]がいますか？</div>
                 <div class="answer-key">かしゅ</div>
               </div>
             
               <div class="exercise-item">
-                <div>⑦ あそこで[立]って話している人はだれですか？</div>
+                <div class="exercise-item-q">⑦ あそこで[立]って話している人はだれですか？</div>
                 <div class="answer-key">た</div>
               </div>
             
               <div class="exercise-item">
-                <div>⑧ 髪が[長]い人ですか？</div>
+                <div class="exercise-item-q">⑧ 髪が[長]い人ですか？</div>
                 <div class="answer-key">なが</div>
               </div>
             
               <div class="exercise-item">
-                <div>⑨ 髪が[短]い人ですか？</div>
+                <div class="exercise-item-q">⑨ 髪が[短]い人ですか？</div>
                 <div class="answer-key">みじか</div>
               </div>
             
               <div class="exercise-item">
-                <div>⑩ みんなで日本の[歌]を歌いました。</div>
+                <div class="exercise-item-q">⑩ みんなで日本の[歌]を歌いました。</div>
                 <div class="answer-key">うた</div>
               </div>
             
           </div>
+        </div>
 
-          <div class="exercise-title" style="margin-top: 12px;">✏️ B. Latihan Menulis (Kanji):</div>
+        <!-- Latihan B (Halaman Terpisah - Selalu Mulai di Page Baru) -->
+        <div class="page-exercise-b">
+          <div class="exercise-title">✏️ B. Latihan Menulis (Kanji) — Bab 2 (10 Soal)</div>
           <div class="exercise-grid">
             
               <div class="exercise-item">
-                <div>① これは だれの ( _________ ) [しゃしん] ですか？</div>
+                <div class="exercise-item-q">① これは だれの ( _________ ) [しゃしん] ですか？</div>
                 <div class="answer-key">写真</div>
               </div>
             
               <div class="exercise-item">
-                <div>② かのじょは うたが とても ( _________ ) [じょうず] です。</div>
+                <div class="exercise-item-q">② かのじょは うたが とても ( _________ ) [じょうず] です。</div>
                 <div class="answer-key">上手</div>
               </div>
             
               <div class="exercise-item">
-                <div>③ にほんで すきな ( _________ ) [かしゅ] が いますか？</div>
+                <div class="exercise-item-q">③ にほんで すきな ( _________ ) [かしゅ] が いますか？</div>
                 <div class="answer-key">歌手</div>
               </div>
             
               <div class="exercise-item">
-                <div>④ かみが ( _________ ) [なが] い ひとですか？</div>
+                <div class="exercise-item-q">④ かみが ( _________ ) [なが] い ひとですか？</div>
                 <div class="answer-key">長</div>
               </div>
             
               <div class="exercise-item">
-                <div>⑤ かみが ( _________ ) [みじか] い ひとですか？</div>
+                <div class="exercise-item-q">⑤ かみが ( _________ ) [みじか] い ひとですか？</div>
                 <div class="answer-key">短</div>
               </div>
             
               <div class="exercise-item">
-                <div>⑥ くろい ふくを ( _________ ) [き] ています。</div>
+                <div class="exercise-item-q">⑥ くろい ふくを ( _________ ) [き] ています。</div>
                 <div class="answer-key">着</div>
               </div>
             
               <div class="exercise-item">
-                <div>⑦ あそこで ( _________ ) [た] って はなしています。</div>
+                <div class="exercise-item-q">⑦ あそこで ( _________ ) [た] って はなしています。</div>
                 <div class="answer-key">立</div>
               </div>
             
               <div class="exercise-item">
-                <div>⑧ アニタさんは ( _________ ) [あか] るい ひとです。</div>
+                <div class="exercise-item-q">⑧ アニタさんは ( _________ ) [あか] るい ひとです。</div>
                 <div class="answer-key">明</div>
               </div>
             
               <div class="exercise-item">
-                <div>⑨ あかちゃんが よく ( _________ ) [な] きます。</div>
+                <div class="exercise-item-q">⑨ あかちゃんが よく ( _________ ) [な] きます。</div>
                 <div class="answer-key">泣</div>
               </div>
             
               <div class="exercise-item">
-                <div>⑩ みんなで たのしく ( _________ ) [うた] を うたいましょう。</div>
+                <div class="exercise-item-q">⑩ みんなで たのしく ( _________ ) [うた] を うたいましょう。</div>
                 <div class="answer-key">歌</div>
               </div>
             

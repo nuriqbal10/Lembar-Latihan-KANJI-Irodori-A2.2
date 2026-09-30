@@ -6,65 +6,122 @@ const svgDir = path.join(rootDir, 'assets', 'kanjivg');
 const dataFile = path.join(rootDir, 'kanji_irodori_a2_2_data.json');
 const kanjiData = JSON.parse(fs.readFileSync(dataFile, 'utf-8'));
 
-// Helper to format KanjiVG SVG
+// Extract stroke paths for all Kanji to power interactive stroke player
+const kanjiStrokesMap = {};
+kanjiData.forEach(ch => {
+  ch.kanjiList.forEach(k => {
+    if (!kanjiStrokesMap[k.kanji]) {
+      const cp = k.kanji.codePointAt(0).toString(16).padStart(5, '0');
+      const svgPath = path.join(svgDir, cp + '.svg');
+      const strokes = [];
+      if (fs.existsSync(svgPath)) {
+        const content = fs.readFileSync(svgPath, 'utf-8');
+        const regex = /<path[^>]+id="kvg:[^"]+-s\d+"[^>]+d="([^"]+)"/g;
+        let match;
+        while ((match = regex.exec(content)) !== null) {
+          strokes.push(match[1]);
+        }
+      }
+      kanjiStrokesMap[k.kanji] = strokes;
+    }
+  });
+});
+
+console.log('Extracted stroke paths for all', Object.keys(kanjiStrokesMap).length, 'unique Kanji!');
+
+// Box 1: Numbered Guidance SVG
 function getGuidanceSvg(kanjiChar) {
   if (!kanjiChar) return '';
-  const codePoint = kanjiChar.codePointAt(0).toString(16).padStart(5, '0');
-  const svgPath = path.join(svgDir, codePoint + '.svg');
-  if (!fs.existsSync(svgPath)) {
-    return `<div style="font-size:24px;font-weight:bold;color:#334155;">${kanjiChar}</div>`;
-  }
-  let rawSvg = fs.readFileSync(svgPath, 'utf-8');
-
-  // Strip xml header & doctype
-  rawSvg = rawSvg.replace(/<\?xml[\s\S]*?<svg/i, '<svg');
-  rawSvg = rawSvg.replace(/<!DOCTYPE[\s\S]*?>/i, '');
-
-  // Add cross guidelines
-  const crossLines = `
-    <!-- Tianzige Cross Guidelines -->
+  const cp = kanjiChar.codePointAt(0).toString(16).padStart(5, '0');
+  const svgPath = path.join(svgDir, cp + '.svg');
+  if (!fs.existsSync(svgPath)) return `<div class="char-fallback">${kanjiChar}</div>`;
+  let raw = fs.readFileSync(svgPath, 'utf-8');
+  raw = raw.replace(/<\?xml[\s\S]*?<svg/i, '<svg').replace(/<!DOCTYPE[\s\S]*?>/i, '');
+  const cross = `
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
   `;
-  rawSvg = rawSvg.replace(/(<svg[^>]*>)/i, `$1${crossLines}`);
+  raw = raw.replace(/(<svg[^>]*>)/i, `$1${cross}`);
+  raw = raw.replace(/stroke:#000000;stroke-width:3;/g, 'stroke:#1e293b;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;');
+  raw = raw.replace(/fill:#808080/g, 'fill:#e11d48;font-weight:bold;');
+  raw = raw.replace(/font-size:8/g, 'font-size:10');
+  return raw.replace('<svg ', '<svg class="kanji-svg guidance-svg" ');
+}
 
-  // Enhance stroke path styling
-  rawSvg = rawSvg.replace(/stroke:#000000;stroke-width:3;/g, 'stroke:#334155;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;');
+// Box 2: Model SVG (Exact same size and stroke shape as guidance, solid dark ink, no numbers)
+function getModelSvg(kanjiChar) {
+  if (!kanjiChar) return '';
+  const cp = kanjiChar.codePointAt(0).toString(16).padStart(5, '0');
+  const svgPath = path.join(svgDir, cp + '.svg');
+  if (!fs.existsSync(svgPath)) return `<div class="char-fallback">${kanjiChar}</div>`;
+  let raw = fs.readFileSync(svgPath, 'utf-8');
+  raw = raw.replace(/<\?xml[\s\S]*?<svg/i, '<svg').replace(/<!DOCTYPE[\s\S]*?>/i, '');
+  raw = raw.replace(/<text[^>]*>.*?<\/text>/g, '');
+  const cross = `
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  `;
+  raw = raw.replace(/(<svg[^>]*>)/i, `$1${cross}`);
+  raw = raw.replace(/stroke:#000000;stroke-width:3;/g, 'stroke:#0f172a;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round;');
+  return raw.replace('<svg ', '<svg class="kanji-svg model-svg" ');
+}
 
-  // Enhance stroke numbers
-  rawSvg = rawSvg.replace(/fill:#808080/g, 'fill:#e11d48;font-weight:bold;');
-  rawSvg = rawSvg.replace(/font-size:8/g, 'font-size:10');
-
-  rawSvg = rawSvg.replace('<svg ', '<svg class="guidance-svg" ');
-  return rawSvg;
+// Boxes 3, 4, 11, 12: Trace SVG (Exact same size and stroke shape, soft calm gray for muscle-memory tracing)
+function getTraceSvg(kanjiChar) {
+  if (!kanjiChar) return '';
+  const cp = kanjiChar.codePointAt(0).toString(16).padStart(5, '0');
+  const svgPath = path.join(svgDir, cp + '.svg');
+  if (!fs.existsSync(svgPath)) return `<div class="char-fallback trace-char">${kanjiChar}</div>`;
+  let raw = fs.readFileSync(svgPath, 'utf-8');
+  raw = raw.replace(/<\?xml[\s\S]*?<svg/i, '<svg').replace(/<!DOCTYPE[\s\S]*?>/i, '');
+  raw = raw.replace(/<text[^>]*>.*?<\/text>/g, '');
+  const cross = `
+    <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+    <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+  `;
+  raw = raw.replace(/(<svg[^>]*>)/i, `$1${cross}`);
+  raw = raw.replace(/stroke:#000000;stroke-width:3;/g, 'stroke:#94a3b8;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;opacity:0.65;');
+  return raw.replace('<svg ', '<svg class="kanji-svg trace-svg" ');
 }
 
 function buildIndexApp() {
-  console.log("Building Enhanced Web Application index.html with Auth, Dark Mode, Animations & Progress Dashboard...");
+  console.log("Building V5 Enhanced Web Application index.html with identical SVG Model/Trace, 20-Grid & Separate A/B Exercise Pages...");
 
   const html = `<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IRODORI Kanji Studio A2.2 (Bab 1 - 18) | Latihan, Kuis & Manajemen Belajar</title>
-  <meta name="description" content="Aplikasi Web Lembar Latihan Kanji IRODORI A2.2 dengan Sistem Login, Pembatasan Akses, Animasi Goresan, Dashboard Progres Belajar, dan Mode Gelap Pastel">
-  
+  <title>IRODORI Kanji Studio A2.2 (Bab 1 - 18) | Lembar Latihan 20-Grid & Kuis Interaktif</title>
+  <meta name="description" content="Lembar Latihan Kanji IRODORI A2.2 dengan font UD Digi Kyokasho, 20 Kotak Grid per Kanji, Ukuran Model & Jiplak Presisi, Halaman Latihan A & B Terpisah">
+
   <style>
+    /* 1. TYPOGRAPHY: STRICT UD DIGI KYOKASHO PRIORITY */
     @font-face {
-      font-family: 'UD Digi Kyokasho Fallback';
-      src: local('UD デジタル 教科書体 NP-R'), local('UD Digi Kyokasho NP-R'), local('UD デジタル 教科書体'), local('UD Digi Kyokasho');
+      font-family: 'UD Digi Kyokasho Native';
+      src: local('UD デジタル 教科書体 NP-R'),
+           local('UD Digi Kyokasho NP-R'),
+           local('UD デジタル 教科書体 NK-R'),
+           local('UD Digi Kyokasho NK-R'),
+           local('UD デジタル 教科書体 N-R'),
+           local('UD Digi Kyokasho N-R'),
+           local('UD デジタル 教科書体 NP-B'),
+           local('UD Digi Kyokasho NP-B'),
+           local('UD デジタル 教科書体'),
+           local('UD Digi Kyokasho');
     }
 
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=BIZ+UDPGothic:wght@400;700&family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
 
     :root {
-      /* Light Mode Pastel Claymorphism */
+      --font-kyokasho: 'UD Digi Kyokasho Native', 'UD デジタル 教科書体 NP-R', 'UD Digi Kyokasho NP-R', 'UD デジタル 教科書体', 'UD Digi Kyokasho', 'BIZ UDPGothic', 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
+      --font-body: 'UD Digi Kyokasho Native', 'UD デジタル 教科書体 NP-R', 'UD Digi Kyokasho NP-R', 'Plus Jakarta Sans', 'BIZ UDPGothic', sans-serif;
+
       --bg-base: #f0f4f8;
       --clay-card-bg: #ffffff;
       --clay-surface: #fdfbf7;
-      --card-border: #edf2f7;
-      
+      --card-border: #e2e8f0;
+
       --pastel-blue-bg: #e8f0fe;
       --pastel-blue-txt: #1d4ed8;
       --pastel-blue-border: #bfdbfe;
@@ -86,12 +143,11 @@ function buildIndexApp() {
       --pastel-lavender-border: #e9d5ff;
 
       --text-main: #1e293b;
-      --text-sub: #64748b;
+      --text-sub: #475569;
       --text-light: #94a3b8;
 
       --grid-border: #94a3b8;
       --grid-cross: #cbd5e1;
-      --trace-char: #cbd5e1;
 
       --clay-shadow-out: 6px 6px 16px rgba(185, 195, 210, 0.4), -4px -4px 12px #ffffff;
       --clay-shadow-pill: 3px 3px 8px rgba(185, 195, 210, 0.3), -2px -2px 6px #ffffff;
@@ -99,8 +155,7 @@ function buildIndexApp() {
     }
 
     body.dark-mode {
-      /* Deep Slate Pastel Dark Mode */
-      --bg-base: #0f172a;
+      --bg-base: #0b1120;
       --clay-card-bg: #1e293b;
       --clay-surface: #141e33;
       --card-border: #334155;
@@ -131,7 +186,6 @@ function buildIndexApp() {
 
       --grid-border: #475569;
       --grid-cross: #334155;
-      --trace-char: #475569;
 
       --clay-shadow-out: 6px 6px 18px rgba(0, 0, 0, 0.5), -3px -3px 10px rgba(255, 255, 255, 0.03);
       --clay-shadow-pill: 3px 3px 8px rgba(0, 0, 0, 0.4), -2px -2px 5px rgba(255, 255, 255, 0.02);
@@ -141,7 +195,7 @@ function buildIndexApp() {
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Plus Jakarta Sans', 'UD Digi Kyokasho Fallback', 'Zen Maru Gothic', 'BIZ UDPGothic', 'Noto Sans JP', sans-serif;
+      font-family: var(--font-kyokasho);
       background-color: var(--bg-base);
       color: var(--text-main);
       line-height: 1.5;
@@ -156,7 +210,7 @@ function buildIndexApp() {
       position: sticky;
       top: 0;
       z-index: 1000;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     }
 
     .header-container {
@@ -170,159 +224,66 @@ function buildIndexApp() {
       gap: 10px;
     }
 
-    .brand-section {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
+    .brand-section { display: flex; align-items: center; gap: 10px; }
     .brand-logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
+      width: 40px; height: 40px; border-radius: 12px;
       background: linear-gradient(135deg, #e0e7ff 0%, #fde8ef 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      box-shadow: var(--clay-shadow-pill);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; box-shadow: var(--clay-shadow-pill);
     }
+    .brand-title { font-size: 1.15rem; font-weight: 800; color: var(--text-main); }
+    .brand-subtitle { font-size: 0.72rem; font-weight: 600; color: var(--text-sub); }
 
-    .brand-title {
-      font-size: 1.12rem;
-      font-weight: 800;
-      color: var(--text-main);
-      letter-spacing: -0.02em;
-    }
-
-    .brand-subtitle {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--text-sub);
-    }
-
-    /* Tab Pills */
     .nav-tabs {
-      display: flex;
-      gap: 6px;
+      display: flex; gap: 6px;
       background: var(--clay-surface);
-      padding: 4px;
-      border-radius: 30px;
+      padding: 4px; border-radius: 30px;
       box-shadow: var(--clay-shadow-in);
     }
 
     .tab-btn {
-      border: none;
-      background: transparent;
-      padding: 7px 14px;
-      border-radius: 20px;
-      font-family: inherit;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--text-sub);
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      display: flex;
-      align-items: center;
-      gap: 5px;
+      border: none; background: transparent;
+      padding: 7px 14px; border-radius: 20px;
+      font-family: inherit; font-size: 0.82rem; font-weight: 700;
+      color: var(--text-sub); cursor: pointer;
+      display: flex; align-items: center; gap: 5px;
     }
-
     .tab-btn:hover { color: var(--text-main); }
-
     .tab-btn.active {
-      background: var(--clay-card-bg);
-      color: #2563eb;
+      background: var(--clay-card-bg); color: #2563eb;
       box-shadow: var(--clay-shadow-pill);
     }
 
-    /* User & Controls */
-    .header-controls {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
+    .header-controls { display: flex; align-items: center; gap: 8px; }
     .select-bab {
-      padding: 7px 12px;
-      border-radius: 16px;
-      border: 1px solid var(--card-border);
-      background-color: var(--clay-card-bg);
-      font-family: inherit;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--text-main);
-      box-shadow: var(--clay-shadow-pill);
-      outline: none;
-      cursor: pointer;
+      padding: 7px 12px; border-radius: 16px;
+      border: 1px solid var(--card-border); background-color: var(--clay-card-bg);
+      font-family: inherit; font-size: 0.82rem; font-weight: 700;
+      color: var(--text-main); box-shadow: var(--clay-shadow-pill); outline: none;
     }
 
     .btn-action {
-      padding: 7px 14px;
-      border-radius: 16px;
-      border: none;
-      font-family: inherit;
-      font-size: 0.82rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 7px 14px; border-radius: 16px; border: none;
+      font-family: inherit; font-size: 0.82rem; font-weight: 700;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
     }
 
-    .btn-print {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: white;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-    }
-
-    .btn-theme {
-      background: var(--clay-card-bg);
-      color: var(--text-main);
-      border: 1px solid var(--card-border);
-      box-shadow: var(--clay-shadow-pill);
-      padding: 7px 10px;
-    }
-
-    .btn-auth {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: white;
-      box-shadow: 0 3px 10px rgba(16, 185, 129, 0.3);
-    }
+    .btn-print { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; }
+    .btn-theme { background: var(--clay-card-bg); color: var(--text-main); border: 1px solid var(--card-border); }
+    .btn-auth { background: linear-gradient(135deg, #10b981, #059669); color: white; }
 
     .user-pill {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px 4px 6px;
-      border-radius: 20px;
-      background: var(--pastel-blue-bg);
-      border: 1px solid var(--pastel-blue-border);
-      color: var(--pastel-blue-txt);
-      font-size: 0.78rem;
-      font-weight: 700;
-      cursor: pointer;
+      display: flex; align-items: center; gap: 6px; padding: 4px 10px 4px 6px;
+      border-radius: 20px; background: var(--pastel-blue-bg); border: 1px solid var(--pastel-blue-border);
+      color: var(--pastel-blue-txt); font-size: 0.78rem; font-weight: 700; cursor: pointer;
     }
-
     .user-avatar {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: #2563eb;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: #2563eb; color: white; display: flex;
+      align-items: center; justify-content: center; font-size: 11px;
     }
 
-    /* Container */
-    .app-main {
-      max-width: 1200px;
-      margin: 20px auto;
-      padding: 0 16px;
-    }
-
+    .app-main { max-width: 1200px; margin: 18px auto; padding: 0 14px; }
     .tab-content { display: none; }
     .tab-content.active { display: block; animation: fadeIn 0.25s ease; }
 
@@ -331,505 +292,329 @@ function buildIndexApp() {
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Hero Banner */
     .hero-banner {
-      background: var(--clay-card-bg);
-      border-radius: 20px;
-      padding: 18px 24px;
-      margin-bottom: 20px;
-      box-shadow: var(--clay-shadow-out);
-      border: 1px solid var(--card-border);
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
+      background: var(--clay-card-bg); border-radius: 20px; padding: 16px 22px;
+      margin-bottom: 18px; box-shadow: var(--clay-shadow-out); border: 1px solid var(--card-border);
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px;
+    }
+    .hero-text h2 { font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin-bottom: 2px; }
+    .hero-text p { font-size: 0.84rem; color: var(--text-sub); max-width: 650px; }
+    .hero-stats { display: flex; gap: 8px; }
+    .stat-pill {
+      background: var(--pastel-blue-bg); border: 1px solid var(--pastel-blue-border);
+      color: var(--pastel-blue-txt); padding: 6px 12px; border-radius: 12px; text-align: center;
+    }
+    .stat-num { font-size: 1.1rem; font-weight: 800; display: block; }
+    .stat-lbl { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; }
+
+    /* WORKSHEET PAGE */
+    .worksheet-page {
+      background: var(--clay-card-bg); border-radius: 20px; padding: 22px 24px;
+      margin-bottom: 28px; box-shadow: var(--clay-shadow-out); border: 1px solid var(--card-border);
+      position: relative;
     }
 
-    .hero-text h2 {
-      font-size: 1.25rem;
+    .sheet-header { border-bottom: 2px dashed var(--card-border); padding-bottom: 12px; margin-bottom: 16px; }
+    .curriculum-tag {
+      display: inline-block; font-size: 0.68rem; font-weight: 800; text-transform: uppercase;
+      color: var(--pastel-blue-txt); background-color: var(--pastel-blue-bg); border: 1px solid var(--pastel-blue-border);
+      padding: 3px 10px; border-radius: 10px; margin-bottom: 4px;
+    }
+    .sheet-title { font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin-bottom: 2px; }
+    .sheet-subtitle { font-size: 0.86rem; font-weight: 600; color: var(--text-sub); margin-bottom: 10px; }
+
+    .student-info-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+      background-color: var(--clay-surface); border-radius: 12px; padding: 8px 12px; border: 1px solid var(--card-border);
+    }
+    .info-field { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 600; color: var(--text-sub); }
+    .info-field .line { flex: 1; border-bottom: 1.5px dotted var(--text-light); height: 12px; }
+    .score-box { font-weight: 800; color: var(--text-main); background: var(--clay-card-bg); padding: 2px 8px; border-radius: 6px; border: 1px solid var(--card-border); }
+
+    /* KANJI UNIT: 20-GRID LAYOUT */
+    .kanji-unit {
+      background: var(--clay-card-bg); border-radius: 16px; border: 1px solid var(--card-border);
+      padding: 14px 16px; margin-bottom: 16px; box-shadow: var(--clay-shadow-pill);
+      page-break-inside: avoid;
+    }
+
+    .kanji-header { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+    .kanji-hero {
+      width: 60px; height: 60px; border-radius: 14px; background: var(--clay-card-bg);
+      border: 1.5px solid var(--card-border); display: flex; align-items: center; justify-content: center;
+      font-size: 2.3rem; font-weight: 800; color: var(--text-main); box-shadow: var(--clay-shadow-pill);
+      position: relative;
+    }
+    .kanji-hero::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; border-top: 1px dashed var(--grid-cross); }
+    .kanji-hero::after { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; border-left: 1px dashed var(--grid-cross); }
+
+    .kanji-meta { flex: 1; }
+    .kanji-readings { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
+    .reading-tag { font-size: 0.74rem; font-weight: 700; padding: 2px 8px; border-radius: 8px; }
+    .tag-on { background: var(--pastel-rose-bg); color: var(--pastel-rose-txt); border: 1px solid var(--pastel-rose-border); }
+    .tag-kun { background: var(--pastel-blue-bg); color: var(--pastel-blue-txt); border: 1px solid var(--pastel-blue-border); }
+    .tag-stroke { background: var(--pastel-amber-bg); color: var(--pastel-amber-txt); border: 1px solid var(--pastel-amber-border); }
+    .tag-radical { background: var(--pastel-lavender-bg); color: var(--pastel-lavender-txt); border: 1px solid var(--pastel-lavender-border); }
+    .kanji-meaning { font-size: 0.95rem; font-weight: 800; color: var(--text-main); }
+    .stroke-rule { font-size: 0.76rem; color: var(--text-sub); }
+
+    .btn-animate-stroke {
+      font-size: 0.75rem; font-weight: 700; color: #e11d48; background: var(--pastel-rose-bg);
+      border: 1px solid var(--pastel-rose-border); padding: 4px 10px; border-radius: 10px;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
+    }
+    .btn-animate-stroke:hover { background: #e11d48; color: white; }
+
+    /* 20-GRID WRITING SECTION */
+    .writing-grid-section-20 { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+    .grid-boxes-10-row { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; }
+
+    .tianzige-box {
+      aspect-ratio: 1 / 1; border: 1.5px solid var(--grid-border); border-radius: 8px;
+      position: relative; display: flex; align-items: center; justify-content: center;
+      background: var(--clay-card-bg); box-shadow: var(--clay-shadow-pill); user-select: none;
+      overflow: hidden;
+    }
+    .tianzige-box::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; border-top: 1px dashed var(--grid-cross); }
+    .tianzige-box::after { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; border-left: 1px dashed var(--grid-cross); }
+
+    /* Clean In-Box Tags (Never overlaps or breaks layout!) */
+    .box-tag {
+      position: absolute;
+      top: 2px;
+      left: 3px;
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: var(--text-sub);
+      z-index: 5;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .guidance-box .box-tag { color: #dc2626; }
+    .model-box .box-tag { color: #2563eb; }
+
+    /* SVG Character Styling inside boxes: 100% Identical Size! */
+    .kanji-svg {
+      width: 90% !important;
+      height: 90% !important;
+      z-index: 2;
+    }
+
+    .guidance-box { background: var(--clay-surface); border-color: #f43f5e; border-width: 2px; cursor: pointer; }
+    .model-box { border-color: #2563eb; border-width: 2px; }
+
+    /* Ruled Writing Line for Print Utilization */
+    .ruled-writing-row {
+      margin-top: 8px; padding-top: 6px; border-top: 1px dotted var(--card-border);
+      display: flex; flex-direction: column; gap: 5px; font-size: 0.78rem;
+    }
+    .ruled-item { display: flex; align-items: baseline; gap: 8px; }
+    .ruled-lbl { font-weight: 700; color: var(--text-sub); white-space: nowrap; font-size: 0.75rem; }
+    .ruled-line { flex: 1; border-bottom: 1.5px dotted var(--grid-cross); height: 14px; }
+
+    /* SEPARATE EXERCISE PAGES FOR A & B */
+    .exercise-page-card {
+      background: var(--clay-card-bg);
+      border-radius: 20px;
+      padding: 24px 28px;
+      margin-bottom: 30px;
+      border: 1px solid var(--card-border);
+      box-shadow: var(--clay-shadow-out);
+      position: relative;
+    }
+
+    .page-exercise-b {
+      page-break-before: always;
+      break-before: page;
+    }
+
+    .exercise-page-title {
+      font-size: 1.15rem;
       font-weight: 800;
       color: var(--text-main);
       margin-bottom: 4px;
     }
 
-    .hero-text p {
-      font-size: 0.86rem;
-      color: var(--text-sub);
-      max-width: 650px;
-    }
-
-    .hero-stats { display: flex; gap: 10px; }
-
-    .stat-pill {
-      background: var(--pastel-blue-bg);
-      border: 1px solid var(--pastel-blue-border);
-      color: var(--pastel-blue-txt);
-      padding: 8px 14px;
-      border-radius: 14px;
-      text-align: center;
-      box-shadow: var(--clay-shadow-pill);
-    }
-
-    .stat-num { font-size: 1.15rem; font-weight: 800; display: block; }
-    .stat-lbl { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; }
-
-    /* WORKSHEET STYLES */
-    .worksheet-page {
-      background: var(--clay-card-bg);
-      border-radius: 20px;
-      padding: 24px 28px;
-      margin-bottom: 30px;
-      box-shadow: var(--clay-shadow-out);
-      border: 1px solid var(--card-border);
-      position: relative;
-    }
-
-    .sheet-header {
-      border-bottom: 2px dashed var(--card-border);
-      padding-bottom: 14px;
-      margin-bottom: 18px;
-    }
-
-    .curriculum-tag {
-      display: inline-block;
-      font-size: 0.68rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--pastel-blue-txt);
-      background-color: var(--pastel-blue-bg);
-      border: 1px solid var(--pastel-blue-border);
-      padding: 3px 10px;
-      border-radius: 10px;
-      margin-bottom: 6px;
-    }
-
-    .sheet-title { font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin-bottom: 2px; }
-    .sheet-subtitle { font-size: 0.88rem; font-weight: 600; color: var(--text-sub); margin-bottom: 12px; }
-
-    .student-info-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
+    .exercise-grid-list {
+      display: flex;
+      flex-direction: column;
       gap: 10px;
-      background-color: var(--clay-surface);
-      border-radius: 14px;
-      padding: 8px 14px;
-      border: 1px solid var(--card-border);
+      margin-top: 14px;
     }
 
-    .info-field { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 600; color: var(--text-sub); }
-    .info-field .line { flex: 1; border-bottom: 1.5px dotted var(--text-light); height: 12px; }
-    .score-box { font-weight: 800; color: var(--text-main); background: var(--clay-card-bg); padding: 2px 8px; border-radius: 6px; border: 1px solid var(--card-border); }
-
-    /* Kanji Row */
-    .kanji-unit {
-      background: var(--clay-card-bg);
-      border-radius: 16px;
-      border: 1px solid var(--card-border);
-      padding: 14px 16px;
-      margin-bottom: 14px;
-      box-shadow: var(--clay-shadow-pill);
-    }
-
-    .kanji-header { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
-
-    .kanji-hero {
-      width: 58px;
-      height: 58px;
-      border-radius: 14px;
-      background: var(--clay-card-bg);
-      border: 1.5px solid var(--card-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: var(--text-main);
-      box-shadow: var(--clay-shadow-pill);
-      position: relative;
-    }
-
-    .kanji-hero::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      border-top: 1px dashed var(--grid-cross);
-      pointer-events: none;
-    }
-
-    .kanji-hero::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      border-left: 1px dashed var(--grid-cross);
-      pointer-events: none;
-    }
-
-    .kanji-meta { flex: 1; }
-
-    .kanji-readings { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
-
-    .reading-tag {
-      font-size: 0.74rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 8px;
-    }
-
-    .tag-on { background: var(--pastel-rose-bg); color: var(--pastel-rose-txt); border: 1px solid var(--pastel-rose-border); }
-    .tag-kun { background: var(--pastel-blue-bg); color: var(--pastel-blue-txt); border: 1px solid var(--pastel-blue-border); }
-    .tag-stroke { background: var(--pastel-amber-bg); color: var(--pastel-amber-txt); border: 1px solid var(--pastel-amber-border); }
-    .tag-radical { background: var(--pastel-lavender-bg); color: var(--pastel-lavender-txt); border: 1px solid var(--pastel-lavender-border); }
-
-    .kanji-meaning { font-size: 0.95rem; font-weight: 800; color: var(--text-main); }
-    .stroke-rule { font-size: 0.78rem; color: var(--text-sub); }
-
-    .kanji-details-row {
-      font-size: 0.8rem;
-      margin-bottom: 8px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      gap: 6px;
-    }
-
-    .row-label { font-weight: 700; color: var(--text-sub); min-width: 80px; }
-
-    .word-pill {
+    .exercise-list-item {
       background: var(--clay-surface);
-      padding: 2px 8px;
-      border-radius: 6px;
+      border-radius: 12px;
+      padding: 10px 14px;
       border: 1px solid var(--card-border);
-      font-size: 0.78rem;
-    }
-
-    .word-kanji { font-weight: 700; color: var(--text-main); }
-    .sentence-jp { font-weight: 600; color: var(--text-main); display: block; }
-    .sentence-id { font-size: 0.76rem; color: var(--text-sub); font-style: italic; display: block; }
-
-    /* 10 Kotak Grid */
-    .writing-grid-section { margin-top: 10px; }
-
-    .grid-label-row {
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      font-size: 0.6rem;
-      font-weight: 800;
-      color: var(--text-sub);
-      margin-bottom: 3px;
-      text-align: center;
-    }
-
-    .grid-boxes-10 {
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      gap: 5px;
-    }
-
-    .tianzige-box {
-      aspect-ratio: 1 / 1;
-      border: 1.5px solid var(--grid-border);
-      border-radius: 8px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--clay-card-bg);
-      box-shadow: var(--clay-shadow-pill);
-      user-select: none;
-    }
-
-    .tianzige-box::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      border-top: 1px dashed var(--grid-cross);
-      pointer-events: none;
-    }
-
-    .tianzige-box::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      border-left: 1px dashed var(--grid-cross);
-      pointer-events: none;
-    }
-
-    .guidance-box {
-      background: var(--clay-surface);
-      border-color: #f43f5e;
-      border-width: 2px;
-      cursor: pointer;
-    }
-
-    .guidance-box svg { width: 90%; height: 90%; z-index: 2; }
-
-    .model-box {
-      border-color: #2563eb;
-      border-width: 2px;
-    }
-
-    .model-box span { font-size: 1.9rem; font-weight: 800; color: var(--text-main); z-index: 2; }
-    .trace-box span { font-size: 1.9rem; font-weight: 700; color: var(--trace-char); z-index: 2; }
-
-    .btn-animate-stroke {
-      margin-top: 6px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #e11d48;
-      background: var(--pastel-rose-bg);
-      border: 1px solid var(--pastel-rose-border);
-      padding: 2px 8px;
-      border-radius: 8px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    /* EXERCISES */
-    .exercise-box {
-      background: var(--clay-surface);
-      border-radius: 16px;
-      padding: 18px;
-      border: 1px solid var(--card-border);
-      margin-top: 20px;
-    }
-
-    .section-title { font-size: 1.05rem; font-weight: 800; color: var(--text-main); margin-bottom: 10px; }
-    .exercise-title { font-size: 0.88rem; font-weight: 700; color: var(--text-sub); margin-bottom: 8px; }
-
-    .exercise-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-    }
-
-    .exercise-item {
-      background: var(--clay-card-bg);
-      border-radius: 10px;
-      padding: 8px 12px;
-      border: 1px solid var(--card-border);
-      font-size: 0.84rem;
+      font-size: 0.92rem;
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
 
-    .exercise-q { font-size: 0.88rem; font-weight: 600; color: var(--text-main); }
+    .exercise-q-text { font-size: 0.95rem; font-weight: 600; color: var(--text-main); }
     .answer-key {
-      display: inline-block;
-      font-size: 0.76rem;
-      font-weight: 700;
-      color: var(--pastel-rose-txt);
-      background: var(--pastel-rose-bg);
-      border: 1px solid var(--pastel-rose-border);
-      padding: 2px 6px;
-      border-radius: 6px;
+      display: inline-block; font-size: 0.78rem; font-weight: 700;
+      color: var(--pastel-rose-txt); background: var(--pastel-rose-bg);
+      border: 1px solid var(--pastel-rose-border); padding: 2px 8px; border-radius: 6px;
       align-self: flex-start;
     }
 
-    /* CONTENT LOCK OVERLAY (Gembok Konten) */
-    .locked-overlay {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(8px);
-      border-radius: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 50;
-      padding: 30px;
-      text-align: center;
-      color: white;
+    /* PURE SVG ANIMATION CANVAS */
+    #animCanvasWrap {
+      width: 190px; height: 190px; margin: 0 auto 14px;
+      background: var(--clay-surface); border-radius: 18px; border: 2px solid var(--card-border);
+      position: relative; overflow: hidden; box-shadow: var(--clay-shadow-pill);
+    }
+    #animCanvasSvg { width: 100%; height: 100%; }
+    .stroke-path {
+      fill: none; stroke-width: 4.2; stroke-linecap: round; stroke-linejoin: round;
+      transition: stroke 0.3s ease, opacity 0.3s ease;
+    }
+    @keyframes drawStrokeAnim {
+      from { stroke-dashoffset: var(--stroke-len); }
+      to { stroke-dashoffset: 0; }
+    }
+    .stroke-drawing {
+      stroke: #e11d48 !important; stroke-width: 5 !important;
+      animation: drawStrokeAnim 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
 
-    .lock-icon-circle {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #f43f5e, #be123c);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-      margin-bottom: 16px;
-      box-shadow: 0 10px 25px rgba(244, 63, 94, 0.4);
-    }
-
-    /* MODAL (Login / Register & Animation) */
+    /* MODAL */
     .modal-backdrop {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(6px);
-      z-index: 2000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(6px);
+      z-index: 2000; display: none; align-items: center; justify-content: center; padding: 16px;
     }
-
     .modal-card {
-      background: var(--clay-card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 24px;
-      max-width: 480px;
-      width: 100%;
-      padding: 28px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      background: var(--clay-card-bg); border: 1px solid var(--card-border); border-radius: 24px;
+      max-width: 480px; width: 100%; padding: 26px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
       position: relative;
-      animation: modalPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-
-    @keyframes modalPop {
-      from { transform: scale(0.92); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
     .modal-close {
-      position: absolute;
-      top: 16px;
-      right: 18px;
-      border: none;
-      background: transparent;
-      font-size: 20px;
-      color: var(--text-sub);
-      cursor: pointer;
+      position: absolute; top: 14px; right: 16px; border: none; background: transparent;
+      font-size: 20px; color: var(--text-sub); cursor: pointer;
     }
-
     .input-field {
-      width: 100%;
-      padding: 10px 14px;
-      border-radius: 12px;
-      border: 1px solid var(--card-border);
-      background: var(--clay-surface);
-      color: var(--text-main);
-      font-family: inherit;
-      font-size: 0.9rem;
-      margin-top: 6px;
-      margin-bottom: 14px;
-      outline: none;
+      width: 100%; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--card-border);
+      background: var(--clay-surface); color: var(--text-main); font-family: inherit; font-size: 0.9rem;
+      margin-top: 5px; margin-bottom: 12px; outline: none;
     }
 
-    .input-field:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
+    /* Content Lock */
+    .locked-overlay {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.78); backdrop-filter: blur(8px); border-radius: 20px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 50; padding: 30px; text-align: center; color: white;
+    }
+    .lock-icon-circle {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, #f43f5e, #be123c); display: flex;
+      align-items: center; justify-content: center; font-size: 28px; margin-bottom: 14px;
     }
 
     /* KANJI EXPLORER & KAMUS */
     .explorer-search-bar { margin-bottom: 20px; display: flex; gap: 10px; }
     .search-input {
-      flex: 1;
-      padding: 10px 16px;
-      border-radius: 16px;
-      border: 1px solid var(--card-border);
-      background: var(--clay-card-bg);
-      color: var(--text-main);
-      font-family: inherit;
-      font-size: 0.9rem;
-      outline: none;
-      box-shadow: var(--clay-shadow-pill);
+      flex: 1; padding: 10px 16px; border-radius: 16px; border: 1px solid var(--card-border);
+      background: var(--clay-card-bg); color: var(--text-main); font-family: inherit; font-size: 0.9rem;
+      outline: none; box-shadow: var(--clay-shadow-pill);
     }
-
-    .explorer-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 14px;
-    }
-
+    .explorer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
     .explorer-card {
-      background: var(--clay-card-bg);
-      border-radius: 16px;
-      padding: 16px;
-      border: 1px solid var(--card-border);
-      box-shadow: var(--clay-shadow-pill);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      background: var(--clay-card-bg); border-radius: 16px; padding: 16px;
+      border: 1px solid var(--card-border); box-shadow: var(--clay-shadow-pill);
+      display: flex; flex-direction: column; gap: 8px;
     }
-
     .explorer-top { display: flex; align-items: center; justify-content: space-between; }
     .exp-char { font-size: 2.4rem; font-weight: 800; color: var(--text-main); cursor: pointer; }
 
     /* DOWNLOAD CENTER */
-    .download-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 14px;
-    }
-
+    .download-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
     .dl-card {
-      background: var(--clay-card-bg);
-      border-radius: 16px;
-      padding: 16px;
-      border: 1px solid var(--card-border);
-      box-shadow: var(--clay-shadow-pill);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 12px;
+      background: var(--clay-card-bg); border-radius: 16px; padding: 16px;
+      border: 1px solid var(--card-border); box-shadow: var(--clay-shadow-pill);
+      display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
     }
-
     .dl-card-title { font-size: 0.98rem; font-weight: 800; color: var(--text-main); }
     .dl-card-sub { font-size: 0.78rem; color: var(--text-sub); }
     .dl-actions { display: flex; gap: 8px; }
-
     .btn-dl-docx {
-      flex: 1;
-      padding: 7px 10px;
-      border-radius: 10px;
-      background: var(--pastel-blue-bg);
-      color: var(--pastel-blue-txt);
-      border: 1px solid var(--pastel-blue-border);
-      font-weight: 700;
-      font-size: 0.78rem;
-      text-align: center;
-      text-decoration: none;
+      flex: 1; padding: 7px 10px; border-radius: 10px; background: var(--pastel-blue-bg);
+      color: var(--pastel-blue-txt); border: 1px solid var(--pastel-blue-border);
+      font-weight: 700; font-size: 0.78rem; text-align: center; text-decoration: none;
     }
-
     .btn-dl-html {
-      flex: 1;
-      padding: 7px 10px;
-      border-radius: 10px;
-      background: var(--pastel-rose-bg);
-      color: var(--pastel-rose-txt);
-      border: 1px solid var(--pastel-rose-border);
-      font-weight: 700;
-      font-size: 0.78rem;
-      text-align: center;
-      text-decoration: none;
+      flex: 1; padding: 7px 10px; border-radius: 10px; background: var(--pastel-rose-bg);
+      color: var(--pastel-rose-txt); border: 1px solid var(--pastel-rose-border);
+      font-weight: 700; font-size: 0.78rem; text-align: center; text-decoration: none;
     }
 
-    /* Print Optimization */
+    /* =======================================================
+       PRINT MEDIA OPTIMIZATION (STRICT A4 WITH DEDICATED PAGES)
+       ======================================================= */
+    @page {
+      size: A4 portrait;
+      margin: 8mm 10mm;
+    }
+
     @media print {
-      body { background: #ffffff !important; color: #000000 !important; padding: 0 !important; }
-      .app-header, .hero-banner, .no-print, .locked-overlay { display: none !important; }
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+        font-family: var(--font-kyokasho) !important;
+      }
+
+      .app-header, .hero-banner, .no-print, .locked-overlay, .btn-animate-stroke {
+        display: none !important;
+      }
+
       .app-main { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
       #tab-worksheets { display: block !important; }
       #tab-quiz, #tab-progress, #tab-explorer, #tab-downloads { display: none !important; }
-      .worksheet-page { box-shadow: none !important; border: none !important; padding: 0 !important; margin-bottom: 15mm !important; page-break-after: always !important; }
-      .kanji-unit { box-shadow: none !important; border: 1px solid #cbd5e1 !important; page-break-inside: avoid !important; }
-      .tianzige-box { box-shadow: none !important; }
-      .exercise-box { box-shadow: none !important; border: 1px solid #cbd5e1 !important; page-break-inside: avoid !important; }
+
+      .worksheet-page {
+        box-shadow: none !important; border: none !important; padding: 0 !important;
+        margin-bottom: 12mm !important; page-break-after: always !important;
+      }
+
+      .exercise-page-card {
+        box-shadow: none !important; border: none !important; padding: 0 !important;
+        margin-bottom: 12mm !important; page-break-after: always !important;
+      }
+
+      .page-exercise-b {
+        page-break-before: always !important;
+        break-before: page !important;
+      }
+
+      .kanji-unit {
+        box-shadow: none !important; border: 1.5px solid #94a3b8 !important;
+        padding: 10px 12px !important; margin-bottom: 12px !important;
+        page-break-inside: avoid !important;
+      }
+
+      .tianzige-box { box-shadow: none !important; border: 1.2px solid #64748b !important; }
+      .guidance-box { border: 1.8px solid #dc2626 !important; }
+      .model-box { border: 1.8px solid #2563eb !important; }
+
+      .ruled-writing-row { display: flex !important; border-top: 1px dashed #94a3b8 !important; }
+      .ruled-line { border-bottom: 1.5px dotted #64748b !important; }
+
+      .exercise-list-item {
+        background: #ffffff !important;
+        border: 1px solid #94a3b8 !important;
+        page-break-inside: avoid !important;
+      }
+
       .answer-key { display: none !important; }
     }
 
     @media (max-width: 768px) {
-      .grid-boxes-10 { grid-template-columns: repeat(5, 1fr); }
-      .grid-label-row { grid-template-columns: repeat(5, 1fr); }
-      .exercise-grid { grid-template-columns: 1fr; }
+      .grid-boxes-10-row { grid-template-columns: repeat(5, 1fr); }
       .student-info-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
@@ -839,56 +624,31 @@ function buildIndexApp() {
   <!-- Top App Bar -->
   <header class="app-header no-print">
     <div class="header-container">
-      
-      <!-- Brand -->
       <div class="brand-section">
         <div class="brand-logo">⛩️</div>
         <div>
           <h1 class="brand-title">IRODORI Kanji Studio</h1>
-          <div class="brand-subtitle">Kurikulum JFT-Basic A2.2 • Bab 1 s.d. 18</div>
+          <div class="brand-subtitle">Kurikulum JFT-Basic A2.2 • Bab 1 s.d. 18 (UD Digi Kyokasho)</div>
         </div>
       </div>
 
-      <!-- Navigation Tabs -->
       <nav class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('worksheets')">
-          📑 Lembar Kerja
-        </button>
-        <button class="tab-btn" onclick="switchTab('quiz')">
-          ⚡ Kuis Mandiri
-        </button>
-        <button class="tab-btn" onclick="switchTab('progress')">
-          📊 Progres Belajar
-        </button>
-        <button class="tab-btn" onclick="switchTab('explorer')">
-          🔍 Kamus Kanji
-        </button>
-        <button class="tab-btn" onclick="switchTab('downloads')">
-          📥 Unduh Berkas
-        </button>
+        <button class="tab-btn active" onclick="switchTab('worksheets')">📑 Lembar Kerja</button>
+        <button class="tab-btn" onclick="switchTab('quiz')">⚡ Kuis Mandiri</button>
+        <button class="tab-btn" onclick="switchTab('progress')">📊 Progres Belajar</button>
+        <button class="tab-btn" onclick="switchTab('explorer')">🔍 Kamus Kanji</button>
+        <button class="tab-btn" onclick="switchTab('downloads')">📥 Unduh Berkas</button>
       </nav>
 
-      <!-- Controls & Auth Profile -->
       <div class="header-controls">
         <select id="babSelector" class="select-bab" onchange="handleBabChange(this.value)">
           <option value="all">Semua Bab (1 - 18)</option>
           ${kanjiData.map(d => `<option value="${d.bab}">Bab ${d.bab}: ${d.titleJp.split(' ')[1] || d.titleId}</option>`).join('')}
         </select>
-
-        <button class="btn-action btn-print" onclick="window.print()">
-          🖨️ Cetak
-        </button>
-
-        <button class="btn-action btn-theme" onclick="toggleTheme()" id="themeBtn" title="Ganti Mode Gelap / Terang">
-          🌙
-        </button>
-
-        <!-- User Authentication Button -->
-        <div id="authProfileContainer">
-          <!-- Populated by JS: either 'Masuk' button or User Pill -->
-        </div>
+        <button class="btn-action btn-print" onclick="window.print()">🖨️ Cetak A4</button>
+        <button class="btn-action btn-theme" onclick="toggleTheme()" id="themeBtn" title="Ganti Mode Gelap / Terang">🌙</button>
+        <div id="authProfileContainer"></div>
       </div>
-
     </div>
   </header>
 
@@ -901,10 +661,10 @@ function buildIndexApp() {
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
           <span class="curriculum-tag" id="userStatusTag">Status: Akses Tamu (Bab 1 - 2)</span>
         </div>
-        <h2>🎌 Studio Latihan & Evaluasi Mandiri Kanji IRODORI</h2>
+        <h2>🎌 Studio Latihan Kanji 20-Grid IRODORI (UD Digi Kyokasho)</h2>
         <p>
-          10 Grid Tianzige dengan diagram nomor urutan goresan, animasi langkah demi langkah, 
-          kotak jiplak motorik, serta 360 butir soal latihan evaluasi.
+          Model & Jiplak presisi vektor identik 100%, 20 Kotak Tianzige (2 Baris), animasi goresan interaktif, 
+          serta <strong>Halaman Latihan A & B yang terpisah rapi saat dicetak</strong>.
         </p>
       </div>
       <div class="hero-stats">
@@ -917,8 +677,8 @@ function buildIndexApp() {
           <span class="stat-lbl">Bab Lengkap</span>
         </div>
         <div class="stat-pill">
-          <span class="stat-num">360</span>
-          <span class="stat-lbl">Soal Latihan</span>
+          <span class="stat-num">20</span>
+          <span class="stat-lbl">Kotak / Kanji</span>
         </div>
       </div>
     </div>
@@ -926,9 +686,9 @@ function buildIndexApp() {
     <!-- TAB 1: LEMBAR LATIHAN KERJA (WORKSHEETS) -->
     <section id="tab-worksheets" class="tab-content active">
       ${kanjiData.map(ch => `
+        <!-- 1. HALAMAN TARGET KANJI (20-GRID) -->
         <div class="worksheet-page" id="sheet-bab-${ch.bab}" data-bab="${ch.bab}">
           
-          <!-- Content Lock Overlay for Guest on Bab 3-18 -->
           ${ch.bab > 2 ? `
             <div class="locked-overlay" id="lock-overlay-${ch.bab}">
               <div class="lock-icon-circle">🔒</div>
@@ -947,7 +707,6 @@ function buildIndexApp() {
             </div>
           ` : ''}
 
-          <!-- Header Bab -->
           <div class="sheet-header">
             <div class="curriculum-tag">IRODORI: Nihongo de Kurashito Kotoba • 初級2 (A2.2 / JFT-Basic)</div>
             <h2 class="sheet-title">${ch.titleJp}</h2>
@@ -961,7 +720,7 @@ function buildIndexApp() {
             </div>
           </div>
 
-          <!-- Daftar Kanji Unit -->
+          <!-- Daftar Kanji Unit (20-Grid) -->
           <div class="kanji-list-container">
             ${ch.kanjiList.map(k => `
               <div class="kanji-unit">
@@ -981,110 +740,159 @@ function buildIndexApp() {
                     <div class="stroke-rule">Urutan goresan: ${k.strokeRule}</div>
                   </div>
                   <div class="no-print">
-                    <button class="btn-animate-stroke" onclick="openStrokeAnimation('${k.kanji}', '${k.meaning}', ${k.strokes})">
-                      ▶️ Animasi
+                    <button class="btn-animate-stroke" onclick="playStrokeAnimation('${k.kanji}', '${k.meaning}', ${k.strokes})">
+                      ▶️ Putar Animasi
                     </button>
                   </div>
                 </div>
 
-                <div class="kanji-details-row">
-                  <span class="row-label">Kosakata Bab:</span>
+                <div class="kanji-details-row" style="font-size:0.82rem;margin-bottom:6px;">
+                  <span style="font-weight:700;color:var(--text-sub);min-width:70px;">Kosakata:</span>
                   <div style="display: flex; gap: 6px; flex-wrap: wrap;">
                     ${k.words.map(w => `
-                      <span class="word-pill">
-                        <span class="word-kanji">${w.word}</span> (${w.reading}): ${w.meaning}
+                      <span style="background:var(--clay-surface);padding:2px 8px;border-radius:6px;border:1px solid var(--card-border);">
+                        <strong>${w.word}</strong> (${w.reading}): ${w.meaning}
                       </span>
                     `).join('')}
                   </div>
                 </div>
 
-                <div class="kanji-details-row">
-                  <span class="row-label">Contoh Kalimat:</span>
+                <div class="kanji-details-row" style="font-size:0.82rem;margin-bottom:10px;">
+                  <span style="font-weight:700;color:var(--text-sub);min-width:70px;">Contoh:</span>
                   <div>
-                    <span class="sentence-jp">${k.sentenceFurigana}</span>
-                    <span class="sentence-id">${k.sentenceId}</span>
+                    <span style="font-weight:700;color:var(--text-main);">${k.sentenceFurigana}</span>
+                    <span style="font-style:italic;color:var(--text-sub);display:block;font-size:0.78rem;">"${k.sentenceId}"</span>
                   </div>
                 </div>
 
-                <!-- 10 Kotak Grid -->
-                <div class="writing-grid-section">
-                  <div class="grid-label-row">
-                    <span style="color:#dc2626;">① Urutan</span>
-                    <span style="color:#2563eb;">② Contoh</span>
-                    <span style="color:var(--text-sub);">③ Jiplak</span>
-                    <span style="color:var(--text-sub);">④ Jiplak</span>
-                    <span>⑤</span>
-                    <span>⑥</span>
-                    <span>⑦</span>
-                    <span>⑧</span>
-                    <span>⑨</span>
-                    <span>⑩</span>
-                  </div>
-                  <div class="grid-boxes-10">
-                    <div class="tianzige-box guidance-box" onclick="openStrokeAnimation('${k.kanji}', '${k.meaning}', ${k.strokes})" title="Klik untuk putar animasi urutan goresan">
+                <!-- 20-GRID WRITING SECTION -->
+                <div class="writing-grid-section-20">
+                  
+                  <!-- Baris 1: 10 Kotak -->
+                  <div class="grid-boxes-10-row">
+                    <div class="tianzige-box guidance-box" onclick="playStrokeAnimation('${k.kanji}', '${k.meaning}', ${k.strokes})" title="Klik untuk putar animasi">
+                      <span class="box-tag">① Urutan</span>
                       ${getGuidanceSvg(k.kanji)}
                     </div>
-                    <div class="tianzige-box model-box" title="Huruf contoh">
-                      <span>${k.kanji}</span>
+                    <div class="tianzige-box model-box" title="Huruf contoh tebal (Kyoukasho)">
+                      <span class="box-tag">② Contoh</span>
+                      ${getModelSvg(k.kanji)}
                     </div>
-                    <div class="tianzige-box trace-box" title="Tebalkan 1">
-                      <span>${k.kanji}</span>
+                    <div class="tianzige-box trace-box" title="Jiplak / Trace 1">
+                      <span class="box-tag">③ Jiplak</span>
+                      ${getTraceSvg(k.kanji)}
                     </div>
-                    <div class="tianzige-box trace-box" title="Tebalkan 2">
-                      <span>${k.kanji}</span>
+                    <div class="tianzige-box trace-box" title="Jiplak / Trace 2">
+                      <span class="box-tag">④ Jiplak</span>
+                      ${getTraceSvg(k.kanji)}
                     </div>
-                    <div class="tianzige-box practice-box"></div>
-                    <div class="tianzige-box practice-box"></div>
-                    <div class="tianzige-box practice-box"></div>
-                    <div class="tianzige-box practice-box"></div>
-                    <div class="tianzige-box practice-box"></div>
-                    <div class="tianzige-box practice-box"></div>
+                    <div class="tianzige-box practice-box"><span class="box-tag">⑤</span></div>
+                    <div class="tianzige-box practice-box"><span class="box-tag">⑥</span></div>
+                    <div class="tianzige-box practice-box"><span class="box-tag">⑦</span></div>
+                    <div class="tianzige-box practice-box"><span class="box-tag">⑧</span></div>
+                    <div class="tianzige-box practice-box"><span class="box-tag">⑨</span></div>
+                    <div class="tianzige-box practice-box"><span class="box-tag">⑩</span></div>
                   </div>
+
+                  <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
+                  <div class="grid-boxes-10-row" style="margin-top: 5px;">
+                    <div class="tianzige-box trace-box" title="Jiplak / Trace 3">
+                      <span class="box-tag">⑪ Jiplak</span>
+                      ${getTraceSvg(k.kanji)}
+                    </div>
+                    <div class="tianzige-box trace-box" title="Jiplak / Trace 4">
+                      <span class="box-tag">⑫ Jiplak</span>
+                      ${getTraceSvg(k.kanji)}
+                    </div>
+                    <div class="tianzige-box practice-box"><span class="box-tag">⑬</span></div>
+                    <div class="tianzige-box practice-box"><span class="box-tag">⑭</span></div>
+                    <div class="tianzige-box practice-box"><span class="box-tag">⑮</span></div>
+                    <div class="tianzige-box practice-box"><span class="box-tag">⑯</span></div>
+                    <div class="tianzige-box practice-box"><span class="box-tag">⑰</span></div>
+                    <div class="tianzige-box practice-box"><span class="box-tag">⑱</span></div>
+                    <div class="tianzige-box practice-box"><span class="box-tag">⑲</span></div>
+                    <div class="tianzige-box practice-box"><span class="box-tag">⑳</span></div>
+                  </div>
+
+                  <!-- Baris Latihan Menulis saat Dicetak -->
+                  <div class="ruled-writing-row">
+                    <div class="ruled-item">
+                      <span class="ruled-lbl">✏️ Tulis Kata (${k.words[0] ? k.words[0].word : k.kanji}):</span>
+                      <span class="ruled-line"></span>
+                      <span class="ruled-line"></span>
+                    </div>
+                    <div class="ruled-item">
+                      <span class="ruled-lbl">💬 Salin Kalimat:</span>
+                      <span class="ruled-line"></span>
+                    </div>
+                  </div>
+
                 </div>
 
               </div>
             `).join('')}
           </div>
 
-          <!-- Latihan Soal Evaluasi -->
-          <div class="exercise-box">
-            <div class="section-title">
-              <span>📝 Latihan Evaluasi Pemahaman Kanji (Bab ${ch.bab} - 20 Soal)</span>
-            </div>
+        </div>
 
-            <div class="exercise-title">
-              <span>📖 A. Latihan Membaca (10 Soal): Tuliskan cara baca (Hiragana) dari Kanji dalam tanda [ ]!</span>
-            </div>
-            <div class="exercise-grid">
-              ${ch.readingExercise.map(ex => `
-                <div class="exercise-item">
-                  <span class="exercise-q">${ex.q}</span>
-                  <span class="answer-key">${ex.a}</span>
-                </div>
-              `).join('')}
-            </div>
+        <!-- 2. HALAMAN TERPISAH: LATIHAN MEMBACA (BAGIAN A) -->
+        <div class="exercise-page-card page-exercise-a" id="sheet-bab-${ch.bab}-ex-a" data-bab="${ch.bab}">
+          <div class="sheet-header">
+            <div class="curriculum-tag">IRODORI A2.2 • Bab ${ch.bab} - Lembar Evaluasi</div>
+            <h2 class="exercise-page-title">📖 A. Latihan Membaca (10 Soal): Tuliskan cara baca (Hiragana) dari Kanji dalam tanda [ ]!</h2>
+            <div class="sheet-subtitle">${ch.titleJp} (${ch.titleId})</div>
 
-            <div class="exercise-title" style="margin-top: 16px;">
-              <span>✏️ B. Latihan Menulis (10 Soal): Tuliskan huruf Kanji dari kata yang bergaris bawah!</span>
-            </div>
-            <div class="exercise-grid">
-              ${ch.writingExercise.map(ex => `
-                <div class="exercise-item">
-                  <span class="exercise-q">${ex.q}</span>
-                  <span class="answer-key">${ex.a}</span>
-                </div>
-              `).join('')}
+            <div class="student-info-grid">
+              <div class="info-field"><span class="label">Nama:</span><span class="line"></span></div>
+              <div class="info-field"><span class="label">Tanggal:</span><span class="line"></span></div>
+              <div class="info-field"><span class="label">Kelas:</span><span class="line"></span></div>
+              <div class="info-field"><span class="label">Nilai Bagian A:</span><span class="score-box">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ 50</span></div>
             </div>
           </div>
 
+          <div class="exercise-grid-list">
+            ${ch.readingExercise.map((ex, idx) => `
+              <div class="exercise-list-item">
+                <div class="exercise-q-text">(${idx + 1}) ${ex.q}</div>
+                <div class="answer-key" style="margin-top:4px;">Jawaban: ${ex.a}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- 3. HALAMAN TERPISAH: LATIHAN MENULIS (BAGIAN B - DEDICATED NEW PAGE) -->
+        <div class="exercise-page-card page-exercise-b" id="sheet-bab-${ch.bab}-ex-b" data-bab="${ch.bab}">
+          <div class="sheet-header">
+            <div class="curriculum-tag" style="background:var(--pastel-amber-bg);color:var(--pastel-amber-txt);border-color:var(--pastel-amber-border);">
+              IRODORI A2.2 • Bab ${ch.bab} - Lembar Evaluasi Menulis
+            </div>
+            <h2 class="exercise-page-title">✏️ B. Latihan Menulis (10 Soal): Tuliskan huruf Kanji dari kata yang berada di dalam [ ]!</h2>
+            <div class="sheet-subtitle">${ch.titleJp} (${ch.titleId})</div>
+
+            <div class="student-info-grid">
+              <div class="info-field"><span class="label">Nama:</span><span class="line"></span></div>
+              <div class="info-field"><span class="label">Tanggal:</span><span class="line"></span></div>
+              <div class="info-field"><span class="label">Kelas:</span><span class="line"></span></div>
+              <div class="info-field"><span class="label">Nilai Bagian B:</span><span class="score-box">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ 50</span></div>
+            </div>
+          </div>
+
+          <div class="exercise-grid-list">
+            ${ch.writingExercise.map((ex, idx) => `
+              <div class="exercise-list-item">
+                <div class="exercise-q-text">(${idx + 1}) ${ex.q}</div>
+                <div class="answer-key" style="margin-top:4px;">Jawaban: ${ex.a}</div>
+              </div>
+            `).join('')}
+          </div>
         </div>
       `).join('')}
     </section>
 
     <!-- TAB 2: KUIS INTERAKTIF -->
     <section id="tab-quiz" class="tab-content">
-      <div style="background:var(--clay-card-bg);border-radius:20px;padding:24px;box-shadow:var(--clay-shadow-out);border:1px solid var(--card-border);margin-bottom:20px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+      <div style="background:var(--clay-card-bg);border-radius:20px;padding:22px;box-shadow:var(--clay-shadow-out);border:1px solid var(--card-border);margin-bottom:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
           <div>
             <h2 style="font-size:1.25rem;font-weight:800;color:var(--text-main);">⚡ Mode Kuis Interaktif IRODORI</h2>
             <p style="font-size:0.86rem;color:var(--text-sub);">Ketikkan jawaban Anda lalu klik 'Cek' untuk evaluasi instan!</p>
@@ -1098,44 +906,38 @@ function buildIndexApp() {
           </div>
         </div>
 
-        <div id="quizContainer">
-          <!-- Dynamically populated per Bab -->
-        </div>
+        <div id="quizContainer"></div>
       </div>
     </section>
 
     <!-- TAB 3: DASHBOARD PROGRES BELAJAR SISWA -->
     <section id="tab-progress" class="tab-content">
-      <div style="background:var(--clay-card-bg);border-radius:20px;padding:24px;border:1px solid var(--card-border);box-shadow:var(--clay-shadow-out);margin-bottom:20px;">
+      <div style="background:var(--clay-card-bg);border-radius:20px;padding:22px;border:1px solid var(--card-border);box-shadow:var(--clay-shadow-out);margin-bottom:20px;">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
           <div>
             <h2 style="font-size:1.25rem;font-weight:800;color:var(--text-main);">📊 Dashboard Progres Belajar Siswa</h2>
             <p style="font-size:0.86rem;color:var(--text-sub);">Pantau perkembangan penguasaan Kanji dan riwayat nilai kuis Anda.</p>
           </div>
-          <div id="progressUserBadge">
-            <!-- Populated by JS -->
-          </div>
+          <div id="progressUserBadge"></div>
         </div>
 
-        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;margin-bottom:24px;">
-          <div class="stat-pill" style="padding:14px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;margin-bottom:22px;">
+          <div class="stat-pill" style="padding:12px;">
             <span class="stat-num" id="dashTotalMastered">0 / 226</span>
             <span class="stat-lbl">Kanji Dikuasai</span>
           </div>
-          <div class="stat-pill" style="padding:14px;background:var(--pastel-sage-bg);color:var(--pastel-sage-txt);border-color:var(--pastel-sage-border);">
+          <div class="stat-pill" style="padding:12px;background:var(--pastel-sage-bg);color:var(--pastel-sage-txt);border-color:var(--pastel-sage-border);">
             <span class="stat-num" id="dashCompletedBab">0 / 18</span>
             <span class="stat-lbl">Bab Selesai</span>
           </div>
-          <div class="stat-pill" style="padding:14px;background:var(--pastel-amber-bg);color:var(--pastel-amber-txt);border-color:var(--pastel-amber-border);">
+          <div class="stat-pill" style="padding:12px;background:var(--pastel-amber-bg);color:var(--pastel-amber-txt);border-color:var(--pastel-amber-border);">
             <span class="stat-num" id="dashAvgScore">0%</span>
             <span class="stat-lbl">Rata-rata Nilai</span>
           </div>
         </div>
 
-        <h3 style="font-size:1.05rem;font-weight:800;color:var(--text-main);margin-bottom:12px;">Daftar Capaian per Bab:</h3>
-        <div id="progressBabList" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));gap:10px;">
-          <!-- Rendered by JS -->
-        </div>
+        <h3 style="font-size:1.02rem;font-weight:800;color:var(--text-main);margin-bottom:10px;">Daftar Capaian per Bab:</h3>
+        <div id="progressBabList" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));gap:10px;"></div>
       </div>
     </section>
 
@@ -1144,25 +946,21 @@ function buildIndexApp() {
       <div class="explorer-search-bar">
         <input type="text" id="explorerSearchInput" class="search-input" placeholder="🔍 Cari Kanji berdasarkan huruf, cara baca, bab, atau arti bahasa Indonesia..." oninput="handleKanjiSearch(this.value)">
       </div>
-
-      <div class="explorer-grid" id="explorerGrid">
-        <!-- Rendered by JavaScript -->
-      </div>
+      <div class="explorer-grid" id="explorerGrid"></div>
     </section>
 
     <!-- TAB 5: PUSAT UNDUHAN BERKAS -->
     <section id="tab-downloads" class="tab-content">
-      <div style="margin-bottom:20px;">
+      <div style="margin-bottom:18px;">
         <h2 style="font-size:1.25rem;font-weight:800;color:var(--text-main);margin-bottom:4px;">📥 Pusat Unduhan Berkas Lengkap</h2>
         <p style="font-size:0.86rem;color:var(--text-sub);">Unduh berkas Microsoft Word (.docx) siap cetak & edit, atau berkas HTML mandiri.</p>
       </div>
 
-      <!-- Master Downloads -->
-      <div style="background:linear-gradient(135deg, #e0e7ff, #fde8ef);border-radius:20px;padding:20px;margin-bottom:20px;box-shadow:var(--clay-shadow-out);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;">
+      <div style="background:linear-gradient(135deg, #e0e7ff, #fde8ef);border-radius:20px;padding:20px;margin-bottom:18px;box-shadow:var(--clay-shadow-out);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;">
         <div>
           <span class="curriculum-tag" style="background:#ffffff;">Master Bundle</span>
           <h3 style="font-size:1.15rem;font-weight:800;color:#1e293b;margin:4px 0;">Paket Lengkap Seluruh Bab 1 s.d. 18 (All-in-One)</h3>
-          <p style="font-size:0.84rem;color:#475569;">Berisi seluruh 226 Kanji lengkap dengan diagram nomor urutan goresan & 360 latihan soal.</p>
+          <p style="font-size:0.84rem;color:#475569;">Berisi seluruh 226 Kanji lengkap dengan diagram 20-grid Tianzige & 360 latihan soal.</p>
         </div>
         <div style="display:flex;gap:8px;">
           <a href="Lembar%20Latihan%20Kanji/Lembar_Latihan_Kanji_IRODORI_A2.2_Lengkap.docx" class="btn-action btn-print" download>
@@ -1182,7 +980,7 @@ function buildIndexApp() {
               <div class="dl-card-title">${ch.titleJp}</div>
               <div class="dl-card-sub">${ch.titleId}</div>
               <div style="font-size:0.75rem;color:var(--text-light);margin-top:4px;">
-                ${ch.kanjiList.length} Kanji • 20 Soal Latihan
+                ${ch.kanjiList.length} Kanji • 20 Kotak/Kanji • 20 Soal
               </div>
             </div>
 
@@ -1201,80 +999,68 @@ function buildIndexApp() {
 
   </main>
 
-  <!-- AUTH MODAL (Login / Register) -->
+  <!-- AUTH MODAL -->
   <div class="modal-backdrop" id="authModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeAuthModal()">✕</button>
-      
-      <div style="display:flex;gap:8px;margin-bottom:20px;border-bottom:1px solid var(--card-border);padding-bottom:10px;">
+      <div style="display:flex;gap:8px;margin-bottom:18px;border-bottom:1px solid var(--card-border);padding-bottom:8px;">
         <button id="authTabLogin" class="tab-btn active" onclick="switchAuthMode('login')">🔑 Masuk Akun</button>
         <button id="authTabRegister" class="tab-btn" onclick="switchAuthMode('register')">📝 Daftar Siswa Baru</button>
       </div>
 
-      <!-- Form Login -->
       <div id="loginFormSection">
         <h3 style="font-size:1.15rem;font-weight:800;color:var(--text-main);margin-bottom:4px;">Selamat Datang!</h3>
-        <p style="font-size:0.82rem;color:var(--text-sub);margin-bottom:16px;">Masuk untuk membuka seluruh 18 Bab dan menyimpan riwayat belajar.</p>
-        
+        <p style="font-size:0.82rem;color:var(--text-sub);margin-bottom:14px;">Masuk untuk membuka seluruh 18 Bab dan menyimpan riwayat belajar.</p>
         <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Username</label>
         <input type="text" id="loginUsername" class="input-field" placeholder="Ketik username...">
-
         <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Password</label>
         <input type="password" id="loginPassword" class="input-field" placeholder="Ketik password...">
-
-        <button class="btn-action btn-print" style="width:100%;justify-content:center;padding:10px;" onclick="handleLoginSubmit()">
-          Masuk Sekarang
-        </button>
-
-        <div style="font-size:0.75rem;color:var(--text-sub);margin-top:14px;background:var(--clay-surface);padding:8px 12px;border-radius:10px;">
+        <button class="btn-action btn-print" style="width:100%;justify-content:center;padding:10px;" onclick="handleLoginSubmit()">Masuk Sekarang</button>
+        <div style="font-size:0.75rem;color:var(--text-sub);margin-top:12px;background:var(--clay-surface);padding:8px 12px;border-radius:10px;">
           💡 Akun Demo: <strong>siswa</strong> / <strong>siswa123</strong> (Siswa) atau <strong>sensei</strong> / <strong>irodori2026</strong> (Guru)
         </div>
       </div>
 
-      <!-- Form Register -->
       <div id="registerFormSection" style="display:none;">
         <h3 style="font-size:1.15rem;font-weight:800;color:var(--text-main);margin-bottom:4px;">Buat Akun Siswa Baru</h3>
-        <p style="font-size:0.82rem;color:var(--text-sub);margin-bottom:16px;">Daftar gratis untuk mengakses seluruh kurikulum Bab 1 s.d. 18.</p>
-
+        <p style="font-size:0.82rem;color:var(--text-sub);margin-bottom:14px;">Daftar gratis untuk mengakses seluruh kurikulum Bab 1 s.d. 18.</p>
         <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Nama Lengkap</label>
         <input type="text" id="regFullName" class="input-field" placeholder="Contoh: Budi Pratama">
-
         <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Username</label>
         <input type="text" id="regUsername" class="input-field" placeholder="Pilih username...">
-
         <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Password</label>
         <input type="password" id="regPassword" class="input-field" placeholder="Buat password...">
-
-        <button class="btn-action btn-auth" style="width:100%;justify-content:center;padding:10px;" onclick="handleRegisterSubmit()">
-          Daftar & Buka Seluruh Bab
-        </button>
+        <button class="btn-action btn-auth" style="width:100%;justify-content:center;padding:10px;" onclick="handleRegisterSubmit()">Daftar & Buka Seluruh Bab</button>
       </div>
-
     </div>
   </div>
 
-  <!-- STROKE ANIMATION MODAL -->
+  <!-- PURE SVG STROKE ANIMATION MODAL -->
   <div class="modal-backdrop" id="strokeModal">
     <div class="modal-card" style="text-align:center;">
       <button class="modal-close" onclick="closeStrokeModal()">✕</button>
-      
-      <span class="curriculum-tag" id="animStrokeCount">8 Goresan</span>
-      <h3 style="font-size:1.3rem;font-weight:800;color:var(--text-main);margin:4px 0 2px;" id="animKanjiTitle">山</h3>
-      <div style="font-size:0.86rem;color:var(--text-sub);margin-bottom:16px;" id="animKanjiMeaning">Gunung</div>
+      <span class="curriculum-tag" id="animStrokeCountTag">0 Goresan</span>
+      <h3 style="font-size:1.35rem;font-weight:800;color:var(--text-main);margin:4px 0 2px;" id="animKanjiTitle">山</h3>
+      <div style="font-size:0.86rem;color:var(--text-sub);margin-bottom:14px;" id="animKanjiMeaning">Gunung</div>
 
-      <!-- Canvas Box for Animated SVG -->
-      <div id="animSvgContainer" style="width:180px;height:180px;margin:0 auto 16px;background:var(--clay-surface);border-radius:18px;border:2px solid var(--card-border);display:flex;align-items:center;justify-content:center;position:relative;">
-        <!-- Injected via JS -->
+      <div id="animCanvasWrap">
+        <svg id="animCanvasSvg" viewBox="0 0 109 109">
+          <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+          <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
+          <g id="animGhostGroup"></g>
+          <g id="animStrokesGroup"></g>
+        </svg>
       </div>
 
-      <div style="font-size:0.82rem;font-weight:700;color:var(--text-sub);margin-bottom:14px;" id="animStepIndicator">
+      <div style="font-size:0.84rem;font-weight:700;color:var(--text-sub);margin-bottom:14px;" id="animStepIndicator">
         Langkah Goresan: 1 / 8
       </div>
 
       <div style="display:flex;justify-content:center;gap:8px;">
-        <button class="btn-action" style="background:var(--clay-surface);color:var(--text-main);" onclick="prevAnimStep()">⏮️ Mundur</button>
-        <button class="btn-action btn-print" id="animPlayBtn" onclick="toggleAnimPlayback()">▶️ Putar</button>
-        <button class="btn-action" style="background:var(--clay-surface);color:var(--text-main);" onclick="nextAnimStep()">Maju ⏭️</button>
+        <button class="btn-action" style="background:var(--clay-surface);color:var(--text-main);" onclick="prevStrokeStep()">⏮️ Mundur</button>
+        <button class="btn-action btn-print" id="animPlayBtn" onclick="toggleStrokePlay()">▶️ Putar Animasi</button>
+        <button class="btn-action" style="background:var(--clay-surface);color:var(--text-main);" onclick="nextStrokeStep()">Maju ⏭️</button>
+        <button class="btn-action" style="background:var(--clay-surface);color:var(--text-main);" onclick="resetStrokePlayer()">🔄 Ulangi</button>
       </div>
     </div>
   </div>
@@ -1282,15 +1068,156 @@ function buildIndexApp() {
   <!-- Client-side Application Logic -->
   <script>
     const kanjiData = ${JSON.stringify(kanjiData)};
+    const kanjiStrokesMap = ${JSON.stringify(kanjiStrokesMap)};
+
     let currentBab = 'all';
     let currentUser = null;
-    let animActiveKanji = null;
-    let animCurrentStep = 0;
-    let animInterval = null;
+
+    // Stroke Player State
+    let activeAnimKanji = null;
+    let activeStrokeList = [];
+    let currentStrokeIndex = 0;
+    let strokeTimer = null;
+    let isPlaying = false;
+
+    function playStrokeAnimation(kanji, meaning, strokesCount) {
+      activeAnimKanji = kanji;
+      activeStrokeList = kanjiStrokesMap[kanji] || [];
+      currentStrokeIndex = 0;
+      isPlaying = false;
+      clearTimeout(strokeTimer);
+
+      document.getElementById('animKanjiTitle').innerText = kanji;
+      document.getElementById('animKanjiMeaning').innerText = meaning;
+      document.getElementById('animStrokeCountTag').innerText = (strokesCount || activeStrokeList.length) + ' Goresan';
+      document.getElementById('animPlayBtn').innerText = '▶️ Putar Animasi';
+
+      setupStrokeSvgCanvas();
+      document.getElementById('strokeModal').style.display = 'flex';
+      toggleStrokePlay();
+    }
+
+    function closeStrokeModal() {
+      clearTimeout(strokeTimer);
+      isPlaying = false;
+      document.getElementById('strokeModal').style.display = 'none';
+    }
+
+    function setupStrokeSvgCanvas() {
+      const ghostGroup = document.getElementById('animGhostGroup');
+      const strokesGroup = document.getElementById('animStrokesGroup');
+      ghostGroup.innerHTML = '';
+      strokesGroup.innerHTML = '';
+
+      if (!activeStrokeList || activeStrokeList.length === 0) {
+        strokesGroup.innerHTML = '<text x="54.5" y="65" font-size="40" text-anchor="middle" fill="#334155">' + activeAnimKanji + '</text>';
+        return;
+      }
+
+      activeStrokeList.forEach((dStr) => {
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', dStr);
+        path.setAttribute('class', 'stroke-path');
+        path.setAttribute('stroke', '#cbd5e1');
+        path.setAttribute('stroke-width', '4');
+        path.setAttribute('opacity', '0.25');
+        ghostGroup.appendChild(path);
+      });
+
+      renderStrokeStep(currentStrokeIndex);
+    }
+
+    function renderStrokeStep(step) {
+      const strokesGroup = document.getElementById('animStrokesGroup');
+      strokesGroup.innerHTML = '';
+
+      const total = activeStrokeList.length;
+      if (total === 0) return;
+
+      for (let i = 0; i <= step && i < total; i++) {
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', activeStrokeList[i]);
+        path.setAttribute('class', 'stroke-path');
+
+        if (i === step) {
+          path.setAttribute('stroke', '#e11d48');
+          path.setAttribute('stroke-width', '5');
+          strokesGroup.appendChild(path);
+
+          const len = path.getTotalLength() || 100;
+          path.style.setProperty('--stroke-len', len);
+          path.style.strokeDasharray = len;
+          path.style.strokeDashoffset = len;
+          path.classList.add('stroke-drawing');
+        } else {
+          path.setAttribute('stroke', '#1e293b');
+          path.setAttribute('stroke-width', '4.2');
+          strokesGroup.appendChild(path);
+        }
+      }
+
+      const indicator = document.getElementById('animStepIndicator');
+      if (indicator) {
+        indicator.innerText = 'Langkah Goresan: ' + (step + 1) + ' / ' + total;
+      }
+    }
+
+    function toggleStrokePlay() {
+      if (isPlaying) { pauseStrokePlay(); } else { startStrokePlay(); }
+    }
+
+    function startStrokePlay() {
+      isPlaying = true;
+      document.getElementById('animPlayBtn').innerText = '⏸️ Jeda';
+      playNextStrokeLoop();
+    }
+
+    function pauseStrokePlay() {
+      isPlaying = false;
+      clearTimeout(strokeTimer);
+      document.getElementById('animPlayBtn').innerText = '▶️ Lanjutkan';
+    }
+
+    function playNextStrokeLoop() {
+      if (!isPlaying) return;
+      renderStrokeStep(currentStrokeIndex);
+
+      if (currentStrokeIndex < activeStrokeList.length - 1) {
+        currentStrokeIndex++;
+        strokeTimer = setTimeout(playNextStrokeLoop, 850);
+      } else {
+        isPlaying = false;
+        document.getElementById('animPlayBtn').innerText = '🔄 Putar Ulang';
+        const indicator = document.getElementById('animStepIndicator');
+        if (indicator) indicator.innerText = '✨ Selesai! Seluruh ' + activeStrokeList.length + ' goresan lengkap.';
+      }
+    }
+
+    function nextStrokeStep() {
+      pauseStrokePlay();
+      if (currentStrokeIndex < activeStrokeList.length - 1) {
+        currentStrokeIndex++;
+        renderStrokeStep(currentStrokeIndex);
+      }
+    }
+
+    function prevStrokeStep() {
+      pauseStrokePlay();
+      if (currentStrokeIndex > 0) {
+        currentStrokeIndex--;
+        renderStrokeStep(currentStrokeIndex);
+      }
+    }
+
+    function resetStrokePlayer() {
+      pauseStrokePlay();
+      currentStrokeIndex = 0;
+      renderStrokeStep(0);
+      startStrokePlay();
+    }
 
     // --- AUTHENTICATION & ACCESS RESTRICTION ---
     function initAuth() {
-      // Seed initial users if not exist
       if (!localStorage.getItem('irodori_users')) {
         const defaultUsers = [
           { username: 'sensei', password: 'irodori2026', name: 'Sensei (Guru)', role: 'admin', masteredKanji: [], quizScores: {} },
@@ -1299,14 +1226,9 @@ function buildIndexApp() {
         localStorage.setItem('irodori_users', JSON.stringify(defaultUsers));
       }
 
-      // Check active user session
       const savedUser = localStorage.getItem('irodori_active_user');
       if (savedUser) {
-        try {
-          currentUser = JSON.parse(savedUser);
-        } catch (e) {
-          currentUser = null;
-        }
+        try { currentUser = JSON.parse(savedUser); } catch (e) { currentUser = null; }
       }
       updateAuthUI();
       applyContentLocks();
@@ -1351,8 +1273,6 @@ function buildIndexApp() {
     }
 
     function applyContentLocks() {
-      // If user is logged in, unlock everything!
-      // If user is guest, lock Bab 3 s.d. 18
       const isUnlocked = !!currentUser;
       for (let b = 3; b <= 18; b++) {
         const overlay = document.getElementById('lock-overlay-' + b);
@@ -1412,12 +1332,8 @@ function buildIndexApp() {
       }
 
       const newUser = {
-        username: u,
-        password: p,
-        name: name,
-        role: 'student',
-        masteredKanji: [],
-        quizScores: {}
+        username: u, password: p, name: name, role: 'student',
+        masteredKanji: [], quizScores: {}
       };
 
       users.push(newUser);
@@ -1471,16 +1387,19 @@ function buildIndexApp() {
       if (tabId === 'explorer') renderExplorerView();
     }
 
-    // Bab Filtering
     function handleBabChange(val) {
       currentBab = val;
-      const pages = document.querySelectorAll('.worksheet-page');
+      const pages = document.querySelectorAll('.worksheet-page, .exercise-page-card');
       if (val === 'all') {
         pages.forEach(p => p.style.display = 'block');
       } else {
         pages.forEach(p => p.style.display = 'none');
-        const target = document.getElementById('sheet-bab-' + val);
-        if (target) target.style.display = 'block';
+        const targetSheet = document.getElementById('sheet-bab-' + val);
+        const targetExA = document.getElementById('sheet-bab-' + val + '-ex-a');
+        const targetExB = document.getElementById('sheet-bab-' + val + '-ex-b');
+        if (targetSheet) targetSheet.style.display = 'block';
+        if (targetExA) targetExA.style.display = 'block';
+        if (targetExB) targetExB.style.display = 'block';
       }
 
       if (document.getElementById('tab-quiz').classList.contains('active')) {
@@ -1488,129 +1407,12 @@ function buildIndexApp() {
       }
     }
 
-    // --- STROKE ANIMATION MODAL ---
-    function openStrokeAnimation(kanji, meaning, strokes) {
-      animActiveKanji = kanji;
-      animCurrentStep = 0;
-      clearInterval(animInterval);
-      document.getElementById('animPlayBtn').innerText = '▶️ Putar';
-
-      document.getElementById('animKanjiTitle').innerText = kanji;
-      document.getElementById('animKanjiMeaning').innerText = meaning;
-      document.getElementById('animStrokeCount').innerText = strokes + ' Goresan';
-
-      // Find SVG element from guidance box on page
-      let targetSvg = null;
-      document.querySelectorAll('.guidance-box').forEach(box => {
-        if (box.getAttribute('onclick')?.includes(kanji)) {
-          const svg = box.querySelector('svg');
-          if (svg) targetSvg = svg.cloneNode(true);
-        }
-      });
-
-      const container = document.getElementById('animSvgContainer');
-      container.innerHTML = '';
-      if (targetSvg) {
-        targetSvg.style.width = '100%';
-        targetSvg.style.height = '100%';
-        container.appendChild(targetSvg);
-        initSvgStrokeAnimation(targetSvg);
-      } else {
-        container.innerHTML = \`<div style="font-size:3rem;font-weight:800;">\${kanji}</div>\`;
-      }
-
-      document.getElementById('strokeModal').style.display = 'flex';
-    }
-
-    function closeStrokeModal() {
-      clearInterval(animInterval);
-      document.getElementById('strokeModal').style.display = 'none';
-    }
-
-    function initSvgStrokeAnimation(svg) {
-      const paths = svg.querySelectorAll('path');
-      const texts = svg.querySelectorAll('text');
-      
-      paths.forEach((p, idx) => {
-        const len = p.getTotalLength ? p.getTotalLength() : 100;
-        p.style.strokeDasharray = len;
-        p.style.strokeDashoffset = '0';
-        p.style.transition = 'stroke-dashoffset 0.6s ease, stroke 0.3s ease';
-      });
-
-      updateAnimStepDisplay(paths.length);
-    }
-
-    function updateAnimStepDisplay(total) {
-      const indicator = document.getElementById('animStepIndicator');
-      if (indicator) indicator.innerText = 'Langkah Goresan: ' + (animCurrentStep + 1) + ' / ' + total;
-    }
-
-    function highlightStroke(step) {
-      const svg = document.querySelector('#animSvgContainer svg');
-      if (!svg) return;
-      const paths = svg.querySelectorAll('path');
-      if (step < 0 || step >= paths.length) return;
-
-      paths.forEach((p, idx) => {
-        if (idx < step) {
-          p.style.stroke = '#334155';
-          p.style.opacity = '1';
-        } else if (idx === step) {
-          p.style.stroke = '#e11d48';
-          p.style.opacity = '1';
-        } else {
-          p.style.opacity = '0.15';
-        }
-      });
-      animCurrentStep = step;
-      updateAnimStepDisplay(paths.length);
-    }
-
-    function nextAnimStep() {
-      const svg = document.querySelector('#animSvgContainer svg');
-      if (!svg) return;
-      const paths = svg.querySelectorAll('path');
-      if (animCurrentStep < paths.length - 1) {
-        highlightStroke(animCurrentStep + 1);
-      }
-    }
-
-    function prevAnimStep() {
-      if (animCurrentStep > 0) {
-        highlightStroke(animCurrentStep - 1);
-      }
-    }
-
-    function toggleAnimPlayback() {
-      const svg = document.querySelector('#animSvgContainer svg');
-      if (!svg) return;
-      const paths = svg.querySelectorAll('path');
-
-      if (animInterval) {
-        clearInterval(animInterval);
-        animInterval = null;
-        document.getElementById('animPlayBtn').innerText = '▶️ Putar';
-      } else {
-        document.getElementById('animPlayBtn').innerText = '⏸️ Jeda';
-        animInterval = setInterval(() => {
-          if (animCurrentStep >= paths.length - 1) {
-            animCurrentStep = 0;
-          } else {
-            animCurrentStep++;
-          }
-          highlightStroke(animCurrentStep);
-        }, 900);
-      }
-    }
-
-    // --- QUIZ LOGIC WITH AUTO-SAVE TO STUDENT PROFILE ---
+    // --- QUIZ LOGIC WITH AUTO-SAVE ---
     function renderQuizView() {
       const container = document.getElementById('quizContainer');
       const targetBab = currentBab === 'all' ? 1 : parseInt(currentBab);
       const ch = kanjiData.find(d => d.bab === targetBab) || kanjiData[0];
 
-      // Check if locked
       if (!currentUser && ch.bab > 2) {
         container.innerHTML = \`
           <div style="text-align:center;padding:40px 20px;">
@@ -1632,13 +1434,13 @@ function buildIndexApp() {
         </div>
 
         <h4 style="font-size:0.9rem;font-weight:700;color:var(--text-sub);margin:14px 0 8px;">A. Kuis Membaca (Hiragana):</h4>
-        <div class="exercise-grid">
+        <div style="display:flex;flex-direction:column;gap:8px;">
           \${ch.readingExercise.map((ex, idx) => \`
-            <div class="exercise-item" id="quiz-r-\${idx}">
-              <div class="exercise-q">\${idx + 1}. \${ex.q}</div>
+            <div class="exercise-list-item" id="quiz-r-\${idx}">
+              <div class="exercise-q-text">(\${idx + 1}) \${ex.q}</div>
               <div style="display:flex;gap:6px;margin-top:4px;">
-                <input type="text" class="search-input" style="padding:5px 10px;font-size:0.84rem;" id="input-r-\${idx}" placeholder="Ketik hiragana..." onkeydown="if(event.key==='Enter') checkQuizItem('r', \${idx}, '\${ex.a}')">
-                <button class="btn-action btn-print" style="padding:5px 12px;font-size:0.78rem;" onclick="checkQuizItem('r', \${idx}, '\${ex.a}')">Cek</button>
+                <input type="text" class="search-input" style="padding:6px 12px;font-size:0.88rem;" id="input-r-\${idx}" placeholder="Ketik hiragana..." onkeydown="if(event.key==='Enter') checkQuizItem('r', \${idx}, '\${ex.a}')">
+                <button class="btn-action btn-print" style="padding:6px 14px;font-size:0.8rem;" onclick="checkQuizItem('r', \${idx}, '\${ex.a}')">Cek</button>
               </div>
               <div><span class="answer-key" id="res-r-\${idx}" style="display:none;"></span></div>
             </div>
@@ -1646,13 +1448,13 @@ function buildIndexApp() {
         </div>
 
         <h4 style="font-size:0.9rem;font-weight:700;color:var(--text-sub);margin:20px 0 8px;">B. Kuis Menulis (Kanji):</h4>
-        <div class="exercise-grid">
+        <div style="display:flex;flex-direction:column;gap:8px;">
           \${ch.writingExercise.map((ex, idx) => \`
-            <div class="exercise-item" id="quiz-w-\${idx}">
-              <div class="exercise-q">\${idx + 1}. \${ex.q}</div>
+            <div class="exercise-list-item" id="quiz-w-\${idx}">
+              <div class="exercise-q-text">(\${idx + 1}) \${ex.q}</div>
               <div style="display:flex;gap:6px;margin-top:4px;">
-                <input type="text" class="search-input" style="padding:5px 10px;font-size:0.84rem;" id="input-w-\${idx}" placeholder="Ketik kanji..." onkeydown="if(event.key==='Enter') checkQuizItem('w', \${idx}, '\${ex.a}')">
-                <button class="btn-action btn-print" style="padding:5px 12px;font-size:0.78rem;" onclick="checkQuizItem('w', \${idx}, '\${ex.a}')">Cek</button>
+                <input type="text" class="search-input" style="padding:6px 12px;font-size:0.88rem;" id="input-w-\${idx}" placeholder="Ketik kanji..." onkeydown="if(event.key==='Enter') checkQuizItem('w', \${idx}, '\${ex.a}')">
+                <button class="btn-action btn-print" style="padding:6px 14px;font-size:0.8rem;" onclick="checkQuizItem('w', \${idx}, '\${ex.a}')">Cek</button>
               </div>
               <div><span class="answer-key" id="res-w-\${idx}" style="display:none;"></span></div>
             </div>
@@ -1699,7 +1501,6 @@ function buildIndexApp() {
       const textEl = document.getElementById('quizScoreText');
       if (textEl) textEl.innerText = correct + ' / 20';
 
-      // Save score to active student profile
       if (currentUser) {
         const targetBab = currentBab === 'all' ? 1 : parseInt(currentBab);
         if (!currentUser.quizScores) currentUser.quizScores = {};
@@ -1754,7 +1555,7 @@ function buildIndexApp() {
           <div style="background:var(--clay-surface);border:1px solid var(--card-border);border-radius:14px;padding:12px 14px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
               <span style="font-size:0.75rem;font-weight:800;color:var(--pastel-blue-txt);">Bab \${ch.bab}</span>
-              <span style="font-size:0.72rem;font-weight:700;\${isLocked ? 'color:#e11d48;' : (score >= 14 ? 'color:#16a34a;' : 'color:var(--text-sub);')}">
+              <span style="font-size:0.72rem;font-weight:700;\${isLocked ? 'color:#e11d48;' : (score !== null ? score + ' / 20 Soal' : 'Belum Kuis')}">
                 \${isLocked ? '🔒 Terkunci' : (score !== null ? score + ' / 20 Soal' : 'Belum Kuis')}
               </span>
             </div>
@@ -1812,7 +1613,7 @@ function buildIndexApp() {
               <div class="exp-char" title="Klik untuk salin" onclick="navigator.clipboard.writeText('\${k.kanji}'); alert('Kanji \${k.kanji} disalin ke clipboard!');">\${k.kanji}</div>
             </div>
             <div>
-              <button class="btn-animate-stroke" onclick="openStrokeAnimation('\${k.kanji}', '\${k.meaning}', \${k.strokes})">
+              <button class="btn-animate-stroke" onclick="playStrokeAnimation('\${k.kanji}', '\${k.meaning}', \${k.strokes})">
                 ▶️ Animasi
               </button>
             </div>
@@ -1837,7 +1638,6 @@ function buildIndexApp() {
       renderExplorerView(val);
     }
 
-    // Initialize on page load
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
       initAuth();
@@ -1846,9 +1646,18 @@ function buildIndexApp() {
 </body>
 </html>`;
 
-  const indexPath = path.join(rootDir, 'index.html');
-  fs.writeFileSync(indexPath, html, 'utf-8');
-  console.log(`Successfully generated Enhanced index.html (${(html.length / 1024).toFixed(1)} KB)!`);
+  // Write to C: workspace
+  const indexPathC = path.join(rootDir, 'index.html');
+  fs.writeFileSync(indexPathC, html, 'utf-8');
+  console.log(`Successfully generated index.html in C: (${(html.length / 1024).toFixed(1)} KB)!`);
+
+  // Write to D: workspace
+  const dPath = 'D:/KANJI Irodori A2.2/KANJI Irodori A2.2';
+  if (fs.existsSync(dPath)) {
+    const indexPathD = path.join(dPath, 'index.html');
+    fs.writeFileSync(indexPathD, html, 'utf-8');
+    console.log(`Successfully synced index.html to D: (${(html.length / 1024).toFixed(1)} KB)!`);
+  }
 }
 
 buildIndexApp();

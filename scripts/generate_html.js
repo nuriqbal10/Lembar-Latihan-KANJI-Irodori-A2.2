@@ -69,6 +69,14 @@ function getTraceSvg(kanjiChar) {
   return raw.replace('<svg ', '<svg class="kanji-svg trace-svg" ');
 }
 
+// Convert Kanji(furigana) to standard HTML <ruby>Kanji<rt>furigana</rt></ruby>
+function formatSentenceRuby(str) {
+  if (!str) return '';
+  return str.replace(/([一-龯々\w]+)[\(（]([ぁ-んァ-ヶー]+)[\)）]/g, (match, kanji, furi) => {
+    return `<ruby>${kanji}<rt>${furi}</rt></ruby>`;
+  });
+}
+
 function generateHtmlContentV4(selectedBab = null) {
   const filteredData = selectedBab ? kanjiData.filter(d => d.bab === selectedBab) : kanjiData;
   const pageTitle = selectedBab
@@ -388,13 +396,13 @@ function generateHtmlContentV4(selectedBab = null) {
                 </div>
               </div>
 
-              <div style="font-size: 0.8rem; margin-bottom: 6px;">
+              <div style="font-size: 0.85rem; margin-bottom: 6px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
                 <strong>Kosakata:</strong>
-                ${k.words.map(w => `<span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>${w.word}</strong> (${w.reading}): ${w.meaning}</span>`).join('')}
+                ${k.words.map(w => `<span style="background:#f1f5f9;padding:3px 8px;border-radius:6px;border:1px solid #e2e8f0;"><ruby><strong>${w.word}</strong><rt>${w.reading}</rt></ruby>: ${w.meaning}</span>`).join('')}
               </div>
 
-              <div style="font-size: 0.8rem; margin-bottom: 8px;">
-                <strong>Contoh:</strong> <span>${k.sentenceFurigana}</span> ➔ <em>"${k.sentenceId}"</em>
+              <div style="font-size: 0.9rem; margin-bottom: 8px; line-height: 1.6;">
+                <strong>Contoh:</strong> <span>${formatSentenceRuby(k.sentenceFurigana)}</span> ➔ <em>"${k.sentenceId}"</em>
               </div>
 
               <!-- 20 Kotak Grid (2 Baris x 10 Kotak) -->

@@ -84,6 +84,25 @@ function getTraceSvg(kanjiChar) {
   return raw.replace('<svg ', '<svg class="kanji-svg trace-svg" ');
 }
 
+// Convert Kanji(furigana) to standard HTML <ruby>Kanji<rt>furigana</rt></ruby>
+function formatSentenceRuby(str) {
+  if (!str) return '';
+  return str.replace(/([一-龯々\w]+)[\(（]([ぁ-んァ-ヶー]+)[\)）]/g, (match, kanji, furi) => {
+    return `<ruby>${kanji}<rt>${furi}</rt></ruby>`;
+  });
+}
+
+// Strip all parenthetical furigana for pure natural Japanese audio speech synthesis
+function stripFurigana(str) {
+  if (!str) return '';
+  return str
+    .replace(/\([^\)]*\)/g, '')
+    .replace(/（[^）]*）/g, '')
+    .replace(/\[[^\]]*\]/g, '')
+    .replace(/[「」『』]/g, '')
+    .trim();
+}
+
 function buildIndexApp() {
   console.log("Building V5 Enhanced Web Application index.html with identical SVG Model/Trace, 20-Grid & Separate A/B Exercise Pages...");
 
@@ -873,24 +892,24 @@ function buildIndexApp() {
 
                 <div class="kanji-details-row" style="font-size:0.82rem;margin-bottom:6px;">
                   <span style="font-weight:700;color:var(--text-sub);min-width:70px;">Kosakata:</span>
-                  <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                  <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
                     ${k.words.map(w => `
                       <span class="vocab-pill">
-                        <strong>${w.word}</strong> (${w.reading}): ${w.meaning}
+                        <ruby><strong>${w.word}</strong><rt>${w.reading}</rt></ruby>: ${w.meaning}
                         <button class="btn-voice-inline no-print" onclick="event.stopPropagation(); speakJapanese('${w.word}')" title="Dengarkan kata">🔊</button>
                       </span>
                     `).join('')}
                   </div>
                 </div>
 
-                <div class="kanji-details-row" style="font-size:0.82rem;margin-bottom:10px;">
+                <div class="kanji-details-row" style="font-size:0.88rem;margin-bottom:10px;">
                   <span style="font-weight:700;color:var(--text-sub);min-width:70px;">Contoh:</span>
                   <div>
-                    <div style="display:flex;align-items:center;gap:6px;">
-                      <span style="font-weight:700;color:var(--text-main);">${k.sentenceFurigana}</span>
-                      <button class="btn-voice-inline no-print" onclick="event.stopPropagation(); speakJapanese('${k.sentenceFurigana.replace(/\[.*?\]/g, '')}')" title="Dengarkan kalimat">🔊</button>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <span style="font-weight:700;color:var(--text-main);font-size:0.98rem;line-height:1.7;">${formatSentenceRuby(k.sentenceFurigana)}</span>
+                      <button class="btn-voice-inline no-print" onclick="event.stopPropagation(); speakJapanese('${stripFurigana(k.sentenceFurigana)}')" title="Dengarkan kalimat">🔊</button>
                     </div>
-                    <span style="font-style:italic;color:var(--text-sub);display:block;font-size:0.78rem;">"${k.sentenceId}"</span>
+                    <span style="font-style:italic;color:var(--text-sub);display:block;font-size:0.78rem;margin-top:2px;">"${k.sentenceId}"</span>
                   </div>
                 </div>
 
@@ -1418,7 +1437,15 @@ function buildIndexApp() {
         return;
       }
       window.speechSynthesis.cancel();
-      const clean = text.replace(/[\(\)\[\]「」\{\}]/g, '').trim();
+      // Hapus seluruh teks dalam tanda kurung (), （）, [], serta tag ruby/rt agar pelafalan murni alami
+      const clean = text
+        .replace(/\([^\)]*\)/g, '')
+        .replace(/（[^）]*）/g, '')
+        .replace(/\[[^\]]*\]/g, '')
+        .replace(/<rt>[\s\S]*?<\/rt>/gi, '')
+        .replace(/<[^>]+>/g, '')
+        .replace(/[「」『』]/g, '')
+        .trim();
       const u = new SpeechSynthesisUtterance(clean);
       u.lang = 'ja-JP';
       u.rate = 0.85; // Sedikit lebih perlahan untuk kenyamanan menyimak
@@ -1977,8 +2004,11 @@ function buildIndexApp() {
               \${k.strokes} Goresan • Radikal: \${k.radical}
             </div>
           </div>
-          <div style="font-size:0.78rem;background:var(--clay-surface);padding:5px 8px;border-radius:8px;color:var(--text-main);border:1px solid var(--card-border);">
-            📚 <strong>\${k.words[0] ? k.words[0].word : k.kanji}</strong> (\${k.words[0] ? k.words[0].reading : ''}): \${k.words[0] ? k.words[0].meaning : ''}
+          <div style="font-size:0.78rem;background:var(--clay-surface);padding:5px 8px;border-radius:8px;color:var(--text-main);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              📚 <ruby><strong>\${k.words[0] ? k.words[0].word : k.kanji}</strong><rt>\${k.words[0] ? k.words[0].reading : ''}</rt></ruby>: \${k.words[0] ? k.words[0].meaning : ''}
+            </div>
+            <button class="btn-voice-inline no-print" onclick="event.stopPropagation(); speakJapanese('\${k.words[0] ? k.words[0].word : k.kanji}')" title="Dengarkan kata">🔊</button>
           </div>
         </div>
       \`).join('');

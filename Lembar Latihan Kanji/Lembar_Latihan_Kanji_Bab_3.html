@@ -5,805 +5,315 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lembar Latihan Kanji IRODORI A2.2 - Bab 3</title>
   <style>
-    /* Font UD Digi Kyokasho priority, with high quality fallbacks */
     @font-face {
-      font-family: 'UD Digi Kyokasho Fallback';
-      src: local('UD デジタル 教科書体 NP-R'), local('UD Digi Kyokasho NP-R'), local('UD デジタル 教科書体'), local('UD Digi Kyokasho');
+      font-family: 'UD Digi Kyokasho Native';
+      src: local('UD デジタル 教科書体 NP-R'),
+           local('UD Digi Kyokasho NP-R'),
+           local('UD デジタル 教科書体 NK-R'),
+           local('UD Digi Kyokasho NK-R'),
+           local('UD デジタル 教科書体 N-R'),
+           local('UD Digi Kyokasho N-R'),
+           local('UD デジタル 教科書体'),
+           local('UD Digi Kyokasho');
     }
 
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=BIZ+UDPGothic:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=BIZ+UDPGothic:wght@400;700&family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
 
     :root {
-      /* Calm Pastel Palette (Claymorphism style) */
-      --bg-base: #f4f7f6;
+      --font-kyokasho: 'UD Digi Kyokasho Native', 'UD デジタル 教科書体 NP-R', 'UD Digi Kyokasho NP-R', 'UD デジタル 教科書体', 'UD Digi Kyokasho', 'BIZ UDPGothic', sans-serif;
+      --bg-base: #f0f4f8;
       --clay-card-bg: #ffffff;
       --clay-surface: #fdfbf7;
-      
-      /* Calm Pastels */
-      --pastel-blue-bg: #e8f0fe;
-      --pastel-blue-txt: #1d4ed8;
-      --pastel-blue-border: #bfdbfe;
-
-      --pastel-rose-bg: #fde8ef;
-      --pastel-rose-txt: #9d174d;
-      --pastel-rose-border: #fbcfe8;
-
-      --pastel-sage-bg: #e6f4ea;
-      --pastel-sage-txt: #166534;
-      --pastel-sage-border: #bbf7d0;
-
-      --pastel-amber-bg: #fef3c7;
-      --pastel-amber-txt: #92400e;
-      --pastel-amber-border: #fde68a;
-
-      --pastel-lavender-bg: #f3e8ff;
-      --pastel-lavender-txt: #6b21a8;
-      --pastel-lavender-border: #e9d5ff;
-
-      --text-main: #2d3748;
-      --text-sub: #4a5568;
-      --text-light: #718096;
-
+      --card-border: #e2e8f0;
+      --text-main: #1e293b;
+      --text-sub: #475569;
       --grid-border: #94a3b8;
       --grid-cross: #cbd5e1;
       --trace-char: #cbd5e1;
-
-      /* Claymorphism Shadows */
-      --clay-shadow-out: 8px 8px 20px rgba(185, 195, 210, 0.4), -6px -6px 16px #ffffff;
-      --clay-shadow-pill: 4px 4px 10px rgba(185, 195, 210, 0.35), -3px -3px 8px #ffffff;
-      --clay-shadow-box: 3px 3px 8px rgba(185, 195, 210, 0.3), -2px -2px 6px #ffffff;
-      --clay-inset: inset 2px 2px 4px rgba(185, 195, 210, 0.25), inset -2px -2px 4px #ffffff;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'UD Digi Kyokasho NP-R', 'UD デジタル 教科書体 NP-R', 'UD Digi Kyokasho', 'UD デジタル 教科書体', 'BIZ UDPGothic', 'Plus Jakarta Sans', sans-serif;
+      font-family: var(--font-kyokasho);
       background-color: var(--bg-base);
       color: var(--text-main);
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
+      padding-bottom: 50px;
     }
 
-    /* Toolbar / Navigation (Screen only) */
-    .toolbar {
+    .no-print-toolbar {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
       position: sticky;
       top: 0;
-      z-index: 1000;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1.5px solid #e2e8f0;
-      padding: 12px 24px;
+      z-index: 100;
+      padding: 10px 20px;
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-    }
-
-    .toolbar-title {
-      display: flex;
       align-items: center;
-      gap: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
 
-    .toolbar-title h1 {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: #1e3a8a;
-    }
-
-    .badge-clay {
-      background: var(--pastel-amber-bg);
-      color: var(--pastel-amber-txt);
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 9999px;
-      border: 1px solid var(--pastel-amber-border);
-      box-shadow: var(--clay-shadow-pill);
-    }
-
-    .toolbar-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .select-bab {
-      padding: 8px 14px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      border: 1.5px solid #cbd5e1;
-      border-radius: 10px;
-      background: white;
-      color: var(--text-main);
-      box-shadow: var(--clay-shadow-box);
-      cursor: pointer;
-      outline: none;
-    }
-
-    .btn-clay {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 18px;
-      font-size: 0.88rem;
-      font-weight: 700;
-      border-radius: 12px;
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-decoration: none;
-    }
-
-    .btn-primary-clay {
+    .btn-print {
       background: #2563eb;
       color: white;
-      box-shadow: 4px 4px 12px rgba(37, 99, 235, 0.35), -2px -2px 8px #ffffff;
-    }
-    .btn-primary-clay:hover {
-      background: #1d4ed8;
-      transform: translateY(-1px);
-    }
-
-    .btn-outline-clay {
-      background: white;
-      color: var(--text-main);
-      border: 1.5px solid #cbd5e1;
-      box-shadow: var(--clay-shadow-box);
-    }
-    .btn-outline-clay:hover {
-      background: #f8fafc;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.85rem;
     }
 
-    /* Main Container */
     .container {
-      max-width: 920px;
-      margin: 28px auto;
+      max-width: 1100px;
+      margin: 20px auto;
       padding: 0 16px;
     }
 
-    /* Worksheet Page Card (Claymorphic) */
     .worksheet-page {
-      background: var(--clay-card-bg);
+      background: #ffffff;
       border-radius: 20px;
-      border: 2px solid #eef2f6;
-      box-shadow: var(--clay-shadow-out);
-      padding: 32px 36px;
-      margin-bottom: 36px;
+      padding: 24px 28px;
+      margin-bottom: 30px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+      page-break-after: always;
     }
 
-    /* Header */
     .sheet-header {
-      border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 16px;
-      margin-bottom: 22px;
+      border-bottom: 2px dashed #cbd5e1;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
     }
 
     .curriculum-tag {
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #92400e;
-      background: var(--pastel-amber-bg);
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #1d4ed8;
+      background: #e8f0fe;
       display: inline-block;
       padding: 3px 10px;
-      border-radius: 6px;
-      border: 1px solid var(--pastel-amber-border);
-      margin-bottom: 8px;
+      border-radius: 10px;
+      margin-bottom: 4px;
     }
 
-    .sheet-title {
-      font-size: 1.38rem;
-      font-weight: 800;
-      color: #1e3a8a;
-      letter-spacing: -0.2px;
-    }
+    .sheet-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 2px; }
+    .sheet-subtitle { font-size: 0.88rem; color: #64748b; margin-bottom: 12px; }
 
-    .sheet-subtitle {
-      font-size: 0.92rem;
-      color: var(--text-sub);
-      margin-top: 4px;
-    }
-
-    /* Student Info Box (Clay Pill Style) */
     .student-info-grid {
       display: grid;
-      grid-template-columns: 2fr 1.2fr 1fr 1fr;
-      gap: 12px;
-      margin-top: 16px;
-      background: #f8fafc;
-      padding: 12px 16px;
-      border-radius: 14px;
-      border: 1.5px solid #e2e8f0;
-      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.03);
-      font-size: 0.86rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      background: #fdfbf7;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      font-size: 0.8rem;
     }
 
-    .info-field {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .info-field .label {
-      font-weight: 700;
-      color: #3b82f6;
-      white-space: nowrap;
-    }
-
-    .info-field .line {
-      flex: 1;
-      border-bottom: 1.5px dotted #94a3b8;
-      height: 16px;
-    }
-
-    .score-box {
-      border: 1.5px dashed #3b82f6;
-      background: white;
-      border-radius: 8px;
-      text-align: center;
-      padding: 3px 8px;
-      font-weight: 800;
-      color: #1e40af;
-      box-shadow: var(--clay-shadow-box);
-    }
-
-    /* Section Subheading */
-    .section-title {
-      font-size: 1.02rem;
-      font-weight: 800;
-      color: #1e293b;
-      margin: 24px 0 14px 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #f1f5f9;
-      padding: 8px 14px;
-      border-radius: 10px;
-      border-left: 5px solid #3b82f6;
-    }
-
-    /* Kanji Card (Claymorphism Calm Style) */
-    .kanji-card {
-      border: 1.8px solid #e2e8f0;
+    .kanji-unit {
+      border: 1.5px solid #cbd5e1;
       border-radius: 16px;
-      margin-bottom: 22px;
-      background: #ffffff;
-      box-shadow: 4px 4px 12px rgba(185, 195, 210, 0.25), -3px -3px 8px #ffffff;
-      overflow: hidden;
+      padding: 14px 16px;
+      margin-bottom: 16px;
       page-break-inside: avoid;
     }
 
-    .kanji-header {
-      background: #fcfbf9;
-      border-bottom: 1.5px solid #edf2f7;
-      padding: 12px 16px;
-      display: grid;
-      grid-template-columns: 84px 1fr;
-      gap: 16px;
-      align-items: center;
-    }
+    .kanji-header { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
 
     .kanji-hero {
-      width: 80px;
-      height: 80px;
-      background: white;
-      border: 2px solid #3b82f6;
+      width: 58px; height: 58px;
       border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'UD Digi Kyokasho NP-R', 'UD デジタル 教科書体 NP-R', 'UD Digi Kyokasho', sans-serif;
-      font-size: 48px;
-      font-weight: 900;
-      color: #0f172a;
-      box-shadow: var(--clay-shadow-box);
+      border: 1.5px solid #94a3b8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.3rem; font-weight: 800;
       position: relative;
     }
 
-    /* Cross inside hero */
-    .kanji-hero::before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 1px;
-      border-top: 1px dashed #cbd5e1;
-      top: 50%;
-      left: 0;
-      pointer-events: none;
-    }
-    .kanji-hero::after {
-      content: '';
-      position: absolute;
-      width: 1px;
-      height: 100%;
-      border-left: 1px dashed #cbd5e1;
-      left: 50%;
-      top: 0;
-      pointer-events: none;
-    }
+    .kanji-meta { flex: 1; }
+    .kanji-readings { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; font-size: 0.75rem; }
+    .reading-tag { padding: 2px 8px; border-radius: 8px; font-weight: 700; }
+    .tag-on { background: #fde8ef; color: #9d174d; }
+    .tag-kun { background: #e8f0fe; color: #1d4ed8; }
+    .tag-stroke { background: #fef3c7; color: #92400e; }
+    .tag-radical { background: #f3e8ff; color: #6b21a8; }
 
-    .kanji-meta {
+    .kanji-meaning { font-size: 0.95rem; font-weight: 800; }
+    .stroke-rule { font-size: 0.76rem; color: #64748b; }
+
+    /* 20-Grid Table (2 Baris x 10 Kotak) */
+    .grid-20-wrapper {
+      margin-top: 10px;
       display: flex;
       flex-direction: column;
-      gap: 7px;
-    }
-
-    .kanji-readings {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .reading-tag {
-      font-size: 0.8rem;
-      padding: 3px 10px;
-      border-radius: 8px;
-      font-weight: 700;
-      box-shadow: 2px 2px 5px rgba(0,0,0,0.03);
-    }
-    .tag-on {
-      background: var(--pastel-rose-bg);
-      color: var(--pastel-rose-txt);
-      border: 1px solid var(--pastel-rose-border);
-    }
-    .tag-kun {
-      background: var(--pastel-blue-bg);
-      color: var(--pastel-blue-txt);
-      border: 1px solid var(--pastel-blue-border);
-    }
-    .tag-stroke {
-      background: var(--pastel-sage-bg);
-      color: var(--pastel-sage-txt);
-      border: 1px solid var(--pastel-sage-border);
-    }
-    .tag-radical {
-      background: var(--pastel-lavender-bg);
-      color: var(--pastel-lavender-txt);
-      border: 1px solid var(--pastel-lavender-border);
-    }
-
-    .kanji-meaning {
-      font-size: 0.96rem;
-      font-weight: 800;
-      color: #1e293b;
-    }
-
-    .stroke-rule {
-      font-size: 0.8rem;
-      color: #64748b;
-      font-style: italic;
-    }
-
-    /* Details Rows */
-    .kanji-details-row {
-      padding: 9px 16px;
-      border-bottom: 1px dashed #e2e8f0;
-      font-size: 0.86rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: baseline;
-    }
-
-    .row-label {
-      font-weight: 800;
-      color: #475569;
-      min-width: 95px;
-    }
-
-    .word-pill {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      padding: 3px 10px;
-      border-radius: 8px;
-      font-size: 0.84rem;
-      box-shadow: 1px 1px 3px rgba(0,0,0,0.02);
-    }
-
-    .word-kanji {
-      font-family: 'UD Digi Kyokasho NP-R', 'UD デジタル 教科書体 NP-R', 'UD Digi Kyokasho', sans-serif;
-      font-weight: 800;
-      color: #1d4ed8;
-    }
-
-    .sentence-jp {
-      font-family: 'UD Digi Kyokasho NP-R', 'UD デジタル 教科書体 NP-R', 'UD Digi Kyokasho', sans-serif;
-      font-weight: 700;
-      color: #1e293b;
-    }
-
-    .sentence-id {
-      color: #64748b;
-      font-style: italic;
-      margin-left: 6px;
-    }
-
-    /* 10-Grid Writing Section */
-    .writing-grid-section {
-      padding: 14px 16px;
-      background: #ffffff;
-      overflow-x: auto;
+      gap: 5px;
     }
 
     .grid-label-row {
       display: grid;
-      grid-template-columns: 50px 50px 104px 1fr;
-      gap: 6px;
-      font-size: 0.74rem;
+      grid-template-columns: repeat(10, 1fr);
+      font-size: 0.62rem;
       font-weight: 800;
       color: #64748b;
-      margin-bottom: 6px;
       text-align: center;
     }
 
-    .grid-boxes-10 {
-      display: flex;
-      gap: 6px;
-      justify-content: flex-start;
-      flex-wrap: nowrap;
+    .grid-boxes-row {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 5px;
     }
 
-    /* Tianzige 10 Boxes */
     .tianzige-box {
-      width: 48px;
-      height: 48px;
-      border: 1.5px solid var(--grid-border);
+      aspect-ratio: 1 / 1;
+      border: 1.5px solid #94a3b8;
       border-radius: 8px;
       position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: white;
-      flex-shrink: 0;
-      box-shadow: inset 1px 1px 2px rgba(0,0,0,0.03);
-    }
-
-    /* Cross guidelines (Tian-zi-ge) */
-    .tianzige-box::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      border-top: 1px dashed var(--grid-cross);
-      pointer-events: none;
-    }
-    .tianzige-box::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      top: 0;
-      width: 1px;
-      height: 100%;
-      border-left: 1px dashed var(--grid-cross);
-      pointer-events: none;
-    }
-
-    /* Box 1: Numbered Stroke Order Guidance */
-    .tianzige-box.guidance-box {
-      border: 2px solid #dc2626;
-      background-color: #fff9f9;
-      overflow: hidden;
-      padding: 2px;
-    }
-    .tianzige-box.guidance-box::before,
-    .tianzige-box.guidance-box::after {
-      display: none; /* Cross is inside SVG */
-    }
-
-    .guidance-svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    /* Box 2: Model Character */
-    .tianzige-box.model-box {
-      border: 2px solid #2563eb;
-      background-color: #f8faff;
-    }
-    .tianzige-box.model-box span {
-      font-family: 'UD Digi Kyokasho NP-R', 'UD デジタル 教科書体 NP-R', 'UD Digi Kyokasho', sans-serif;
-      font-size: 30px;
-      font-weight: 900;
-      color: #0f172a;
-      z-index: 1;
-    }
-
-    /* Box 3 & 4: Trace (Grey character for tracing) */
-    .tianzige-box.trace-box {
-      border-color: #94a3b8;
-    }
-    .tianzige-box.trace-box span {
-      font-family: 'UD Digi Kyokasho NP-R', 'UD デジタル 教科書体 NP-R', 'UD Digi Kyokasho', sans-serif;
-      font-size: 30px;
-      font-weight: 600;
-      color: var(--trace-char);
-      z-index: 1;
+      display: flex; align-items: center; justify-content: center;
+      background: #ffffff;
       user-select: none;
     }
 
-    /* Box 5 to 10: Blank practice */
-    .tianzige-box.practice-box {
-      border-color: #94a3b8;
+    .tianzige-box::before {
+      content: ''; position: absolute;
+      top: 50%; left: 0; right: 0;
+      border-top: 1px dashed #cbd5e1;
     }
 
-    /* Exercises Section (10 Reading + 10 Writing) */
-    .exercise-box {
-      background: #fbfcfe;
-      border: 1.8px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 20px;
-      margin-top: 24px;
-      box-shadow: var(--clay-shadow-box);
-      page-break-inside: avoid;
+    .tianzige-box::after {
+      content: ''; position: absolute;
+      left: 50%; top: 0; bottom: 0;
+      border-left: 1px dashed #cbd5e1;
     }
 
-    .exercise-title {
-      font-size: 0.96rem;
-      font-weight: 800;
-      color: #1e3a8a;
-      margin-bottom: 12px;
+    .guidance-box { border-color: #dc2626; border-width: 2px; }
+    .guidance-box svg { width: 90%; height: 90%; z-index: 2; }
+    .model-box { border-color: #2563eb; border-width: 2px; }
+    .model-box span { font-size: 2rem; font-weight: 800; color: #0f172a; z-index: 2; }
+    .trace-box span { font-size: 2rem; font-weight: 700; color: #cbd5e1; z-index: 2; }
+
+    /* Ruled Writing Line */
+    .ruled-writing-row {
+      margin-top: 8px;
+      padding-top: 6px;
+      border-top: 1px dotted #cbd5e1;
       display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .exercise-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .exercise-item {
-      font-size: 0.88rem;
-      background: white;
-      padding: 9px 12px;
-      border-radius: 10px;
-      border: 1.5px solid #edf2f7;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 2px 2px 6px rgba(0,0,0,0.02);
-    }
-
-    .exercise-q {
-      font-family: 'UD Digi Kyokasho NP-R', 'UD デジタル 教科書体 NP-R', 'UD Digi Kyokasho', sans-serif;
-      font-weight: 600;
-      color: #1e293b;
-    }
-
-    .answer-space {
-      display: inline-block;
-      min-width: 60px;
-      border-bottom: 1.5px dotted #94a3b8;
-      text-align: center;
-      color: transparent;
-      padding: 0 4px;
-    }
-
-    .answer-key {
+      flex-direction: column;
+      gap: 5px;
       font-size: 0.78rem;
-      color: #059669;
-      font-weight: 700;
-      background: #ecfdf5;
-      padding: 2px 7px;
-      border-radius: 6px;
-      border: 1px solid #a7f3d0;
-      white-space: nowrap;
     }
 
-    .page-break {
-      page-break-after: always;
-      break-after: page;
+    .ruled-item { display: flex; align-items: baseline; gap: 8px; }
+    .ruled-lbl { font-weight: 700; color: #475569; white-space: nowrap; font-size: 0.74rem; }
+    .ruled-line { flex: 1; border-bottom: 1.5px dotted #94a3b8; height: 14px; }
+
+    /* Exercises */
+    .exercise-box {
+      background: #fdfbf7;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 16px;
+      padding: 16px 18px;
+      margin-top: 20px;
     }
 
-    /* Print Styles (A4 Optimized) */
+    .exercise-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 8px; }
+    .exercise-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .exercise-item { background: #ffffff; border: 1px solid #cbd5e1; padding: 8px 12px; border-radius: 10px; font-size: 0.85rem; }
+    .answer-key { display: inline-block; font-size: 0.75rem; font-weight: 700; color: #9d174d; background: #fde8ef; padding: 2px 6px; border-radius: 6px; margin-top: 4px; }
+
+    @page {
+      size: A4 portrait;
+      margin: 8mm 10mm;
+    }
+
     @media print {
-      body {
-        background: white !important;
-        color: black !important;
-      }
-
-      .no-print {
-        display: none !important;
-      }
-
-      .container {
-        max-width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-      }
-
-      .worksheet-page {
-        box-shadow: none !important;
-        border: none !important;
-        border-radius: 0 !important;
-        padding: 6mm 8mm !important;
-        margin-bottom: 0 !important;
-      }
-
-      .kanji-card {
-        border: 1px solid #475569 !important;
-        box-shadow: none !important;
-        page-break-inside: avoid !important;
-        margin-bottom: 14px !important;
-        border-radius: 10px !important;
-      }
-
-      .kanji-hero {
-        border: 1.5px solid black !important;
-        box-shadow: none !important;
-      }
-
-      .tianzige-box {
-        border: 1px solid #475569 !important;
-        width: 38px !important;
-        height: 38px !important;
-        box-shadow: none !important;
-      }
-
-      .tianzige-box.guidance-box {
-        border: 1.5px solid #dc2626 !important;
-      }
-
-      .tianzige-box.model-box {
-        border: 1.5px solid black !important;
-      }
-
-      .tianzige-box.model-box span {
-        font-size: 24px !important;
-      }
-
-      .tianzige-box.trace-box span {
-        font-size: 24px !important;
-        color: #94a3b8 !important;
-      }
-
-      .exercise-grid {
-        grid-template-columns: 1fr 1fr !important;
-      }
-
-      .exercise-item {
-        border: 1px solid #cbd5e1 !important;
-        box-shadow: none !important;
-      }
-
-      .answer-key {
-        display: none !important;
-      }
+      body { background: #ffffff !important; padding: 0 !important; font-family: var(--font-kyokasho) !important; }
+      .no-print-toolbar { display: none !important; }
+      .container { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
+      .worksheet-page { box-shadow: none !important; border: none !important; padding: 0 !important; margin-bottom: 10mm !important; }
+      .kanji-unit { page-break-inside: avoid !important; }
+      .exercise-box { page-break-inside: avoid !important; }
+      .answer-key { display: none !important; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Toolbar / Navigasi Layar -->
-  <div class="toolbar no-print">
-    <div class="toolbar-title">
-      <h1>🎌 Lembar Latihan Kanji IRODORI A2.2 (JFT-Basic A2)</h1>
-      <span class="badge-clay">Claymorphism Pastel Calm • 10-Grid</span>
+  <div class="no-print-toolbar">
+    <div style="font-weight: 800; font-size: 1rem;">
+      🎌 Lembar Latihan Kanji IRODORI A2.2 (20 Kotak Grid • UD Digi Kyokasho)
     </div>
-
-    <div class="toolbar-actions">
-      <label for="babSelector" style="font-size: 0.86rem; font-weight: 700;">Pilih Bab:</label>
-      <select id="babSelector" class="select-bab" onchange="filterBab(this.value)">
-        <option value="all">Tampilkan Semua (Bab 1 - 18)</option>
-        <option value="1" >Bab 1: 先週、日本に来たばかりです</option><option value="2" >Bab 2: まじめそうな人ですね</option><option value="3" selected>Bab 3: アレルギーがあるので、食べられないんです</option><option value="4" >Bab 4: しょうゆをつけないで食べてください</option><option value="5" >Bab 5: 早く予約したほうがいいですよ</option><option value="6" >Bab 6: いろいろなところに行けて、よかったです</option><option value="7" >Bab 7: 雨が降ったら、ホールでやります</option><option value="8" >Bab 8: 屋台はどこかわかりますか？</option><option value="9" >Bab 9: 成人の日は、何をするんですか？</option><option value="10" >Bab 10: どんな服を着て行けばいいですか？</option><option value="11" >Bab 11: ポイントカードを忘れてしまいました</option><option value="12" >Bab 12: このボタンを押すと、エコモードに変わります</option><option value="13" >Bab 13: いろいろな資料を展示してあります</option><option value="14" >Bab 14: 外国からの観光客のための情報がたくさんあります</option><option value="15" >Bab 15: 水がもったいないですよ</option><option value="16" >Bab 16: 地震が来ても、あわてて動かないでください</option><option value="17" >Bab 17: 日本語が前より話せるようになりました</option><option value="18" >Bab 18: 将来、自分の会社を作ろうと思います</option>
-      </select>
-
-      <button class="btn-clay btn-primary-clay" onclick="window.print()">
-        🖨️ Cetak / Simpan PDF (A4)
-      </button>
-
-      <button class="btn-clay btn-outline-clay" id="toggleAnswerBtn" onclick="toggleAnswers()">
-        👁️ Kunci Jawaban: Sembunyikan
-      </button>
+    <div>
+      <button class="btn-print" onclick="window.print()">🖨️ Cetak A4 / Simpan PDF</button>
     </div>
   </div>
 
   <div class="container">
     
-      <!-- Bab 3 Worksheet -->
       <div class="worksheet-page" id="bab-3">
         
-        <!-- Header Bab -->
         <div class="sheet-header">
-          <div class="curriculum-tag">IRODORI: Nihongo de Kurashito Kotoba • 初級2 (A2.2 / JFT-Basic)</div>
+          <div class="curriculum-tag">IRODORI: Nihongo de Kurashito Kotoba • 初級2 (A2.2)</div>
           <h2 class="sheet-title">第3課 アレルギーがあるので、食べられないんです</h2>
           <div class="sheet-subtitle">Bab 3: Karena Ada Alergi, Saya Tidak Bisa Makan — Topik: レストランで (Di Restoran)</div>
 
-          <!-- Identitas Siswa -->
           <div class="student-info-grid">
-            <div class="info-field">
-              <span class="label">Nama:</span>
-              <span class="line"></span>
-            </div>
-            <div class="info-field">
-              <span class="label">Tanggal:</span>
-              <span class="line"></span>
-            </div>
-            <div class="info-field">
-              <span class="label">Kelas:</span>
-              <span class="line"></span>
-            </div>
-            <div class="info-field">
-              <span class="label">Nilai:</span>
-              <span class="score-box">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ 100</span>
-            </div>
+            <div>Nama: ________________</div>
+            <div>Tanggal: ______________</div>
+            <div>Kelas: _______________</div>
+            <div>Nilai: _______ / 100</div>
           </div>
         </div>
 
-        <!-- Judul Bagian Target Kanji -->
-        <div class="section-title">
-          <span>✍️ Target Kanji, Cara Baca, & 10 Kotak Grid Latihan Menulis (十字リーダー格)</span>
-        </div>
-
-        <!-- Daftar Kanji Cards -->
-        
-          <div class="kanji-card">
-            <!-- Header Kartu Kanji -->
-            <div class="kanji-header">
-              <div class="kanji-hero">
-                <span>注</span>
-              </div>
-              <div class="kanji-meta">
-                <div class="kanji-readings">
-                  <span class="reading-tag tag-on">音 (Onyomi): チュウ</span>
-                  <span class="reading-tag tag-kun">訓 (Kunyomi): そそ-ぐ</span>
-                  <span class="reading-tag tag-stroke">Goresan: 8 画</span>
-                  <span class="reading-tag tag-radical">Radikal: 氵 (air)</span>
+        <div class="kanji-list-container">
+          
+            <div class="kanji-unit">
+              
+              <div class="kanji-header">
+                <div class="kanji-hero">
+                  <span>注</span>
                 </div>
-                <div class="kanji-meaning">Arti: Mencurahkan / Memesan</div>
-                <div class="stroke-rule">Urutan goresan: 氵 di kiri (3 goresan), 主 (tuan/utama) di kanan (5 goresan).</div>
+                <div class="kanji-meta">
+                  <div class="kanji-readings">
+                    <span class="reading-tag tag-on">音: チュウ</span>
+                    <span class="reading-tag tag-kun">訓: そそ-ぐ</span>
+                    <span class="reading-tag tag-stroke">Goresan: 8 画</span>
+                    <span class="reading-tag tag-radical">Radikal: 氵 (air)</span>
+                  </div>
+                  <div class="kanji-meaning">Arti: Mencurahkan / Memesan</div>
+                  <div class="stroke-rule">Urutan goresan: 氵 di kiri (3 goresan), 主 (tuan/utama) di kanan (5 goresan).</div>
+                </div>
               </div>
-            </div>
 
-            <!-- Baris Kosakata Terkait -->
-            <div class="kanji-details-row">
-              <span class="row-label">Kosakata Bab:</span>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">注文</span> (ちゅうもん): pesanan
-                  </span>
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">注意</span> (ちゅうい): perhatian
-                  </span>
-                
+              <div style="font-size: 0.8rem; margin-bottom: 6px;">
+                <strong>Kosakata:</strong>
+                <span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>注文</strong> (ちゅうもん): pesanan</span><span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>注意</strong> (ちゅうい): perhatian</span>
               </div>
-            </div>
 
-            <!-- Baris Contoh Kalimat Bab -->
-            <div class="kanji-details-row">
-              <span class="row-label">Contoh Kalimat:</span>
-              <div>
-                <span class="sentence-jp">ご注(ちゅう)文(もん)はお決(き)まりですか？</span>
-                <span class="sentence-id">Apakah sudah menentukan pesanan Anda?</span>
+              <div style="font-size: 0.8rem; margin-bottom: 8px;">
+                <strong>Contoh:</strong> <span>ご注(ちゅう)文(もん)はお決(き)まりですか？</span> ➔ <em>"Apakah sudah menentukan pesanan Anda?"</em>
               </div>
-            </div>
 
-            <!-- 10 Kotak Grid Latihan Menulis -->
-            <div class="writing-grid-section">
-              <div class="grid-label-row">
-                <span style="color:#dc2626;">[① Urutan]</span>
-                <span style="color:#2563eb;">[② Contoh]</span>
-                <span style="color:#64748b;">[③-④ Tebalkan]</span>
-                <span style="text-align: right; color:#475569;">[⑤ s.d. ⑩ Latihan Mandiri 6x]</span>
-              </div>
-              <div class="grid-boxes-10">
-                <!-- Kotak 1: Peragaan Urutan Nomor (Guidance Box) -->
-                <div class="tianzige-box guidance-box" title="Urutan goresan dengan nomor petunjuk">
-                  <svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+              <!-- 20 Kotak Grid (2 Baris) -->
+              <div class="grid-20-wrapper">
+                
+                <!-- Baris 1: 10 Kotak -->
+                <div>
+                  <div class="grid-label-row">
+                    <span style="color:#dc2626;">① Urutan</span>
+                    <span style="color:#2563eb;">② Contoh</span>
+                    <span>③ Jiplak</span>
+                    <span>④ Jiplak</span>
+                    <span>⑤ Latih</span>
+                    <span>⑥ Latih</span>
+                    <span>⑦ Latih</span>
+                    <span>⑧ Latih</span>
+                    <span>⑨ Latih</span>
+                    <span>⑩ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
@@ -839,90 +349,110 @@
 	<text transform="matrix(1 0 0 1 32.25 84.77)">8</text>
 </g>
 </svg>
-
+</div>
+                    <div class="tianzige-box model-box"><span>注</span></div>
+                    <div class="tianzige-box trace-box"><span>注</span></div>
+                    <div class="tianzige-box trace-box"><span>注</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 2: Huruf Contoh Tebal (Model Box) -->
-                <div class="tianzige-box model-box" title="Huruf contoh">
-                  <span>注</span>
+                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
+                <div style="margin-top: 4px;">
+                  <div class="grid-label-row">
+                    <span>⑪ Jiplak</span>
+                    <span>⑫ Jiplak</span>
+                    <span>⑬ Latih</span>
+                    <span>⑭ Latih</span>
+                    <span>⑮ Latih</span>
+                    <span>⑯ Latih</span>
+                    <span>⑰ Latih</span>
+                    <span>⑱ Latih</span>
+                    <span>⑲ Latih</span>
+                    <span>⑳ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box trace-box"><span>注</span></div>
+                    <div class="tianzige-box trace-box"><span>注</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 3: Jiplak / Trace 1 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 1">
-                  <span>注</span>
+                <!-- Baris Menulis saat Dicetak -->
+                <div class="ruled-writing-row">
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">✏️ Tulis Kata (注文):</span>
+                    <span class="ruled-line"></span>
+                    <span class="ruled-line"></span>
+                  </div>
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">💬 Salin Kalimat:</span>
+                    <span class="ruled-line"></span>
+                  </div>
                 </div>
 
-                <!-- Kotak 4: Jiplak / Trace 2 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 2">
-                  <span>注</span>
-                </div>
-
-                <!-- Kotak 5 s.d. 10: Latihan Mandiri (6 Kotak Kosong Bergaris Bantu) -->
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
               </div>
+
             </div>
-          </div>
-        
-          <div class="kanji-card">
-            <!-- Header Kartu Kanji -->
-            <div class="kanji-header">
-              <div class="kanji-hero">
-                <span>文</span>
-              </div>
-              <div class="kanji-meta">
-                <div class="kanji-readings">
-                  <span class="reading-tag tag-on">音 (Onyomi): ブン / モン</span>
-                  <span class="reading-tag tag-kun">訓 (Kunyomi): ふみ</span>
-                  <span class="reading-tag tag-stroke">Goresan: 4 画</span>
-                  <span class="reading-tag tag-radical">Radikal: 文 (sastra)</span>
+          
+            <div class="kanji-unit">
+              
+              <div class="kanji-header">
+                <div class="kanji-hero">
+                  <span>文</span>
                 </div>
-                <div class="kanji-meaning">Arti: Kalimat / Pola / Tulisan</div>
-                <div class="stroke-rule">Urutan goresan: Titik atas, garis horizontal panjang, sapuan miring kiri, sapuan miring kanan melintang.</div>
+                <div class="kanji-meta">
+                  <div class="kanji-readings">
+                    <span class="reading-tag tag-on">音: ブン / モン</span>
+                    <span class="reading-tag tag-kun">訓: ふみ</span>
+                    <span class="reading-tag tag-stroke">Goresan: 4 画</span>
+                    <span class="reading-tag tag-radical">Radikal: 文 (sastra)</span>
+                  </div>
+                  <div class="kanji-meaning">Arti: Kalimat / Pola / Tulisan</div>
+                  <div class="stroke-rule">Urutan goresan: Titik atas, garis horizontal panjang, sapuan miring kiri, sapuan miring kanan melintang.</div>
+                </div>
               </div>
-            </div>
 
-            <!-- Baris Kosakata Terkait -->
-            <div class="kanji-details-row">
-              <span class="row-label">Kosakata Bab:</span>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <div style="font-size: 0.8rem; margin-bottom: 6px;">
+                <strong>Kosakata:</strong>
+                <span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>注文</strong> (ちゅうもん): pesanan</span><span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>文化</strong> (ぶんか): kebudayaan</span>
+              </div>
+
+              <div style="font-size: 0.8rem; margin-bottom: 8px;">
+                <strong>Contoh:</strong> <span>ご注(ちゅう)文(もん)はお決(き)まりですか？</span> ➔ <em>"Apakah Anda sudah siap memesan?"</em>
+              </div>
+
+              <!-- 20 Kotak Grid (2 Baris) -->
+              <div class="grid-20-wrapper">
                 
-                  <span class="word-pill">
-                    <span class="word-kanji">注文</span> (ちゅうもん): pesanan
-                  </span>
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">文化</span> (ぶんか): kebudayaan
-                  </span>
-                
-              </div>
-            </div>
-
-            <!-- Baris Contoh Kalimat Bab -->
-            <div class="kanji-details-row">
-              <span class="row-label">Contoh Kalimat:</span>
-              <div>
-                <span class="sentence-jp">ご注(ちゅう)文(もん)はお決(き)まりですか？</span>
-                <span class="sentence-id">Apakah Anda sudah siap memesan?</span>
-              </div>
-            </div>
-
-            <!-- 10 Kotak Grid Latihan Menulis -->
-            <div class="writing-grid-section">
-              <div class="grid-label-row">
-                <span style="color:#dc2626;">[① Urutan]</span>
-                <span style="color:#2563eb;">[② Contoh]</span>
-                <span style="color:#64748b;">[③-④ Tebalkan]</span>
-                <span style="text-align: right; color:#475569;">[⑤ s.d. ⑩ Latihan Mandiri 6x]</span>
-              </div>
-              <div class="grid-boxes-10">
-                <!-- Kotak 1: Peragaan Urutan Nomor (Guidance Box) -->
-                <div class="tianzige-box guidance-box" title="Urutan goresan dengan nomor petunjuk">
-                  <svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: 10 Kotak -->
+                <div>
+                  <div class="grid-label-row">
+                    <span style="color:#dc2626;">① Urutan</span>
+                    <span style="color:#2563eb;">② Contoh</span>
+                    <span>③ Jiplak</span>
+                    <span>④ Jiplak</span>
+                    <span>⑤ Latih</span>
+                    <span>⑥ Latih</span>
+                    <span>⑦ Latih</span>
+                    <span>⑧ Latih</span>
+                    <span>⑨ Latih</span>
+                    <span>⑩ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
@@ -946,90 +476,110 @@
 	<text transform="matrix(1 0 0 1 25.50 46.50)">4</text>
 </g>
 </svg>
-
+</div>
+                    <div class="tianzige-box model-box"><span>文</span></div>
+                    <div class="tianzige-box trace-box"><span>文</span></div>
+                    <div class="tianzige-box trace-box"><span>文</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 2: Huruf Contoh Tebal (Model Box) -->
-                <div class="tianzige-box model-box" title="Huruf contoh">
-                  <span>文</span>
+                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
+                <div style="margin-top: 4px;">
+                  <div class="grid-label-row">
+                    <span>⑪ Jiplak</span>
+                    <span>⑫ Jiplak</span>
+                    <span>⑬ Latih</span>
+                    <span>⑭ Latih</span>
+                    <span>⑮ Latih</span>
+                    <span>⑯ Latih</span>
+                    <span>⑰ Latih</span>
+                    <span>⑱ Latih</span>
+                    <span>⑲ Latih</span>
+                    <span>⑳ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box trace-box"><span>文</span></div>
+                    <div class="tianzige-box trace-box"><span>文</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 3: Jiplak / Trace 1 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 1">
-                  <span>文</span>
+                <!-- Baris Menulis saat Dicetak -->
+                <div class="ruled-writing-row">
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">✏️ Tulis Kata (注文):</span>
+                    <span class="ruled-line"></span>
+                    <span class="ruled-line"></span>
+                  </div>
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">💬 Salin Kalimat:</span>
+                    <span class="ruled-line"></span>
+                  </div>
                 </div>
 
-                <!-- Kotak 4: Jiplak / Trace 2 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 2">
-                  <span>文</span>
-                </div>
-
-                <!-- Kotak 5 s.d. 10: Latihan Mandiri (6 Kotak Kosong Bergaris Bantu) -->
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
               </div>
+
             </div>
-          </div>
-        
-          <div class="kanji-card">
-            <!-- Header Kartu Kanji -->
-            <div class="kanji-header">
-              <div class="kanji-hero">
-                <span>飯</span>
-              </div>
-              <div class="kanji-meta">
-                <div class="kanji-readings">
-                  <span class="reading-tag tag-on">音 (Onyomi): ハン</span>
-                  <span class="reading-tag tag-kun">訓 (Kunyomi): めし</span>
-                  <span class="reading-tag tag-stroke">Goresan: 12 画</span>
-                  <span class="reading-tag tag-radical">Radikal: 飠 (makanan)</span>
+          
+            <div class="kanji-unit">
+              
+              <div class="kanji-header">
+                <div class="kanji-hero">
+                  <span>飯</span>
                 </div>
-                <div class="kanji-meaning">Arti: Nasi / Makanan</div>
-                <div class="stroke-rule">Urutan goresan: Radikal makanan 飠 di kiri (8 goresan), 反 di kanan (4 goresan).</div>
+                <div class="kanji-meta">
+                  <div class="kanji-readings">
+                    <span class="reading-tag tag-on">音: ハン</span>
+                    <span class="reading-tag tag-kun">訓: めし</span>
+                    <span class="reading-tag tag-stroke">Goresan: 12 画</span>
+                    <span class="reading-tag tag-radical">Radikal: 飠 (makanan)</span>
+                  </div>
+                  <div class="kanji-meaning">Arti: Nasi / Makanan</div>
+                  <div class="stroke-rule">Urutan goresan: Radikal makanan 飠 di kiri (8 goresan), 反 di kanan (4 goresan).</div>
+                </div>
               </div>
-            </div>
 
-            <!-- Baris Kosakata Terkait -->
-            <div class="kanji-details-row">
-              <span class="row-label">Kosakata Bab:</span>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <div style="font-size: 0.8rem; margin-bottom: 6px;">
+                <strong>Kosakata:</strong>
+                <span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>ご飯</strong> (ごはん): nasi / hidangan</span><span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>朝飯</strong> (あさめし): sarapan</span>
+              </div>
+
+              <div style="font-size: 0.8rem; margin-bottom: 8px;">
+                <strong>Contoh:</strong> <span>ご飯(はん)は、おかわり自(じ)由(ゆう)です。</span> ➔ <em>"Tambah nasi bebas (gratis ambil sepuasnya)."</em>
+              </div>
+
+              <!-- 20 Kotak Grid (2 Baris) -->
+              <div class="grid-20-wrapper">
                 
-                  <span class="word-pill">
-                    <span class="word-kanji">ご飯</span> (ごはん): nasi / hidangan
-                  </span>
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">朝飯</span> (あさめし): sarapan
-                  </span>
-                
-              </div>
-            </div>
-
-            <!-- Baris Contoh Kalimat Bab -->
-            <div class="kanji-details-row">
-              <span class="row-label">Contoh Kalimat:</span>
-              <div>
-                <span class="sentence-jp">ご飯(はん)は、おかわり自(じ)由(ゆう)です。</span>
-                <span class="sentence-id">Tambah nasi bebas (gratis ambil sepuasnya).</span>
-              </div>
-            </div>
-
-            <!-- 10 Kotak Grid Latihan Menulis -->
-            <div class="writing-grid-section">
-              <div class="grid-label-row">
-                <span style="color:#dc2626;">[① Urutan]</span>
-                <span style="color:#2563eb;">[② Contoh]</span>
-                <span style="color:#64748b;">[③-④ Tebalkan]</span>
-                <span style="text-align: right; color:#475569;">[⑤ s.d. ⑩ Latihan Mandiri 6x]</span>
-              </div>
-              <div class="grid-boxes-10">
-                <!-- Kotak 1: Peragaan Urutan Nomor (Guidance Box) -->
-                <div class="tianzige-box guidance-box" title="Urutan goresan dengan nomor petunjuk">
-                  <svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: 10 Kotak -->
+                <div>
+                  <div class="grid-label-row">
+                    <span style="color:#dc2626;">① Urutan</span>
+                    <span style="color:#2563eb;">② Contoh</span>
+                    <span>③ Jiplak</span>
+                    <span>④ Jiplak</span>
+                    <span>⑤ Latih</span>
+                    <span>⑥ Latih</span>
+                    <span>⑦ Latih</span>
+                    <span>⑧ Latih</span>
+                    <span>⑨ Latih</span>
+                    <span>⑩ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
@@ -1073,90 +623,110 @@
 	<text transform="matrix(1 0 0 1 63.94 56.30)">12</text>
 </g>
 </svg>
-
+</div>
+                    <div class="tianzige-box model-box"><span>飯</span></div>
+                    <div class="tianzige-box trace-box"><span>飯</span></div>
+                    <div class="tianzige-box trace-box"><span>飯</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 2: Huruf Contoh Tebal (Model Box) -->
-                <div class="tianzige-box model-box" title="Huruf contoh">
-                  <span>飯</span>
+                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
+                <div style="margin-top: 4px;">
+                  <div class="grid-label-row">
+                    <span>⑪ Jiplak</span>
+                    <span>⑫ Jiplak</span>
+                    <span>⑬ Latih</span>
+                    <span>⑭ Latih</span>
+                    <span>⑮ Latih</span>
+                    <span>⑯ Latih</span>
+                    <span>⑰ Latih</span>
+                    <span>⑱ Latih</span>
+                    <span>⑲ Latih</span>
+                    <span>⑳ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box trace-box"><span>飯</span></div>
+                    <div class="tianzige-box trace-box"><span>飯</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 3: Jiplak / Trace 1 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 1">
-                  <span>飯</span>
+                <!-- Baris Menulis saat Dicetak -->
+                <div class="ruled-writing-row">
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">✏️ Tulis Kata (ご飯):</span>
+                    <span class="ruled-line"></span>
+                    <span class="ruled-line"></span>
+                  </div>
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">💬 Salin Kalimat:</span>
+                    <span class="ruled-line"></span>
+                  </div>
                 </div>
 
-                <!-- Kotak 4: Jiplak / Trace 2 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 2">
-                  <span>飯</span>
-                </div>
-
-                <!-- Kotak 5 s.d. 10: Latihan Mandiri (6 Kotak Kosong Bergaris Bantu) -->
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
               </div>
+
             </div>
-          </div>
-        
-          <div class="kanji-card">
-            <!-- Header Kartu Kanji -->
-            <div class="kanji-header">
-              <div class="kanji-hero">
-                <span>会</span>
-              </div>
-              <div class="kanji-meta">
-                <div class="kanji-readings">
-                  <span class="reading-tag tag-on">音 (Onyomi): カイ</span>
-                  <span class="reading-tag tag-kun">訓 (Kunyomi): あ-う</span>
-                  <span class="reading-tag tag-stroke">Goresan: 6 画</span>
-                  <span class="reading-tag tag-radical">Radikal: 人 (manusia)</span>
+          
+            <div class="kanji-unit">
+              
+              <div class="kanji-header">
+                <div class="kanji-hero">
+                  <span>会</span>
                 </div>
-                <div class="kanji-meaning">Arti: Bertemu / Perkumpulan</div>
-                <div class="stroke-rule">Urutan goresan: Bentuk atap 人 di atas (2 goresan), lalu 二 dan ム di bawah.</div>
+                <div class="kanji-meta">
+                  <div class="kanji-readings">
+                    <span class="reading-tag tag-on">音: カイ</span>
+                    <span class="reading-tag tag-kun">訓: あ-う</span>
+                    <span class="reading-tag tag-stroke">Goresan: 6 画</span>
+                    <span class="reading-tag tag-radical">Radikal: 人 (manusia)</span>
+                  </div>
+                  <div class="kanji-meaning">Arti: Bertemu / Perkumpulan</div>
+                  <div class="stroke-rule">Urutan goresan: Bentuk atap 人 di atas (2 goresan), lalu 二 dan ム di bawah.</div>
+                </div>
               </div>
-            </div>
 
-            <!-- Baris Kosakata Terkait -->
-            <div class="kanji-details-row">
-              <span class="row-label">Kosakata Bab:</span>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <div style="font-size: 0.8rem; margin-bottom: 6px;">
+                <strong>Kosakata:</strong>
+                <span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>会計</strong> (かいけい): pembayaran / kasir</span><span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>会社</strong> (かいしゃ): perusahaan</span>
+              </div>
+
+              <div style="font-size: 0.8rem; margin-bottom: 8px;">
+                <strong>Contoh:</strong> <span>お会(かい)計(けい)はこちらです。</span> ➔ <em>"Pembayaran kasir ada di sebelah sini."</em>
+              </div>
+
+              <!-- 20 Kotak Grid (2 Baris) -->
+              <div class="grid-20-wrapper">
                 
-                  <span class="word-pill">
-                    <span class="word-kanji">会計</span> (かいけい): pembayaran / kasir
-                  </span>
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">会社</span> (かいしゃ): perusahaan
-                  </span>
-                
-              </div>
-            </div>
-
-            <!-- Baris Contoh Kalimat Bab -->
-            <div class="kanji-details-row">
-              <span class="row-label">Contoh Kalimat:</span>
-              <div>
-                <span class="sentence-jp">お会(かい)計(けい)はこちらです。</span>
-                <span class="sentence-id">Pembayaran kasir ada di sebelah sini.</span>
-              </div>
-            </div>
-
-            <!-- 10 Kotak Grid Latihan Menulis -->
-            <div class="writing-grid-section">
-              <div class="grid-label-row">
-                <span style="color:#dc2626;">[① Urutan]</span>
-                <span style="color:#2563eb;">[② Contoh]</span>
-                <span style="color:#64748b;">[③-④ Tebalkan]</span>
-                <span style="text-align: right; color:#475569;">[⑤ s.d. ⑩ Latihan Mandiri 6x]</span>
-              </div>
-              <div class="grid-boxes-10">
-                <!-- Kotak 1: Peragaan Urutan Nomor (Guidance Box) -->
-                <div class="tianzige-box guidance-box" title="Urutan goresan dengan nomor petunjuk">
-                  <svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: 10 Kotak -->
+                <div>
+                  <div class="grid-label-row">
+                    <span style="color:#dc2626;">① Urutan</span>
+                    <span style="color:#2563eb;">② Contoh</span>
+                    <span>③ Jiplak</span>
+                    <span>④ Jiplak</span>
+                    <span>⑤ Latih</span>
+                    <span>⑥ Latih</span>
+                    <span>⑦ Latih</span>
+                    <span>⑧ Latih</span>
+                    <span>⑨ Latih</span>
+                    <span>⑩ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
@@ -1188,90 +758,110 @@
 	<text transform="matrix(1 0 0 1 69.75 76.63)">6</text>
 </g>
 </svg>
-
+</div>
+                    <div class="tianzige-box model-box"><span>会</span></div>
+                    <div class="tianzige-box trace-box"><span>会</span></div>
+                    <div class="tianzige-box trace-box"><span>会</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 2: Huruf Contoh Tebal (Model Box) -->
-                <div class="tianzige-box model-box" title="Huruf contoh">
-                  <span>会</span>
+                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
+                <div style="margin-top: 4px;">
+                  <div class="grid-label-row">
+                    <span>⑪ Jiplak</span>
+                    <span>⑫ Jiplak</span>
+                    <span>⑬ Latih</span>
+                    <span>⑭ Latih</span>
+                    <span>⑮ Latih</span>
+                    <span>⑯ Latih</span>
+                    <span>⑰ Latih</span>
+                    <span>⑱ Latih</span>
+                    <span>⑲ Latih</span>
+                    <span>⑳ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box trace-box"><span>会</span></div>
+                    <div class="tianzige-box trace-box"><span>会</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 3: Jiplak / Trace 1 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 1">
-                  <span>会</span>
+                <!-- Baris Menulis saat Dicetak -->
+                <div class="ruled-writing-row">
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">✏️ Tulis Kata (会計):</span>
+                    <span class="ruled-line"></span>
+                    <span class="ruled-line"></span>
+                  </div>
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">💬 Salin Kalimat:</span>
+                    <span class="ruled-line"></span>
+                  </div>
                 </div>
 
-                <!-- Kotak 4: Jiplak / Trace 2 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 2">
-                  <span>会</span>
-                </div>
-
-                <!-- Kotak 5 s.d. 10: Latihan Mandiri (6 Kotak Kosong Bergaris Bantu) -->
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
               </div>
+
             </div>
-          </div>
-        
-          <div class="kanji-card">
-            <!-- Header Kartu Kanji -->
-            <div class="kanji-header">
-              <div class="kanji-hero">
-                <span>計</span>
-              </div>
-              <div class="kanji-meta">
-                <div class="kanji-readings">
-                  <span class="reading-tag tag-on">音 (Onyomi): ケイ</span>
-                  <span class="reading-tag tag-kun">訓 (Kunyomi): はか-る</span>
-                  <span class="reading-tag tag-stroke">Goresan: 9 画</span>
-                  <span class="reading-tag tag-radical">Radikal: 言 (kata)</span>
+          
+            <div class="kanji-unit">
+              
+              <div class="kanji-header">
+                <div class="kanji-hero">
+                  <span>計</span>
                 </div>
-                <div class="kanji-meaning">Arti: Mengukur / Menghitung</div>
-                <div class="stroke-rule">Urutan goresan: Kata 言 di sisi kiri (7 goresan), 十 di sisi kanan (2 goresan).</div>
+                <div class="kanji-meta">
+                  <div class="kanji-readings">
+                    <span class="reading-tag tag-on">音: ケイ</span>
+                    <span class="reading-tag tag-kun">訓: はか-る</span>
+                    <span class="reading-tag tag-stroke">Goresan: 9 画</span>
+                    <span class="reading-tag tag-radical">Radikal: 言 (kata)</span>
+                  </div>
+                  <div class="kanji-meaning">Arti: Mengukur / Menghitung</div>
+                  <div class="stroke-rule">Urutan goresan: Kata 言 di sisi kiri (7 goresan), 十 di sisi kanan (2 goresan).</div>
+                </div>
               </div>
-            </div>
 
-            <!-- Baris Kosakata Terkait -->
-            <div class="kanji-details-row">
-              <span class="row-label">Kosakata Bab:</span>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <div style="font-size: 0.8rem; margin-bottom: 6px;">
+                <strong>Kosakata:</strong>
+                <span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>会計</strong> (かいけい): pembayaran / kasir</span><span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>計画</strong> (けいかく): rencana</span>
+              </div>
+
+              <div style="font-size: 0.8rem; margin-bottom: 8px;">
+                <strong>Contoh:</strong> <span>お会(かい)計(けい)をお願(ねが)いします。</span> ➔ <em>"Tolong minta bon pembayarannya."</em>
+              </div>
+
+              <!-- 20 Kotak Grid (2 Baris) -->
+              <div class="grid-20-wrapper">
                 
-                  <span class="word-pill">
-                    <span class="word-kanji">会計</span> (かいけい): pembayaran / kasir
-                  </span>
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">計画</span> (けいかく): rencana
-                  </span>
-                
-              </div>
-            </div>
-
-            <!-- Baris Contoh Kalimat Bab -->
-            <div class="kanji-details-row">
-              <span class="row-label">Contoh Kalimat:</span>
-              <div>
-                <span class="sentence-jp">お会(かい)計(けい)をお願(ねが)いします。</span>
-                <span class="sentence-id">Tolong minta bon pembayarannya.</span>
-              </div>
-            </div>
-
-            <!-- 10 Kotak Grid Latihan Menulis -->
-            <div class="writing-grid-section">
-              <div class="grid-label-row">
-                <span style="color:#dc2626;">[① Urutan]</span>
-                <span style="color:#2563eb;">[② Contoh]</span>
-                <span style="color:#64748b;">[③-④ Tebalkan]</span>
-                <span style="text-align: right; color:#475569;">[⑤ s.d. ⑩ Latihan Mandiri 6x]</span>
-              </div>
-              <div class="grid-boxes-10">
-                <!-- Kotak 1: Peragaan Urutan Nomor (Guidance Box) -->
-                <div class="tianzige-box guidance-box" title="Urutan goresan dengan nomor petunjuk">
-                  <svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: 10 Kotak -->
+                <div>
+                  <div class="grid-label-row">
+                    <span style="color:#dc2626;">① Urutan</span>
+                    <span style="color:#2563eb;">② Contoh</span>
+                    <span>③ Jiplak</span>
+                    <span>④ Jiplak</span>
+                    <span>⑤ Latih</span>
+                    <span>⑥ Latih</span>
+                    <span>⑦ Latih</span>
+                    <span>⑧ Latih</span>
+                    <span>⑨ Latih</span>
+                    <span>⑩ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
@@ -1307,90 +897,110 @@
 	<text transform="matrix(1 0 0 1 65.50 12.50)">9</text>
 </g>
 </svg>
-
+</div>
+                    <div class="tianzige-box model-box"><span>計</span></div>
+                    <div class="tianzige-box trace-box"><span>計</span></div>
+                    <div class="tianzige-box trace-box"><span>計</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 2: Huruf Contoh Tebal (Model Box) -->
-                <div class="tianzige-box model-box" title="Huruf contoh">
-                  <span>計</span>
+                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
+                <div style="margin-top: 4px;">
+                  <div class="grid-label-row">
+                    <span>⑪ Jiplak</span>
+                    <span>⑫ Jiplak</span>
+                    <span>⑬ Latih</span>
+                    <span>⑭ Latih</span>
+                    <span>⑮ Latih</span>
+                    <span>⑯ Latih</span>
+                    <span>⑰ Latih</span>
+                    <span>⑱ Latih</span>
+                    <span>⑲ Latih</span>
+                    <span>⑳ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box trace-box"><span>計</span></div>
+                    <div class="tianzige-box trace-box"><span>計</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 3: Jiplak / Trace 1 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 1">
-                  <span>計</span>
+                <!-- Baris Menulis saat Dicetak -->
+                <div class="ruled-writing-row">
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">✏️ Tulis Kata (会計):</span>
+                    <span class="ruled-line"></span>
+                    <span class="ruled-line"></span>
+                  </div>
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">💬 Salin Kalimat:</span>
+                    <span class="ruled-line"></span>
+                  </div>
                 </div>
 
-                <!-- Kotak 4: Jiplak / Trace 2 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 2">
-                  <span>計</span>
-                </div>
-
-                <!-- Kotak 5 s.d. 10: Latihan Mandiri (6 Kotak Kosong Bergaris Bantu) -->
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
               </div>
+
             </div>
-          </div>
-        
-          <div class="kanji-card">
-            <!-- Header Kartu Kanji -->
-            <div class="kanji-header">
-              <div class="kanji-hero">
-                <span>牛</span>
-              </div>
-              <div class="kanji-meta">
-                <div class="kanji-readings">
-                  <span class="reading-tag tag-on">音 (Onyomi): ギュウ</span>
-                  <span class="reading-tag tag-kun">訓 (Kunyomi): うし</span>
-                  <span class="reading-tag tag-stroke">Goresan: 4 画</span>
-                  <span class="reading-tag tag-radical">Radikal: 牛 (sapi)</span>
+          
+            <div class="kanji-unit">
+              
+              <div class="kanji-header">
+                <div class="kanji-hero">
+                  <span>牛</span>
                 </div>
-                <div class="kanji-meaning">Arti: Sapi</div>
-                <div class="stroke-rule">Urutan goresan: Sapuan miring pendek atas, garis horizontal atas, garis horizontal panjang, garis vertikal tembus.</div>
+                <div class="kanji-meta">
+                  <div class="kanji-readings">
+                    <span class="reading-tag tag-on">音: ギュウ</span>
+                    <span class="reading-tag tag-kun">訓: うし</span>
+                    <span class="reading-tag tag-stroke">Goresan: 4 画</span>
+                    <span class="reading-tag tag-radical">Radikal: 牛 (sapi)</span>
+                  </div>
+                  <div class="kanji-meaning">Arti: Sapi</div>
+                  <div class="stroke-rule">Urutan goresan: Sapuan miring pendek atas, garis horizontal atas, garis horizontal panjang, garis vertikal tembus.</div>
+                </div>
               </div>
-            </div>
 
-            <!-- Baris Kosakata Terkait -->
-            <div class="kanji-details-row">
-              <span class="row-label">Kosakata Bab:</span>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <div style="font-size: 0.8rem; margin-bottom: 6px;">
+                <strong>Kosakata:</strong>
+                <span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>牛乳</strong> (ぎゅうにゅう): susu sapi</span><span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>牛肉</strong> (ぎゅうにく): daging sapi</span>
+              </div>
+
+              <div style="font-size: 0.8rem; margin-bottom: 8px;">
+                <strong>Contoh:</strong> <span>牛(ぎゅう)乳(にゅう)と生(なま)の魚(さかな)が苦(にが)手(て)です。</span> ➔ <em>"Saya kurang bisa (tidak suka/alergi) susu sapi dan ikan mentah."</em>
+              </div>
+
+              <!-- 20 Kotak Grid (2 Baris) -->
+              <div class="grid-20-wrapper">
                 
-                  <span class="word-pill">
-                    <span class="word-kanji">牛乳</span> (ぎゅうにゅう): susu sapi
-                  </span>
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">牛肉</span> (ぎゅうにく): daging sapi
-                  </span>
-                
-              </div>
-            </div>
-
-            <!-- Baris Contoh Kalimat Bab -->
-            <div class="kanji-details-row">
-              <span class="row-label">Contoh Kalimat:</span>
-              <div>
-                <span class="sentence-jp">牛(ぎゅう)乳(にゅう)と生(なま)の魚(さかな)が苦(にが)手(て)です。</span>
-                <span class="sentence-id">Saya kurang bisa (tidak suka/alergi) susu sapi dan ikan mentah.</span>
-              </div>
-            </div>
-
-            <!-- 10 Kotak Grid Latihan Menulis -->
-            <div class="writing-grid-section">
-              <div class="grid-label-row">
-                <span style="color:#dc2626;">[① Urutan]</span>
-                <span style="color:#2563eb;">[② Contoh]</span>
-                <span style="color:#64748b;">[③-④ Tebalkan]</span>
-                <span style="text-align: right; color:#475569;">[⑤ s.d. ⑩ Latihan Mandiri 6x]</span>
-              </div>
-              <div class="grid-boxes-10">
-                <!-- Kotak 1: Peragaan Urutan Nomor (Guidance Box) -->
-                <div class="tianzige-box guidance-box" title="Urutan goresan dengan nomor petunjuk">
-                  <svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: 10 Kotak -->
+                <div>
+                  <div class="grid-label-row">
+                    <span style="color:#dc2626;">① Urutan</span>
+                    <span style="color:#2563eb;">② Contoh</span>
+                    <span>③ Jiplak</span>
+                    <span>④ Jiplak</span>
+                    <span>⑤ Latih</span>
+                    <span>⑥ Latih</span>
+                    <span>⑦ Latih</span>
+                    <span>⑧ Latih</span>
+                    <span>⑨ Latih</span>
+                    <span>⑩ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
@@ -1410,90 +1020,110 @@
 	<text transform="matrix(1 0 0 1 43.00 12.50)">4</text>
 </g>
 </svg>
-
+</div>
+                    <div class="tianzige-box model-box"><span>牛</span></div>
+                    <div class="tianzige-box trace-box"><span>牛</span></div>
+                    <div class="tianzige-box trace-box"><span>牛</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 2: Huruf Contoh Tebal (Model Box) -->
-                <div class="tianzige-box model-box" title="Huruf contoh">
-                  <span>牛</span>
+                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
+                <div style="margin-top: 4px;">
+                  <div class="grid-label-row">
+                    <span>⑪ Jiplak</span>
+                    <span>⑫ Jiplak</span>
+                    <span>⑬ Latih</span>
+                    <span>⑭ Latih</span>
+                    <span>⑮ Latih</span>
+                    <span>⑯ Latih</span>
+                    <span>⑰ Latih</span>
+                    <span>⑱ Latih</span>
+                    <span>⑲ Latih</span>
+                    <span>⑳ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box trace-box"><span>牛</span></div>
+                    <div class="tianzige-box trace-box"><span>牛</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 3: Jiplak / Trace 1 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 1">
-                  <span>牛</span>
+                <!-- Baris Menulis saat Dicetak -->
+                <div class="ruled-writing-row">
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">✏️ Tulis Kata (牛乳):</span>
+                    <span class="ruled-line"></span>
+                    <span class="ruled-line"></span>
+                  </div>
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">💬 Salin Kalimat:</span>
+                    <span class="ruled-line"></span>
+                  </div>
                 </div>
 
-                <!-- Kotak 4: Jiplak / Trace 2 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 2">
-                  <span>牛</span>
-                </div>
-
-                <!-- Kotak 5 s.d. 10: Latihan Mandiri (6 Kotak Kosong Bergaris Bantu) -->
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
               </div>
+
             </div>
-          </div>
-        
-          <div class="kanji-card">
-            <!-- Header Kartu Kanji -->
-            <div class="kanji-header">
-              <div class="kanji-hero">
-                <span>乳</span>
-              </div>
-              <div class="kanji-meta">
-                <div class="kanji-readings">
-                  <span class="reading-tag tag-on">音 (Onyomi): ニュウ</span>
-                  <span class="reading-tag tag-kun">訓 (Kunyomi): ちち</span>
-                  <span class="reading-tag tag-stroke">Goresan: 8 画</span>
-                  <span class="reading-tag tag-radical">Radikal: 乙 (kait)</span>
+          
+            <div class="kanji-unit">
+              
+              <div class="kanji-header">
+                <div class="kanji-hero">
+                  <span>乳</span>
                 </div>
-                <div class="kanji-meaning">Arti: Susu</div>
-                <div class="stroke-rule">Urutan goresan: Sisi kiri: 爪 dan 子 bagian atas (4 goresan), sisi kanan 乚 (kait lengkung).</div>
+                <div class="kanji-meta">
+                  <div class="kanji-readings">
+                    <span class="reading-tag tag-on">音: ニュウ</span>
+                    <span class="reading-tag tag-kun">訓: ちち</span>
+                    <span class="reading-tag tag-stroke">Goresan: 8 画</span>
+                    <span class="reading-tag tag-radical">Radikal: 乙 (kait)</span>
+                  </div>
+                  <div class="kanji-meaning">Arti: Susu</div>
+                  <div class="stroke-rule">Urutan goresan: Sisi kiri: 爪 dan 子 bagian atas (4 goresan), sisi kanan 乚 (kait lengkung).</div>
+                </div>
               </div>
-            </div>
 
-            <!-- Baris Kosakata Terkait -->
-            <div class="kanji-details-row">
-              <span class="row-label">Kosakata Bab:</span>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <div style="font-size: 0.8rem; margin-bottom: 6px;">
+                <strong>Kosakata:</strong>
+                <span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>牛乳</strong> (ぎゅうにゅう): susu sapi</span><span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>豆乳</strong> (とうにゅう): susu kedelai</span>
+              </div>
+
+              <div style="font-size: 0.8rem; margin-bottom: 8px;">
+                <strong>Contoh:</strong> <span>毎(まい)朝(あさ)、牛(ぎゅう)乳(にゅう)を飲(の)みます。</span> ➔ <em>"Setiap pagi minum susu sapi."</em>
+              </div>
+
+              <!-- 20 Kotak Grid (2 Baris) -->
+              <div class="grid-20-wrapper">
                 
-                  <span class="word-pill">
-                    <span class="word-kanji">牛乳</span> (ぎゅうにゅう): susu sapi
-                  </span>
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">豆乳</span> (とうにゅう): susu kedelai
-                  </span>
-                
-              </div>
-            </div>
-
-            <!-- Baris Contoh Kalimat Bab -->
-            <div class="kanji-details-row">
-              <span class="row-label">Contoh Kalimat:</span>
-              <div>
-                <span class="sentence-jp">毎(まい)朝(あさ)、牛(ぎゅう)乳(にゅう)を飲(の)みます。</span>
-                <span class="sentence-id">Setiap pagi minum susu sapi.</span>
-              </div>
-            </div>
-
-            <!-- 10 Kotak Grid Latihan Menulis -->
-            <div class="writing-grid-section">
-              <div class="grid-label-row">
-                <span style="color:#dc2626;">[① Urutan]</span>
-                <span style="color:#2563eb;">[② Contoh]</span>
-                <span style="color:#64748b;">[③-④ Tebalkan]</span>
-                <span style="text-align: right; color:#475569;">[⑤ s.d. ⑩ Latihan Mandiri 6x]</span>
-              </div>
-              <div class="grid-boxes-10">
-                <!-- Kotak 1: Peragaan Urutan Nomor (Guidance Box) -->
-                <div class="tianzige-box guidance-box" title="Urutan goresan dengan nomor petunjuk">
-                  <svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: 10 Kotak -->
+                <div>
+                  <div class="grid-label-row">
+                    <span style="color:#dc2626;">① Urutan</span>
+                    <span style="color:#2563eb;">② Contoh</span>
+                    <span>③ Jiplak</span>
+                    <span>④ Jiplak</span>
+                    <span>⑤ Latih</span>
+                    <span>⑥ Latih</span>
+                    <span>⑦ Latih</span>
+                    <span>⑧ Latih</span>
+                    <span>⑨ Latih</span>
+                    <span>⑩ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
@@ -1529,90 +1159,110 @@
 	<text transform="matrix(1 0 0 1 55.50 15.50)">8</text>
 </g>
 </svg>
-
+</div>
+                    <div class="tianzige-box model-box"><span>乳</span></div>
+                    <div class="tianzige-box trace-box"><span>乳</span></div>
+                    <div class="tianzige-box trace-box"><span>乳</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 2: Huruf Contoh Tebal (Model Box) -->
-                <div class="tianzige-box model-box" title="Huruf contoh">
-                  <span>乳</span>
+                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
+                <div style="margin-top: 4px;">
+                  <div class="grid-label-row">
+                    <span>⑪ Jiplak</span>
+                    <span>⑫ Jiplak</span>
+                    <span>⑬ Latih</span>
+                    <span>⑭ Latih</span>
+                    <span>⑮ Latih</span>
+                    <span>⑯ Latih</span>
+                    <span>⑰ Latih</span>
+                    <span>⑱ Latih</span>
+                    <span>⑲ Latih</span>
+                    <span>⑳ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box trace-box"><span>乳</span></div>
+                    <div class="tianzige-box trace-box"><span>乳</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 3: Jiplak / Trace 1 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 1">
-                  <span>乳</span>
+                <!-- Baris Menulis saat Dicetak -->
+                <div class="ruled-writing-row">
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">✏️ Tulis Kata (牛乳):</span>
+                    <span class="ruled-line"></span>
+                    <span class="ruled-line"></span>
+                  </div>
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">💬 Salin Kalimat:</span>
+                    <span class="ruled-line"></span>
+                  </div>
                 </div>
 
-                <!-- Kotak 4: Jiplak / Trace 2 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 2">
-                  <span>乳</span>
-                </div>
-
-                <!-- Kotak 5 s.d. 10: Latihan Mandiri (6 Kotak Kosong Bergaris Bantu) -->
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
               </div>
+
             </div>
-          </div>
-        
-          <div class="kanji-card">
-            <!-- Header Kartu Kanji -->
-            <div class="kanji-header">
-              <div class="kanji-hero">
-                <span>予</span>
-              </div>
-              <div class="kanji-meta">
-                <div class="kanji-readings">
-                  <span class="reading-tag tag-on">音 (Onyomi): ヨ</span>
-                  <span class="reading-tag tag-kun">訓 (Kunyomi): -</span>
-                  <span class="reading-tag tag-stroke">Goresan: 4 画</span>
-                  <span class="reading-tag tag-radical">Radikal: 亅 (kait)</span>
+          
+            <div class="kanji-unit">
+              
+              <div class="kanji-header">
+                <div class="kanji-hero">
+                  <span>予</span>
                 </div>
-                <div class="kanji-meaning">Arti: Sebelumnya / Antisipasi</div>
-                <div class="stroke-rule">Urutan goresan: Satu goresan horizontal-diagonal マ atas, lalu garis horizontal tengah, dan vertikal kait.</div>
+                <div class="kanji-meta">
+                  <div class="kanji-readings">
+                    <span class="reading-tag tag-on">音: ヨ</span>
+                    <span class="reading-tag tag-kun">訓: -</span>
+                    <span class="reading-tag tag-stroke">Goresan: 4 画</span>
+                    <span class="reading-tag tag-radical">Radikal: 亅 (kait)</span>
+                  </div>
+                  <div class="kanji-meaning">Arti: Sebelumnya / Antisipasi</div>
+                  <div class="stroke-rule">Urutan goresan: Satu goresan horizontal-diagonal マ atas, lalu garis horizontal tengah, dan vertikal kait.</div>
+                </div>
               </div>
-            </div>
 
-            <!-- Baris Kosakata Terkait -->
-            <div class="kanji-details-row">
-              <span class="row-label">Kosakata Bab:</span>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <div style="font-size: 0.8rem; margin-bottom: 6px;">
+                <strong>Kosakata:</strong>
+                <span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>予約</strong> (よやく): reservasi / pesan</span><span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>予定</strong> (よてい): jadwal/rencana</span>
+              </div>
+
+              <div style="font-size: 0.8rem; margin-bottom: 8px;">
+                <strong>Contoh:</strong> <span>レストランの予(よ)約(やく)をしました。</span> ➔ <em>"Saya sudah membuat reservasi restoran."</em>
+              </div>
+
+              <!-- 20 Kotak Grid (2 Baris) -->
+              <div class="grid-20-wrapper">
                 
-                  <span class="word-pill">
-                    <span class="word-kanji">予約</span> (よやく): reservasi / pesan
-                  </span>
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">予定</span> (よてい): jadwal/rencana
-                  </span>
-                
-              </div>
-            </div>
-
-            <!-- Baris Contoh Kalimat Bab -->
-            <div class="kanji-details-row">
-              <span class="row-label">Contoh Kalimat:</span>
-              <div>
-                <span class="sentence-jp">レストランの予(よ)約(やく)をしました。</span>
-                <span class="sentence-id">Saya sudah membuat reservasi restoran.</span>
-              </div>
-            </div>
-
-            <!-- 10 Kotak Grid Latihan Menulis -->
-            <div class="writing-grid-section">
-              <div class="grid-label-row">
-                <span style="color:#dc2626;">[① Urutan]</span>
-                <span style="color:#2563eb;">[② Contoh]</span>
-                <span style="color:#64748b;">[③-④ Tebalkan]</span>
-                <span style="text-align: right; color:#475569;">[⑤ s.d. ⑩ Latihan Mandiri 6x]</span>
-              </div>
-              <div class="grid-boxes-10">
-                <!-- Kotak 1: Peragaan Urutan Nomor (Guidance Box) -->
-                <div class="tianzige-box guidance-box" title="Urutan goresan dengan nomor petunjuk">
-                  <svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: 10 Kotak -->
+                <div>
+                  <div class="grid-label-row">
+                    <span style="color:#dc2626;">① Urutan</span>
+                    <span style="color:#2563eb;">② Contoh</span>
+                    <span>③ Jiplak</span>
+                    <span>④ Jiplak</span>
+                    <span>⑤ Latih</span>
+                    <span>⑥ Latih</span>
+                    <span>⑦ Latih</span>
+                    <span>⑧ Latih</span>
+                    <span>⑨ Latih</span>
+                    <span>⑩ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
@@ -1638,90 +1288,110 @@
 	<text transform="matrix(1 0 0 1 47.50 53.50)">4</text>
 </g>
 </svg>
-
+</div>
+                    <div class="tianzige-box model-box"><span>予</span></div>
+                    <div class="tianzige-box trace-box"><span>予</span></div>
+                    <div class="tianzige-box trace-box"><span>予</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 2: Huruf Contoh Tebal (Model Box) -->
-                <div class="tianzige-box model-box" title="Huruf contoh">
-                  <span>予</span>
+                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
+                <div style="margin-top: 4px;">
+                  <div class="grid-label-row">
+                    <span>⑪ Jiplak</span>
+                    <span>⑫ Jiplak</span>
+                    <span>⑬ Latih</span>
+                    <span>⑭ Latih</span>
+                    <span>⑮ Latih</span>
+                    <span>⑯ Latih</span>
+                    <span>⑰ Latih</span>
+                    <span>⑱ Latih</span>
+                    <span>⑲ Latih</span>
+                    <span>⑳ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box trace-box"><span>予</span></div>
+                    <div class="tianzige-box trace-box"><span>予</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 3: Jiplak / Trace 1 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 1">
-                  <span>予</span>
+                <!-- Baris Menulis saat Dicetak -->
+                <div class="ruled-writing-row">
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">✏️ Tulis Kata (予約):</span>
+                    <span class="ruled-line"></span>
+                    <span class="ruled-line"></span>
+                  </div>
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">💬 Salin Kalimat:</span>
+                    <span class="ruled-line"></span>
+                  </div>
                 </div>
 
-                <!-- Kotak 4: Jiplak / Trace 2 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 2">
-                  <span>予</span>
-                </div>
-
-                <!-- Kotak 5 s.d. 10: Latihan Mandiri (6 Kotak Kosong Bergaris Bantu) -->
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
               </div>
+
             </div>
-          </div>
-        
-          <div class="kanji-card">
-            <!-- Header Kartu Kanji -->
-            <div class="kanji-header">
-              <div class="kanji-hero">
-                <span>約</span>
-              </div>
-              <div class="kanji-meta">
-                <div class="kanji-readings">
-                  <span class="reading-tag tag-on">音 (Onyomi): ヤク</span>
-                  <span class="reading-tag tag-kun">訓 (Kunyomi): -</span>
-                  <span class="reading-tag tag-stroke">Goresan: 9 画</span>
-                  <span class="reading-tag tag-radical">Radikal: 糸 (benang)</span>
+          
+            <div class="kanji-unit">
+              
+              <div class="kanji-header">
+                <div class="kanji-hero">
+                  <span>約</span>
                 </div>
-                <div class="kanji-meaning">Arti: Janji / Perkiraan</div>
-                <div class="stroke-rule">Urutan goresan: Benang 糸 di sisi kiri (6 goresan), 勺 di sisi kanan (3 goresan).</div>
+                <div class="kanji-meta">
+                  <div class="kanji-readings">
+                    <span class="reading-tag tag-on">音: ヤク</span>
+                    <span class="reading-tag tag-kun">訓: -</span>
+                    <span class="reading-tag tag-stroke">Goresan: 9 画</span>
+                    <span class="reading-tag tag-radical">Radikal: 糸 (benang)</span>
+                  </div>
+                  <div class="kanji-meaning">Arti: Janji / Perkiraan</div>
+                  <div class="stroke-rule">Urutan goresan: Benang 糸 di sisi kiri (6 goresan), 勺 di sisi kanan (3 goresan).</div>
+                </div>
               </div>
-            </div>
 
-            <!-- Baris Kosakata Terkait -->
-            <div class="kanji-details-row">
-              <span class="row-label">Kosakata Bab:</span>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <div style="font-size: 0.8rem; margin-bottom: 6px;">
+                <strong>Kosakata:</strong>
+                <span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>予約</strong> (よやく): reservasi</span><span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>約束</strong> (やくそく): janji</span>
+              </div>
+
+              <div style="font-size: 0.8rem; margin-bottom: 8px;">
+                <strong>Contoh:</strong> <span>レストランの予(よ)約(やく)をしました。</span> ➔ <em>"Sudah memesan tempat di restoran."</em>
+              </div>
+
+              <!-- 20 Kotak Grid (2 Baris) -->
+              <div class="grid-20-wrapper">
                 
-                  <span class="word-pill">
-                    <span class="word-kanji">予約</span> (よやく): reservasi
-                  </span>
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">約束</span> (やくそく): janji
-                  </span>
-                
-              </div>
-            </div>
-
-            <!-- Baris Contoh Kalimat Bab -->
-            <div class="kanji-details-row">
-              <span class="row-label">Contoh Kalimat:</span>
-              <div>
-                <span class="sentence-jp">レストランの予(よ)約(やく)をしました。</span>
-                <span class="sentence-id">Sudah memesan tempat di restoran.</span>
-              </div>
-            </div>
-
-            <!-- 10 Kotak Grid Latihan Menulis -->
-            <div class="writing-grid-section">
-              <div class="grid-label-row">
-                <span style="color:#dc2626;">[① Urutan]</span>
-                <span style="color:#2563eb;">[② Contoh]</span>
-                <span style="color:#64748b;">[③-④ Tebalkan]</span>
-                <span style="text-align: right; color:#475569;">[⑤ s.d. ⑩ Latihan Mandiri 6x]</span>
-              </div>
-              <div class="grid-boxes-10">
-                <!-- Kotak 1: Peragaan Urutan Nomor (Guidance Box) -->
-                <div class="tianzige-box guidance-box" title="Urutan goresan dengan nomor petunjuk">
-                  <svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: 10 Kotak -->
+                <div>
+                  <div class="grid-label-row">
+                    <span style="color:#dc2626;">① Urutan</span>
+                    <span style="color:#2563eb;">② Contoh</span>
+                    <span>③ Jiplak</span>
+                    <span>④ Jiplak</span>
+                    <span>⑤ Latih</span>
+                    <span>⑥ Latih</span>
+                    <span>⑦ Latih</span>
+                    <span>⑧ Latih</span>
+                    <span>⑨ Latih</span>
+                    <span>⑩ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
@@ -1761,94 +1431,110 @@
 	<text transform="matrix(1 0 0 1 55.50 54.50)">9</text>
 </g>
 </svg>
-
+</div>
+                    <div class="tianzige-box model-box"><span>約</span></div>
+                    <div class="tianzige-box trace-box"><span>約</span></div>
+                    <div class="tianzige-box trace-box"><span>約</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 2: Huruf Contoh Tebal (Model Box) -->
-                <div class="tianzige-box model-box" title="Huruf contoh">
-                  <span>約</span>
+                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
+                <div style="margin-top: 4px;">
+                  <div class="grid-label-row">
+                    <span>⑪ Jiplak</span>
+                    <span>⑫ Jiplak</span>
+                    <span>⑬ Latih</span>
+                    <span>⑭ Latih</span>
+                    <span>⑮ Latih</span>
+                    <span>⑯ Latih</span>
+                    <span>⑰ Latih</span>
+                    <span>⑱ Latih</span>
+                    <span>⑲ Latih</span>
+                    <span>⑳ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box trace-box"><span>約</span></div>
+                    <div class="tianzige-box trace-box"><span>約</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 3: Jiplak / Trace 1 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 1">
-                  <span>約</span>
+                <!-- Baris Menulis saat Dicetak -->
+                <div class="ruled-writing-row">
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">✏️ Tulis Kata (予約):</span>
+                    <span class="ruled-line"></span>
+                    <span class="ruled-line"></span>
+                  </div>
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">💬 Salin Kalimat:</span>
+                    <span class="ruled-line"></span>
+                  </div>
                 </div>
 
-                <!-- Kotak 4: Jiplak / Trace 2 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 2">
-                  <span>約</span>
-                </div>
-
-                <!-- Kotak 5 s.d. 10: Latihan Mandiri (6 Kotak Kosong Bergaris Bantu) -->
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
               </div>
+
             </div>
-          </div>
-        
-          <div class="kanji-card">
-            <!-- Header Kartu Kanji -->
-            <div class="kanji-header">
-              <div class="kanji-hero">
-                <span>生</span>
-              </div>
-              <div class="kanji-meta">
-                <div class="kanji-readings">
-                  <span class="reading-tag tag-on">音 (Onyomi): セイ / ショウ</span>
-                  <span class="reading-tag tag-kun">訓 (Kunyomi): なま / い-きる</span>
-                  <span class="reading-tag tag-stroke">Goresan: 5 画</span>
-                  <span class="reading-tag tag-radical">Radikal: 生 (lahir/hidup)</span>
+          
+            <div class="kanji-unit">
+              
+              <div class="kanji-header">
+                <div class="kanji-hero">
+                  <span>生</span>
                 </div>
-                <div class="kanji-meaning">Arti: Mentah / Hidup / Segar</div>
-                <div class="stroke-rule">Urutan goresan: Sapuan miring kiri, horizontal atas, vertikal tengah, dua horizontal bawah.</div>
+                <div class="kanji-meta">
+                  <div class="kanji-readings">
+                    <span class="reading-tag tag-on">音: セイ / ショウ</span>
+                    <span class="reading-tag tag-kun">訓: なま / い-きる</span>
+                    <span class="reading-tag tag-stroke">Goresan: 5 画</span>
+                    <span class="reading-tag tag-radical">Radikal: 生 (lahir/hidup)</span>
+                  </div>
+                  <div class="kanji-meaning">Arti: Mentah / Hidup / Segar</div>
+                  <div class="stroke-rule">Urutan goresan: Sapuan miring kiri, horizontal atas, vertikal tengah, dua horizontal bawah.</div>
+                </div>
               </div>
-            </div>
 
-            <!-- Baris Kosakata Terkait -->
-            <div class="kanji-details-row">
-              <span class="row-label">Kosakata Bab:</span>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">生</span> (なま): mentah / segar
-                  </span>
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">学生</span> (がくせい): pelajar
-                  </span>
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">生まれる</span> (うまれる): lahir
-                  </span>
-                
+              <div style="font-size: 0.8rem; margin-bottom: 6px;">
+                <strong>Kosakata:</strong>
+                <span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>生</strong> (なま): mentah / segar</span><span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>学生</strong> (がくせい): pelajar</span><span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>生まれる</strong> (うまれる): lahir</span>
               </div>
-            </div>
 
-            <!-- Baris Contoh Kalimat Bab -->
-            <div class="kanji-details-row">
-              <span class="row-label">Contoh Kalimat:</span>
-              <div>
-                <span class="sentence-jp">生(なま)の魚(さかな)が食(た)べられません。</span>
-                <span class="sentence-id">Saya tidak bisa makan ikan mentah.</span>
+              <div style="font-size: 0.8rem; margin-bottom: 8px;">
+                <strong>Contoh:</strong> <span>生(なま)の魚(さかな)が食(た)べられません。</span> ➔ <em>"Saya tidak bisa makan ikan mentah."</em>
               </div>
-            </div>
 
-            <!-- 10 Kotak Grid Latihan Menulis -->
-            <div class="writing-grid-section">
-              <div class="grid-label-row">
-                <span style="color:#dc2626;">[① Urutan]</span>
-                <span style="color:#2563eb;">[② Contoh]</span>
-                <span style="color:#64748b;">[③-④ Tebalkan]</span>
-                <span style="text-align: right; color:#475569;">[⑤ s.d. ⑩ Latihan Mandiri 6x]</span>
-              </div>
-              <div class="grid-boxes-10">
-                <!-- Kotak 1: Peragaan Urutan Nomor (Guidance Box) -->
-                <div class="tianzige-box guidance-box" title="Urutan goresan dengan nomor petunjuk">
-                  <svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+              <!-- 20 Kotak Grid (2 Baris) -->
+              <div class="grid-20-wrapper">
+                
+                <!-- Baris 1: 10 Kotak -->
+                <div>
+                  <div class="grid-label-row">
+                    <span style="color:#dc2626;">① Urutan</span>
+                    <span style="color:#2563eb;">② Contoh</span>
+                    <span>③ Jiplak</span>
+                    <span>④ Jiplak</span>
+                    <span>⑤ Latih</span>
+                    <span>⑥ Latih</span>
+                    <span>⑦ Latih</span>
+                    <span>⑧ Latih</span>
+                    <span>⑨ Latih</span>
+                    <span>⑩ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
@@ -1870,90 +1556,110 @@
 	<text transform="matrix(1 0 0 1 8.50 89.50)">5</text>
 </g>
 </svg>
-
+</div>
+                    <div class="tianzige-box model-box"><span>生</span></div>
+                    <div class="tianzige-box trace-box"><span>生</span></div>
+                    <div class="tianzige-box trace-box"><span>生</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 2: Huruf Contoh Tebal (Model Box) -->
-                <div class="tianzige-box model-box" title="Huruf contoh">
-                  <span>生</span>
+                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
+                <div style="margin-top: 4px;">
+                  <div class="grid-label-row">
+                    <span>⑪ Jiplak</span>
+                    <span>⑫ Jiplak</span>
+                    <span>⑬ Latih</span>
+                    <span>⑭ Latih</span>
+                    <span>⑮ Latih</span>
+                    <span>⑯ Latih</span>
+                    <span>⑰ Latih</span>
+                    <span>⑱ Latih</span>
+                    <span>⑲ Latih</span>
+                    <span>⑳ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box trace-box"><span>生</span></div>
+                    <div class="tianzige-box trace-box"><span>生</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 3: Jiplak / Trace 1 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 1">
-                  <span>生</span>
+                <!-- Baris Menulis saat Dicetak -->
+                <div class="ruled-writing-row">
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">✏️ Tulis Kata (生):</span>
+                    <span class="ruled-line"></span>
+                    <span class="ruled-line"></span>
+                  </div>
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">💬 Salin Kalimat:</span>
+                    <span class="ruled-line"></span>
+                  </div>
                 </div>
 
-                <!-- Kotak 4: Jiplak / Trace 2 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 2">
-                  <span>生</span>
-                </div>
-
-                <!-- Kotak 5 s.d. 10: Latihan Mandiri (6 Kotak Kosong Bergaris Bantu) -->
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
               </div>
+
             </div>
-          </div>
-        
-          <div class="kanji-card">
-            <!-- Header Kartu Kanji -->
-            <div class="kanji-header">
-              <div class="kanji-hero">
-                <span>番</span>
-              </div>
-              <div class="kanji-meta">
-                <div class="kanji-readings">
-                  <span class="reading-tag tag-on">音 (Onyomi): バン</span>
-                  <span class="reading-tag tag-kun">訓 (Kunyomi): -</span>
-                  <span class="reading-tag tag-stroke">Goresan: 12 画</span>
-                  <span class="reading-tag tag-radical">Radikal: 田 (sawah)</span>
+          
+            <div class="kanji-unit">
+              
+              <div class="kanji-header">
+                <div class="kanji-hero">
+                  <span>番</span>
                 </div>
-                <div class="kanji-meaning">Arti: Nomor / Giliran</div>
-                <div class="stroke-rule">Urutan goresan: Bagian atas 釆 (7 goresan: sapuan atas dan 米), bagian bawah 田 (5 goresan).</div>
+                <div class="kanji-meta">
+                  <div class="kanji-readings">
+                    <span class="reading-tag tag-on">音: バン</span>
+                    <span class="reading-tag tag-kun">訓: -</span>
+                    <span class="reading-tag tag-stroke">Goresan: 12 画</span>
+                    <span class="reading-tag tag-radical">Radikal: 田 (sawah)</span>
+                  </div>
+                  <div class="kanji-meaning">Arti: Nomor / Giliran</div>
+                  <div class="stroke-rule">Urutan goresan: Bagian atas 釆 (7 goresan: sapuan atas dan 米), bagian bawah 田 (5 goresan).</div>
+                </div>
               </div>
-            </div>
 
-            <!-- Baris Kosakata Terkait -->
-            <div class="kanji-details-row">
-              <span class="row-label">Kosakata Bab:</span>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <div style="font-size: 0.8rem; margin-bottom: 6px;">
+                <strong>Kosakata:</strong>
+                <span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>番号</strong> (ばんごう): nomor</span><span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>電話番号</strong> (でんわばんごう): nomor telepon</span>
+              </div>
+
+              <div style="font-size: 0.8rem; margin-bottom: 8px;">
+                <strong>Contoh:</strong> <span>電(でん)話(わ)番(ばん)号(ごう)をお願(ねが)いします。</span> ➔ <em>"Mohon nomor telepon Anda."</em>
+              </div>
+
+              <!-- 20 Kotak Grid (2 Baris) -->
+              <div class="grid-20-wrapper">
                 
-                  <span class="word-pill">
-                    <span class="word-kanji">番号</span> (ばんごう): nomor
-                  </span>
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">電話番号</span> (でんわばんごう): nomor telepon
-                  </span>
-                
-              </div>
-            </div>
-
-            <!-- Baris Contoh Kalimat Bab -->
-            <div class="kanji-details-row">
-              <span class="row-label">Contoh Kalimat:</span>
-              <div>
-                <span class="sentence-jp">電(でん)話(わ)番(ばん)号(ごう)をお願(ねが)いします。</span>
-                <span class="sentence-id">Mohon nomor telepon Anda.</span>
-              </div>
-            </div>
-
-            <!-- 10 Kotak Grid Latihan Menulis -->
-            <div class="writing-grid-section">
-              <div class="grid-label-row">
-                <span style="color:#dc2626;">[① Urutan]</span>
-                <span style="color:#2563eb;">[② Contoh]</span>
-                <span style="color:#64748b;">[③-④ Tebalkan]</span>
-                <span style="text-align: right; color:#475569;">[⑤ s.d. ⑩ Latihan Mandiri 6x]</span>
-              </div>
-              <div class="grid-boxes-10">
-                <!-- Kotak 1: Peragaan Urutan Nomor (Guidance Box) -->
-                <div class="tianzige-box guidance-box" title="Urutan goresan dengan nomor petunjuk">
-                  <svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: 10 Kotak -->
+                <div>
+                  <div class="grid-label-row">
+                    <span style="color:#dc2626;">① Urutan</span>
+                    <span style="color:#2563eb;">② Contoh</span>
+                    <span>③ Jiplak</span>
+                    <span>④ Jiplak</span>
+                    <span>⑤ Latih</span>
+                    <span>⑥ Latih</span>
+                    <span>⑦ Latih</span>
+                    <span>⑧ Latih</span>
+                    <span>⑨ Latih</span>
+                    <span>⑩ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
@@ -1997,90 +1703,110 @@
 	<text transform="matrix(1 0 0 1 34.50 93.13)">12</text>
 </g>
 </svg>
-
+</div>
+                    <div class="tianzige-box model-box"><span>番</span></div>
+                    <div class="tianzige-box trace-box"><span>番</span></div>
+                    <div class="tianzige-box trace-box"><span>番</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 2: Huruf Contoh Tebal (Model Box) -->
-                <div class="tianzige-box model-box" title="Huruf contoh">
-                  <span>番</span>
+                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
+                <div style="margin-top: 4px;">
+                  <div class="grid-label-row">
+                    <span>⑪ Jiplak</span>
+                    <span>⑫ Jiplak</span>
+                    <span>⑬ Latih</span>
+                    <span>⑭ Latih</span>
+                    <span>⑮ Latih</span>
+                    <span>⑯ Latih</span>
+                    <span>⑰ Latih</span>
+                    <span>⑱ Latih</span>
+                    <span>⑲ Latih</span>
+                    <span>⑳ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box trace-box"><span>番</span></div>
+                    <div class="tianzige-box trace-box"><span>番</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 3: Jiplak / Trace 1 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 1">
-                  <span>番</span>
+                <!-- Baris Menulis saat Dicetak -->
+                <div class="ruled-writing-row">
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">✏️ Tulis Kata (番号):</span>
+                    <span class="ruled-line"></span>
+                    <span class="ruled-line"></span>
+                  </div>
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">💬 Salin Kalimat:</span>
+                    <span class="ruled-line"></span>
+                  </div>
                 </div>
 
-                <!-- Kotak 4: Jiplak / Trace 2 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 2">
-                  <span>番</span>
-                </div>
-
-                <!-- Kotak 5 s.d. 10: Latihan Mandiri (6 Kotak Kosong Bergaris Bantu) -->
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
               </div>
+
             </div>
-          </div>
-        
-          <div class="kanji-card">
-            <!-- Header Kartu Kanji -->
-            <div class="kanji-header">
-              <div class="kanji-hero">
-                <span>号</span>
-              </div>
-              <div class="kanji-meta">
-                <div class="kanji-readings">
-                  <span class="reading-tag tag-on">音 (Onyomi): ゴウ</span>
-                  <span class="reading-tag tag-kun">訓 (Kunyomi): -</span>
-                  <span class="reading-tag tag-stroke">Goresan: 5 画</span>
-                  <span class="reading-tag tag-radical">Radikal: 口 (mulut)</span>
+          
+            <div class="kanji-unit">
+              
+              <div class="kanji-header">
+                <div class="kanji-hero">
+                  <span>号</span>
                 </div>
-                <div class="kanji-meaning">Arti: Tanda / Angka / Kode</div>
-                <div class="stroke-rule">Urutan goresan: Kotak 口 di atas (3 goresan), lalu satu garis horizontal dan belok melengkung 丂 bawah.</div>
+                <div class="kanji-meta">
+                  <div class="kanji-readings">
+                    <span class="reading-tag tag-on">音: ゴウ</span>
+                    <span class="reading-tag tag-kun">訓: -</span>
+                    <span class="reading-tag tag-stroke">Goresan: 5 画</span>
+                    <span class="reading-tag tag-radical">Radikal: 口 (mulut)</span>
+                  </div>
+                  <div class="kanji-meaning">Arti: Tanda / Angka / Kode</div>
+                  <div class="stroke-rule">Urutan goresan: Kotak 口 di atas (3 goresan), lalu satu garis horizontal dan belok melengkung 丂 bawah.</div>
+                </div>
               </div>
-            </div>
 
-            <!-- Baris Kosakata Terkait -->
-            <div class="kanji-details-row">
-              <span class="row-label">Kosakata Bab:</span>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <div style="font-size: 0.8rem; margin-bottom: 6px;">
+                <strong>Kosakata:</strong>
+                <span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>番号</strong> (ばんごう): nomor</span><span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>信号</strong> (しんごう): lampu lalu lintas</span>
+              </div>
+
+              <div style="font-size: 0.8rem; margin-bottom: 8px;">
+                <strong>Contoh:</strong> <span>お客(きゃく)様(さま)の電(でん)話(わ)番(ばん)号(ごう)をお願(ねが)いします。</span> ➔ <em>"Boleh minta nomor telepon pelanggan?"</em>
+              </div>
+
+              <!-- 20 Kotak Grid (2 Baris) -->
+              <div class="grid-20-wrapper">
                 
-                  <span class="word-pill">
-                    <span class="word-kanji">番号</span> (ばんごう): nomor
-                  </span>
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">信号</span> (しんごう): lampu lalu lintas
-                  </span>
-                
-              </div>
-            </div>
-
-            <!-- Baris Contoh Kalimat Bab -->
-            <div class="kanji-details-row">
-              <span class="row-label">Contoh Kalimat:</span>
-              <div>
-                <span class="sentence-jp">お客(きゃく)様(さま)の電(でん)話(わ)番(ばん)号(ごう)をお願(ねが)いします。</span>
-                <span class="sentence-id">Boleh minta nomor telepon pelanggan?</span>
-              </div>
-            </div>
-
-            <!-- 10 Kotak Grid Latihan Menulis -->
-            <div class="writing-grid-section">
-              <div class="grid-label-row">
-                <span style="color:#dc2626;">[① Urutan]</span>
-                <span style="color:#2563eb;">[② Contoh]</span>
-                <span style="color:#64748b;">[③-④ Tebalkan]</span>
-                <span style="text-align: right; color:#475569;">[⑤ s.d. ⑩ Latihan Mandiri 6x]</span>
-              </div>
-              <div class="grid-boxes-10">
-                <!-- Kotak 1: Peragaan Urutan Nomor (Guidance Box) -->
-                <div class="tianzige-box guidance-box" title="Urutan goresan dengan nomor petunjuk">
-                  <svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: 10 Kotak -->
+                <div>
+                  <div class="grid-label-row">
+                    <span style="color:#dc2626;">① Urutan</span>
+                    <span style="color:#2563eb;">② Contoh</span>
+                    <span>③ Jiplak</span>
+                    <span>④ Jiplak</span>
+                    <span>⑤ Latih</span>
+                    <span>⑥ Latih</span>
+                    <span>⑦ Latih</span>
+                    <span>⑧ Latih</span>
+                    <span>⑨ Latih</span>
+                    <span>⑩ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
@@ -2108,90 +1834,110 @@
 	<text transform="matrix(1 0 0 1 36.50 55.50)">5</text>
 </g>
 </svg>
-
+</div>
+                    <div class="tianzige-box model-box"><span>号</span></div>
+                    <div class="tianzige-box trace-box"><span>号</span></div>
+                    <div class="tianzige-box trace-box"><span>号</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 2: Huruf Contoh Tebal (Model Box) -->
-                <div class="tianzige-box model-box" title="Huruf contoh">
-                  <span>号</span>
+                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
+                <div style="margin-top: 4px;">
+                  <div class="grid-label-row">
+                    <span>⑪ Jiplak</span>
+                    <span>⑫ Jiplak</span>
+                    <span>⑬ Latih</span>
+                    <span>⑭ Latih</span>
+                    <span>⑮ Latih</span>
+                    <span>⑯ Latih</span>
+                    <span>⑰ Latih</span>
+                    <span>⑱ Latih</span>
+                    <span>⑲ Latih</span>
+                    <span>⑳ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box trace-box"><span>号</span></div>
+                    <div class="tianzige-box trace-box"><span>号</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 3: Jiplak / Trace 1 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 1">
-                  <span>号</span>
+                <!-- Baris Menulis saat Dicetak -->
+                <div class="ruled-writing-row">
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">✏️ Tulis Kata (番号):</span>
+                    <span class="ruled-line"></span>
+                    <span class="ruled-line"></span>
+                  </div>
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">💬 Salin Kalimat:</span>
+                    <span class="ruled-line"></span>
+                  </div>
                 </div>
 
-                <!-- Kotak 4: Jiplak / Trace 2 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 2">
-                  <span>号</span>
-                </div>
-
-                <!-- Kotak 5 s.d. 10: Latihan Mandiri (6 Kotak Kosong Bergaris Bantu) -->
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
               </div>
+
             </div>
-          </div>
-        
-          <div class="kanji-card">
-            <!-- Header Kartu Kanji -->
-            <div class="kanji-header">
-              <div class="kanji-hero">
-                <span>煙</span>
-              </div>
-              <div class="kanji-meta">
-                <div class="kanji-readings">
-                  <span class="reading-tag tag-on">音 (Onyomi): エン</span>
-                  <span class="reading-tag tag-kun">訓 (Kunyomi): けむり</span>
-                  <span class="reading-tag tag-stroke">Goresan: 13 画</span>
-                  <span class="reading-tag tag-radical">Radikal: 火 (api)</span>
+          
+            <div class="kanji-unit">
+              
+              <div class="kanji-header">
+                <div class="kanji-hero">
+                  <span>煙</span>
                 </div>
-                <div class="kanji-meaning">Arti: Asap</div>
-                <div class="stroke-rule">Urutan goresan: Api 火 di kiri (4 goresan), sisi kanan 西/覀 dan 土 di bawah.</div>
+                <div class="kanji-meta">
+                  <div class="kanji-readings">
+                    <span class="reading-tag tag-on">音: エン</span>
+                    <span class="reading-tag tag-kun">訓: けむり</span>
+                    <span class="reading-tag tag-stroke">Goresan: 13 画</span>
+                    <span class="reading-tag tag-radical">Radikal: 火 (api)</span>
+                  </div>
+                  <div class="kanji-meaning">Arti: Asap</div>
+                  <div class="stroke-rule">Urutan goresan: Api 火 di kiri (4 goresan), sisi kanan 西/覀 dan 土 di bawah.</div>
+                </div>
               </div>
-            </div>
 
-            <!-- Baris Kosakata Terkait -->
-            <div class="kanji-details-row">
-              <span class="row-label">Kosakata Bab:</span>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <div style="font-size: 0.8rem; margin-bottom: 6px;">
+                <strong>Kosakata:</strong>
+                <span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>禁煙</strong> (きんえん): dilarang merokok</span><span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>煙</strong> (けむり): asap</span>
+              </div>
+
+              <div style="font-size: 0.8rem; margin-bottom: 8px;">
+                <strong>Contoh:</strong> <span>お店(みせ)の中(なか)は禁(きん)煙(えん)です。</span> ➔ <em>"Di dalam toko/restoran dilarang merokok."</em>
+              </div>
+
+              <!-- 20 Kotak Grid (2 Baris) -->
+              <div class="grid-20-wrapper">
                 
-                  <span class="word-pill">
-                    <span class="word-kanji">禁煙</span> (きんえん): dilarang merokok
-                  </span>
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">煙</span> (けむり): asap
-                  </span>
-                
-              </div>
-            </div>
-
-            <!-- Baris Contoh Kalimat Bab -->
-            <div class="kanji-details-row">
-              <span class="row-label">Contoh Kalimat:</span>
-              <div>
-                <span class="sentence-jp">お店(みせ)の中(なか)は禁(きん)煙(えん)です。</span>
-                <span class="sentence-id">Di dalam toko/restoran dilarang merokok.</span>
-              </div>
-            </div>
-
-            <!-- 10 Kotak Grid Latihan Menulis -->
-            <div class="writing-grid-section">
-              <div class="grid-label-row">
-                <span style="color:#dc2626;">[① Urutan]</span>
-                <span style="color:#2563eb;">[② Contoh]</span>
-                <span style="color:#64748b;">[③-④ Tebalkan]</span>
-                <span style="text-align: right; color:#475569;">[⑤ s.d. ⑩ Latihan Mandiri 6x]</span>
-              </div>
-              <div class="grid-boxes-10">
-                <!-- Kotak 1: Peragaan Urutan Nomor (Guidance Box) -->
-                <div class="tianzige-box guidance-box" title="Urutan goresan dengan nomor petunjuk">
-                  <svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: 10 Kotak -->
+                <div>
+                  <div class="grid-label-row">
+                    <span style="color:#dc2626;">① Urutan</span>
+                    <span style="color:#2563eb;">② Contoh</span>
+                    <span>③ Jiplak</span>
+                    <span>④ Jiplak</span>
+                    <span>⑤ Latih</span>
+                    <span>⑥ Latih</span>
+                    <span>⑦ Latih</span>
+                    <span>⑧ Latih</span>
+                    <span>⑨ Latih</span>
+                    <span>⑩ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
@@ -2237,90 +1983,110 @@
 	<text transform="matrix(1 0 0 1 44.50 85.63)">13</text>
 </g>
 </svg>
-
+</div>
+                    <div class="tianzige-box model-box"><span>煙</span></div>
+                    <div class="tianzige-box trace-box"><span>煙</span></div>
+                    <div class="tianzige-box trace-box"><span>煙</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 2: Huruf Contoh Tebal (Model Box) -->
-                <div class="tianzige-box model-box" title="Huruf contoh">
-                  <span>煙</span>
+                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
+                <div style="margin-top: 4px;">
+                  <div class="grid-label-row">
+                    <span>⑪ Jiplak</span>
+                    <span>⑫ Jiplak</span>
+                    <span>⑬ Latih</span>
+                    <span>⑭ Latih</span>
+                    <span>⑮ Latih</span>
+                    <span>⑯ Latih</span>
+                    <span>⑰ Latih</span>
+                    <span>⑱ Latih</span>
+                    <span>⑲ Latih</span>
+                    <span>⑳ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box trace-box"><span>煙</span></div>
+                    <div class="tianzige-box trace-box"><span>煙</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 3: Jiplak / Trace 1 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 1">
-                  <span>煙</span>
+                <!-- Baris Menulis saat Dicetak -->
+                <div class="ruled-writing-row">
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">✏️ Tulis Kata (禁煙):</span>
+                    <span class="ruled-line"></span>
+                    <span class="ruled-line"></span>
+                  </div>
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">💬 Salin Kalimat:</span>
+                    <span class="ruled-line"></span>
+                  </div>
                 </div>
 
-                <!-- Kotak 4: Jiplak / Trace 2 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 2">
-                  <span>煙</span>
-                </div>
-
-                <!-- Kotak 5 s.d. 10: Latihan Mandiri (6 Kotak Kosong Bergaris Bantu) -->
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
               </div>
+
             </div>
-          </div>
-        
-          <div class="kanji-card">
-            <!-- Header Kartu Kanji -->
-            <div class="kanji-header">
-              <div class="kanji-hero">
-                <span>禁</span>
-              </div>
-              <div class="kanji-meta">
-                <div class="kanji-readings">
-                  <span class="reading-tag tag-on">音 (Onyomi): キン</span>
-                  <span class="reading-tag tag-kun">訓 (Kunyomi): -</span>
-                  <span class="reading-tag tag-stroke">Goresan: 13 画</span>
-                  <span class="reading-tag tag-radical">Radikal: 示 (altar/tanda)</span>
+          
+            <div class="kanji-unit">
+              
+              <div class="kanji-header">
+                <div class="kanji-hero">
+                  <span>禁</span>
                 </div>
-                <div class="kanji-meaning">Arti: Larangan</div>
-                <div class="stroke-rule">Urutan goresan: Hutan 林 di atas (8 goresan), 示 di bawah (5 goresan).</div>
+                <div class="kanji-meta">
+                  <div class="kanji-readings">
+                    <span class="reading-tag tag-on">音: キン</span>
+                    <span class="reading-tag tag-kun">訓: -</span>
+                    <span class="reading-tag tag-stroke">Goresan: 13 画</span>
+                    <span class="reading-tag tag-radical">Radikal: 示 (altar/tanda)</span>
+                  </div>
+                  <div class="kanji-meaning">Arti: Larangan</div>
+                  <div class="stroke-rule">Urutan goresan: Hutan 林 di atas (8 goresan), 示 di bawah (5 goresan).</div>
+                </div>
               </div>
-            </div>
 
-            <!-- Baris Kosakata Terkait -->
-            <div class="kanji-details-row">
-              <span class="row-label">Kosakata Bab:</span>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <div style="font-size: 0.8rem; margin-bottom: 6px;">
+                <strong>Kosakata:</strong>
+                <span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>禁煙</strong> (きんえん): dilarang merokok</span><span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>禁止</strong> (きんし): dilarang keras</span>
+              </div>
+
+              <div style="font-size: 0.8rem; margin-bottom: 8px;">
+                <strong>Contoh:</strong> <span>全(ぜん)席(せき)禁(きん)煙(えん)となっております。</span> ➔ <em>"Semua tempat duduk bebas rokok (dilarang merokok)."</em>
+              </div>
+
+              <!-- 20 Kotak Grid (2 Baris) -->
+              <div class="grid-20-wrapper">
                 
-                  <span class="word-pill">
-                    <span class="word-kanji">禁煙</span> (きんえん): dilarang merokok
-                  </span>
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">禁止</span> (きんし): dilarang keras
-                  </span>
-                
-              </div>
-            </div>
-
-            <!-- Baris Contoh Kalimat Bab -->
-            <div class="kanji-details-row">
-              <span class="row-label">Contoh Kalimat:</span>
-              <div>
-                <span class="sentence-jp">全(ぜん)席(せき)禁(きん)煙(えん)となっております。</span>
-                <span class="sentence-id">Semua tempat duduk bebas rokok (dilarang merokok).</span>
-              </div>
-            </div>
-
-            <!-- 10 Kotak Grid Latihan Menulis -->
-            <div class="writing-grid-section">
-              <div class="grid-label-row">
-                <span style="color:#dc2626;">[① Urutan]</span>
-                <span style="color:#2563eb;">[② Contoh]</span>
-                <span style="color:#64748b;">[③-④ Tebalkan]</span>
-                <span style="text-align: right; color:#475569;">[⑤ s.d. ⑩ Latihan Mandiri 6x]</span>
-              </div>
-              <div class="grid-boxes-10">
-                <!-- Kotak 1: Peragaan Urutan Nomor (Guidance Box) -->
-                <div class="tianzige-box guidance-box" title="Urutan goresan dengan nomor petunjuk">
-                  <svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: 10 Kotak -->
+                <div>
+                  <div class="grid-label-row">
+                    <span style="color:#dc2626;">① Urutan</span>
+                    <span style="color:#2563eb;">② Contoh</span>
+                    <span>③ Jiplak</span>
+                    <span>④ Jiplak</span>
+                    <span>⑤ Latih</span>
+                    <span>⑥ Latih</span>
+                    <span>⑦ Latih</span>
+                    <span>⑧ Latih</span>
+                    <span>⑨ Latih</span>
+                    <span>⑩ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
@@ -2370,90 +2136,110 @@
 	<text transform="matrix(1 0 0 1 75.94 78.73)">13</text>
 </g>
 </svg>
-
+</div>
+                    <div class="tianzige-box model-box"><span>禁</span></div>
+                    <div class="tianzige-box trace-box"><span>禁</span></div>
+                    <div class="tianzige-box trace-box"><span>禁</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 2: Huruf Contoh Tebal (Model Box) -->
-                <div class="tianzige-box model-box" title="Huruf contoh">
-                  <span>禁</span>
+                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
+                <div style="margin-top: 4px;">
+                  <div class="grid-label-row">
+                    <span>⑪ Jiplak</span>
+                    <span>⑫ Jiplak</span>
+                    <span>⑬ Latih</span>
+                    <span>⑭ Latih</span>
+                    <span>⑮ Latih</span>
+                    <span>⑯ Latih</span>
+                    <span>⑰ Latih</span>
+                    <span>⑱ Latih</span>
+                    <span>⑲ Latih</span>
+                    <span>⑳ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box trace-box"><span>禁</span></div>
+                    <div class="tianzige-box trace-box"><span>禁</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 3: Jiplak / Trace 1 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 1">
-                  <span>禁</span>
+                <!-- Baris Menulis saat Dicetak -->
+                <div class="ruled-writing-row">
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">✏️ Tulis Kata (禁煙):</span>
+                    <span class="ruled-line"></span>
+                    <span class="ruled-line"></span>
+                  </div>
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">💬 Salin Kalimat:</span>
+                    <span class="ruled-line"></span>
+                  </div>
                 </div>
 
-                <!-- Kotak 4: Jiplak / Trace 2 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 2">
-                  <span>禁</span>
-                </div>
-
-                <!-- Kotak 5 s.d. 10: Latihan Mandiri (6 Kotak Kosong Bergaris Bantu) -->
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
               </div>
+
             </div>
-          </div>
-        
-          <div class="kanji-card">
-            <!-- Header Kartu Kanji -->
-            <div class="kanji-header">
-              <div class="kanji-hero">
-                <span>様</span>
-              </div>
-              <div class="kanji-meta">
-                <div class="kanji-readings">
-                  <span class="reading-tag tag-on">音 (Onyomi): ヨウ</span>
-                  <span class="reading-tag tag-kun">訓 (Kunyomi): さま</span>
-                  <span class="reading-tag tag-stroke">Goresan: 14 画</span>
-                  <span class="reading-tag tag-radical">Radikal: 木 (kayu/pohon)</span>
+          
+            <div class="kanji-unit">
+              
+              <div class="kanji-header">
+                <div class="kanji-hero">
+                  <span>様</span>
                 </div>
-                <div class="kanji-meaning">Arti: Tuan / Nyonya / Bentuk</div>
-                <div class="stroke-rule">Urutan goresan: Pohon 木 di kiri (4 goresan), 𦍌 (domba) dan 水 (tiga sapuan) di kanan.</div>
+                <div class="kanji-meta">
+                  <div class="kanji-readings">
+                    <span class="reading-tag tag-on">音: ヨウ</span>
+                    <span class="reading-tag tag-kun">訓: さま</span>
+                    <span class="reading-tag tag-stroke">Goresan: 14 画</span>
+                    <span class="reading-tag tag-radical">Radikal: 木 (kayu/pohon)</span>
+                  </div>
+                  <div class="kanji-meaning">Arti: Tuan / Nyonya / Bentuk</div>
+                  <div class="stroke-rule">Urutan goresan: Pohon 木 di kiri (4 goresan), 𦍌 (domba) dan 水 (tiga sapuan) di kanan.</div>
+                </div>
               </div>
-            </div>
 
-            <!-- Baris Kosakata Terkait -->
-            <div class="kanji-details-row">
-              <span class="row-label">Kosakata Bab:</span>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <div style="font-size: 0.8rem; margin-bottom: 6px;">
+                <strong>Kosakata:</strong>
+                <span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>～様</strong> (さま): tuan / nyonya</span><span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>お客様</strong> (おきゃくさま): pelanggan terhormat</span>
+              </div>
+
+              <div style="font-size: 0.8rem; margin-bottom: 8px;">
+                <strong>Contoh:</strong> <span>お客(きゃく)様(さま)の電(でん)話(わ)番(ばん)号(ごう)をお願(ねが)いします。</span> ➔ <em>"Tolong sebutkan nomor telepon Anda, pelanggan yang terhormat."</em>
+              </div>
+
+              <!-- 20 Kotak Grid (2 Baris) -->
+              <div class="grid-20-wrapper">
                 
-                  <span class="word-pill">
-                    <span class="word-kanji">～様</span> (さま): tuan / nyonya
-                  </span>
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">お客様</span> (おきゃくさま): pelanggan terhormat
-                  </span>
-                
-              </div>
-            </div>
-
-            <!-- Baris Contoh Kalimat Bab -->
-            <div class="kanji-details-row">
-              <span class="row-label">Contoh Kalimat:</span>
-              <div>
-                <span class="sentence-jp">お客(きゃく)様(さま)の電(でん)話(わ)番(ばん)号(ごう)をお願(ねが)いします。</span>
-                <span class="sentence-id">Tolong sebutkan nomor telepon Anda, pelanggan yang terhormat.</span>
-              </div>
-            </div>
-
-            <!-- 10 Kotak Grid Latihan Menulis -->
-            <div class="writing-grid-section">
-              <div class="grid-label-row">
-                <span style="color:#dc2626;">[① Urutan]</span>
-                <span style="color:#2563eb;">[② Contoh]</span>
-                <span style="color:#64748b;">[③-④ Tebalkan]</span>
-                <span style="text-align: right; color:#475569;">[⑤ s.d. ⑩ Latihan Mandiri 6x]</span>
-              </div>
-              <div class="grid-boxes-10">
-                <!-- Kotak 1: Peragaan Urutan Nomor (Guidance Box) -->
-                <div class="tianzige-box guidance-box" title="Urutan goresan dengan nomor petunjuk">
-                  <svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: 10 Kotak -->
+                <div>
+                  <div class="grid-label-row">
+                    <span style="color:#dc2626;">① Urutan</span>
+                    <span style="color:#2563eb;">② Contoh</span>
+                    <span>③ Jiplak</span>
+                    <span>④ Jiplak</span>
+                    <span>⑤ Latih</span>
+                    <span>⑥ Latih</span>
+                    <span>⑦ Latih</span>
+                    <span>⑧ Latih</span>
+                    <span>⑨ Latih</span>
+                    <span>⑩ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
@@ -2503,90 +2289,110 @@
 	<text transform="matrix(1 0 0 1 85.50 78.13)">14</text>
 </g>
 </svg>
-
+</div>
+                    <div class="tianzige-box model-box"><span>様</span></div>
+                    <div class="tianzige-box trace-box"><span>様</span></div>
+                    <div class="tianzige-box trace-box"><span>様</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 2: Huruf Contoh Tebal (Model Box) -->
-                <div class="tianzige-box model-box" title="Huruf contoh">
-                  <span>様</span>
+                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
+                <div style="margin-top: 4px;">
+                  <div class="grid-label-row">
+                    <span>⑪ Jiplak</span>
+                    <span>⑫ Jiplak</span>
+                    <span>⑬ Latih</span>
+                    <span>⑭ Latih</span>
+                    <span>⑮ Latih</span>
+                    <span>⑯ Latih</span>
+                    <span>⑰ Latih</span>
+                    <span>⑱ Latih</span>
+                    <span>⑲ Latih</span>
+                    <span>⑳ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box trace-box"><span>様</span></div>
+                    <div class="tianzige-box trace-box"><span>様</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 3: Jiplak / Trace 1 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 1">
-                  <span>様</span>
+                <!-- Baris Menulis saat Dicetak -->
+                <div class="ruled-writing-row">
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">✏️ Tulis Kata (～様):</span>
+                    <span class="ruled-line"></span>
+                    <span class="ruled-line"></span>
+                  </div>
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">💬 Salin Kalimat:</span>
+                    <span class="ruled-line"></span>
+                  </div>
                 </div>
 
-                <!-- Kotak 4: Jiplak / Trace 2 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 2">
-                  <span>様</span>
-                </div>
-
-                <!-- Kotak 5 s.d. 10: Latihan Mandiri (6 Kotak Kosong Bergaris Bantu) -->
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
               </div>
+
             </div>
-          </div>
-        
-          <div class="kanji-card">
-            <!-- Header Kartu Kanji -->
-            <div class="kanji-header">
-              <div class="kanji-hero">
-                <span>由</span>
-              </div>
-              <div class="kanji-meta">
-                <div class="kanji-readings">
-                  <span class="reading-tag tag-on">音 (Onyomi): ユウ / ユ</span>
-                  <span class="reading-tag tag-kun">訓 (Kunyomi): よし</span>
-                  <span class="reading-tag tag-stroke">Goresan: 5 画</span>
-                  <span class="reading-tag tag-radical">Radikal: 田 (sawah)</span>
+          
+            <div class="kanji-unit">
+              
+              <div class="kanji-header">
+                <div class="kanji-hero">
+                  <span>由</span>
                 </div>
-                <div class="kanji-meaning">Arti: Alasan / Asal / Bebas</div>
-                <div class="stroke-rule">Urutan goresan: Kotak dengan garis vertikal tengah yang menjulang ke atas menembus garis atas.</div>
+                <div class="kanji-meta">
+                  <div class="kanji-readings">
+                    <span class="reading-tag tag-on">音: ユウ / ユ</span>
+                    <span class="reading-tag tag-kun">訓: よし</span>
+                    <span class="reading-tag tag-stroke">Goresan: 5 画</span>
+                    <span class="reading-tag tag-radical">Radikal: 田 (sawah)</span>
+                  </div>
+                  <div class="kanji-meaning">Arti: Alasan / Asal / Bebas</div>
+                  <div class="stroke-rule">Urutan goresan: Kotak dengan garis vertikal tengah yang menjulang ke atas menembus garis atas.</div>
+                </div>
               </div>
-            </div>
 
-            <!-- Baris Kosakata Terkait -->
-            <div class="kanji-details-row">
-              <span class="row-label">Kosakata Bab:</span>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <div style="font-size: 0.8rem; margin-bottom: 6px;">
+                <strong>Kosakata:</strong>
+                <span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>自由</strong> (じゆう): bebas</span><span style="background:#f1f5f9;padding:2px 6px;border-radius:6px;margin-right:6px;"><strong>理由</strong> (りゆう): alasan</span>
+              </div>
+
+              <div style="font-size: 0.8rem; margin-bottom: 8px;">
+                <strong>Contoh:</strong> <span>ご飯(はん)は、おかわり自(じ)由(ゆう)です。</span> ➔ <em>"Nasi bebas tambah sepuasnya."</em>
+              </div>
+
+              <!-- 20 Kotak Grid (2 Baris) -->
+              <div class="grid-20-wrapper">
                 
-                  <span class="word-pill">
-                    <span class="word-kanji">自由</span> (じゆう): bebas
-                  </span>
-                
-                  <span class="word-pill">
-                    <span class="word-kanji">理由</span> (りゆう): alasan
-                  </span>
-                
-              </div>
-            </div>
-
-            <!-- Baris Contoh Kalimat Bab -->
-            <div class="kanji-details-row">
-              <span class="row-label">Contoh Kalimat:</span>
-              <div>
-                <span class="sentence-jp">ご飯(はん)は、おかわり自(じ)由(ゆう)です。</span>
-                <span class="sentence-id">Nasi bebas tambah sepuasnya.</span>
-              </div>
-            </div>
-
-            <!-- 10 Kotak Grid Latihan Menulis -->
-            <div class="writing-grid-section">
-              <div class="grid-label-row">
-                <span style="color:#dc2626;">[① Urutan]</span>
-                <span style="color:#2563eb;">[② Contoh]</span>
-                <span style="color:#64748b;">[③-④ Tebalkan]</span>
-                <span style="text-align: right; color:#475569;">[⑤ s.d. ⑩ Latihan Mandiri 6x]</span>
-              </div>
-              <div class="grid-boxes-10">
-                <!-- Kotak 1: Peragaan Urutan Nomor (Guidance Box) -->
-                <div class="tianzige-box guidance-box" title="Urutan goresan dengan nomor petunjuk">
-                  <svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
+                <!-- Baris 1: 10 Kotak -->
+                <div>
+                  <div class="grid-label-row">
+                    <span style="color:#dc2626;">① Urutan</span>
+                    <span style="color:#2563eb;">② Contoh</span>
+                    <span>③ Jiplak</span>
+                    <span>④ Jiplak</span>
+                    <span>⑤ Latih</span>
+                    <span>⑥ Latih</span>
+                    <span>⑦ Latih</span>
+                    <span>⑧ Latih</span>
+                    <span>⑨ Latih</span>
+                    <span>⑩ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box guidance-box"><svg class="guidance-svg" xmlns="http://www.w3.org/2000/svg" width="109" height="109" viewBox="0 0 109 109" xmlns:kvg="https://kanjivg.tagaini.net/">
     <!-- Tianzige Cross Guidelines -->
     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
     <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#cbd5e1" stroke-dasharray="2.5,2.5" stroke-width="0.9" />
@@ -2614,192 +2420,186 @@
 	<text transform="matrix(1 0 0 1 30.50 88.22)">5</text>
 </g>
 </svg>
-
+</div>
+                    <div class="tianzige-box model-box"><span>由</span></div>
+                    <div class="tianzige-box trace-box"><span>由</span></div>
+                    <div class="tianzige-box trace-box"><span>由</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 2: Huruf Contoh Tebal (Model Box) -->
-                <div class="tianzige-box model-box" title="Huruf contoh">
-                  <span>由</span>
+                <!-- Baris 2: 10 Kotak Penguatan (Total 20 Kotak!) -->
+                <div style="margin-top: 4px;">
+                  <div class="grid-label-row">
+                    <span>⑪ Jiplak</span>
+                    <span>⑫ Jiplak</span>
+                    <span>⑬ Latih</span>
+                    <span>⑭ Latih</span>
+                    <span>⑮ Latih</span>
+                    <span>⑯ Latih</span>
+                    <span>⑰ Latih</span>
+                    <span>⑱ Latih</span>
+                    <span>⑲ Latih</span>
+                    <span>⑳ Latih</span>
+                  </div>
+                  <div class="grid-boxes-row">
+                    <div class="tianzige-box trace-box"><span>由</span></div>
+                    <div class="tianzige-box trace-box"><span>由</span></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                    <div class="tianzige-box"></div>
+                  </div>
                 </div>
 
-                <!-- Kotak 3: Jiplak / Trace 1 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 1">
-                  <span>由</span>
+                <!-- Baris Menulis saat Dicetak -->
+                <div class="ruled-writing-row">
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">✏️ Tulis Kata (自由):</span>
+                    <span class="ruled-line"></span>
+                    <span class="ruled-line"></span>
+                  </div>
+                  <div class="ruled-item">
+                    <span class="ruled-lbl">💬 Salin Kalimat:</span>
+                    <span class="ruled-line"></span>
+                  </div>
                 </div>
 
-                <!-- Kotak 4: Jiplak / Trace 2 -->
-                <div class="tianzige-box trace-box" title="Tebalkan 2">
-                  <span>由</span>
-                </div>
-
-                <!-- Kotak 5 s.d. 10: Latihan Mandiri (6 Kotak Kosong Bergaris Bantu) -->
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
-                <div class="tianzige-box practice-box"></div>
               </div>
-            </div>
-          </div>
-        
 
-        <!-- Bagian Latihan Evaluasi (10 Soal Membaca + 10 Soal Menulis) -->
-        <div class="section-title" style="margin-top: 28px;">
-          <span>📝 Latihan Evaluasi Pemahaman Kanji (Bab 3 - 20 Soal)</span>
+            </div>
+          
         </div>
 
+        <!-- Latihan Soal -->
         <div class="exercise-box">
-          <!-- A. 10 Soal Membaca -->
-          <div class="exercise-title">
-            <span>📖 A. Latihan Membaca (10 Soal): Tuliskan cara baca (Hiragana) dari Kanji dalam tanda [ ]!</span>
+          <div style="font-weight: 800; font-size: 1.05rem; margin-bottom: 10px;">
+            📝 Latihan Soal Evaluasi Bab 3 (20 Soal)
           </div>
+
+          <div class="exercise-title">📖 A. Latihan Membaca (Hiragana):</div>
           <div class="exercise-grid">
             
               <div class="exercise-item">
-                <span class="exercise-q">① お店の中は[禁煙]です。</span>
-                <span class="answer-space">________</span>
-                <span class="answer-key">きんえん</span>
+                <div>① お店の中は[禁煙]です。</div>
+                <div class="answer-key">きんえん</div>
               </div>
             
               <div class="exercise-item">
-                <span class="exercise-q">② レストランの[予約]をしました。</span>
-                <span class="answer-space">________</span>
-                <span class="answer-key">よやく</span>
+                <div>② レストランの[予約]をしました。</div>
+                <div class="answer-key">よやく</div>
               </div>
             
               <div class="exercise-item">
-                <span class="exercise-q">③ お[会計]はこちらです。</span>
-                <span class="answer-space">________</span>
-                <span class="answer-key">かいけい</span>
+                <div>③ お[会計]はこちらです。</div>
+                <div class="answer-key">かいけい</div>
               </div>
             
               <div class="exercise-item">
-                <span class="exercise-q">④ ご[飯]はおかわり自由です。</span>
-                <span class="answer-space">________</span>
-                <span class="answer-key">はん</span>
+                <div>④ ご[飯]はおかわり自由です。</div>
+                <div class="answer-key">はん</div>
               </div>
             
               <div class="exercise-item">
-                <span class="exercise-q">⑤ ご飯は、おかわり[自由]です。</span>
-                <span class="answer-space">________</span>
-                <span class="answer-key">じゆう</span>
+                <div>⑤ ご飯は、おかわり[自由]です。</div>
+                <div class="answer-key">じゆう</div>
               </div>
             
               <div class="exercise-item">
-                <span class="exercise-q">⑥ ご[注文]はお決まりですか？</span>
-                <span class="answer-space">________</span>
-                <span class="answer-key">ちゅうもん</span>
+                <div>⑥ ご[注文]はお決まりですか？</div>
+                <div class="answer-key">ちゅうもん</div>
               </div>
             
               <div class="exercise-item">
-                <span class="exercise-q">⑦ お客[様]、こちらへどうぞ。</span>
-                <span class="answer-space">________</span>
-                <span class="answer-key">さま</span>
+                <div>⑦ お客[様]、こちらへどうぞ。</div>
+                <div class="answer-key">さま</div>
               </div>
             
               <div class="exercise-item">
-                <span class="exercise-q">⑧ お客様の[電話番号]をお願いします。</span>
-                <span class="answer-space">________</span>
-                <span class="answer-key">でんわばんごう</span>
+                <div>⑧ お客様の[電話番号]をお願いします。</div>
+                <div class="answer-key">でんわばんごう</div>
               </div>
             
               <div class="exercise-item">
-                <span class="exercise-q">⑨ 毎朝、[牛乳]を飲みます。</span>
-                <span class="answer-space">________</span>
-                <span class="answer-key">ぎゅうにゅう</span>
+                <div>⑨ 毎朝、[牛乳]を飲みます。</div>
+                <div class="answer-key">ぎゅうにゅう</div>
               </div>
             
               <div class="exercise-item">
-                <span class="exercise-q">⑩ [生]の魚が苦手です。</span>
-                <span class="answer-space">________</span>
-                <span class="answer-key">なま</span>
+                <div>⑩ [生]の魚が苦手です。</div>
+                <div class="answer-key">なま</div>
               </div>
             
           </div>
 
-          <!-- B. 10 Soal Menulis -->
-          <div class="exercise-title" style="margin-top: 20px;">
-            <span>✏️ B. Latihan Menulis (10 Soal): Tuliskan huruf Kanji dari kata yang bergaris bawah!</span>
-          </div>
+          <div class="exercise-title" style="margin-top: 12px;">✏️ B. Latihan Menulis (Kanji):</div>
           <div class="exercise-grid">
             
               <div class="exercise-item">
-                <span class="exercise-q">① レストランの ( _________ ) [よやく] を しました。</span>
-                <span class="answer-key">予約</span>
+                <div>① レストランの ( _________ ) [よやく] を しました。</div>
+                <div class="answer-key">予約</div>
               </div>
             
               <div class="exercise-item">
-                <span class="exercise-q">② お ( _________ ) [かいけい] は こちらです。</span>
-                <span class="answer-key">会計</span>
+                <div>② お ( _________ ) [かいけい] は こちらです。</div>
+                <div class="answer-key">会計</div>
               </div>
             
               <div class="exercise-item">
-                <span class="exercise-q">③ この みせの なかは ( _________ ) [きんえん] です。</span>
-                <span class="answer-key">禁煙</span>
+                <div>③ この みせの なかは ( _________ ) [きんえん] です。</div>
+                <div class="answer-key">禁煙</div>
               </div>
             
               <div class="exercise-item">
-                <span class="exercise-q">④ ご ( _________ ) [ちゅうもん] は おきまりですか？</span>
-                <span class="answer-key">注文</span>
+                <div>④ ご ( _________ ) [ちゅうもん] は おきまりですか？</div>
+                <div class="answer-key">注文</div>
               </div>
             
               <div class="exercise-item">
-                <span class="exercise-q">⑤ ごはんの おかわりは ( _________ ) [じゆう] です。</span>
-                <span class="answer-key">自由</span>
+                <div>⑤ ごはんの おかわりは ( _________ ) [じゆう] です。</div>
+                <div class="answer-key">自由</div>
               </div>
             
               <div class="exercise-item">
-                <span class="exercise-q">⑥ おきゃく ( _________ ) [さま] 、ごあんないいたします。</span>
-                <span class="answer-key">様</span>
+                <div>⑥ おきゃく ( _________ ) [さま] 、ごあんないいたします。</div>
+                <div class="answer-key">様</div>
               </div>
             
               <div class="exercise-item">
-                <span class="exercise-q">⑦ ( _________ ) [でんわばんごう] を おしえてください。</span>
-                <span class="answer-key">電話番号</span>
+                <div>⑦ ( _________ ) [でんわばんごう] を おしえてください。</div>
+                <div class="answer-key">電話番号</div>
               </div>
             
               <div class="exercise-item">
-                <span class="exercise-q">⑧ あさごはんに ( _________ ) [ぎゅうにゅう] を のみます。</span>
-                <span class="answer-key">牛乳</span>
+                <div>⑧ あさごはんに ( _________ ) [ぎゅうにゅう] を のみます。</div>
+                <div class="answer-key">牛乳</div>
               </div>
             
               <div class="exercise-item">
-                <span class="exercise-q">⑨ ( _________ ) [なま] の さかなが たべられません。</span>
-                <span class="answer-key">生</span>
+                <div>⑨ ( _________ ) [なま] の さかなが たべられません。</div>
+                <div class="answer-key">生</div>
               </div>
             
               <div class="exercise-item">
-                <span class="exercise-q">⑩ おいしい ご ( _________ ) [はん] を たべました。</span>
-                <span class="answer-key">飯</span>
+                <div>⑩ おいしい ご ( _________ ) [はん] を たべました。</div>
+                <div class="answer-key">飯</div>
               </div>
             
           </div>
         </div>
 
       </div>
-      <div class="page-break"></div>
     
   </div>
 
-  <script>
-    function filterBab(val) {
-      if (val === 'all') {
-        document.querySelectorAll('.worksheet-page').forEach(el => el.style.display = 'block');
-      } else {
-        document.querySelectorAll('.worksheet-page').forEach(el => el.style.display = 'none');
-        const target = document.getElementById('bab-' + val);
-        if (target) target.style.display = 'block';
-      }
-    }
-
-    let showAnswers = true;
-    function toggleAnswers() {
-      showAnswers = !showAnswers;
-      const keys = document.querySelectorAll('.answer-key');
-      keys.forEach(k => k.style.display = showAnswers ? 'inline-block' : 'none');
-      document.getElementById('toggleAnswerBtn').innerText = showAnswers ? '👁️ Kunci Jawaban: Sembunyikan' : '👁️ Kunci Jawaban: Tampilkan';
-    }
-  </script>
 </body>
 </html>

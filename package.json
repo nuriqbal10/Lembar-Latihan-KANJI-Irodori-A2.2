@@ -1,0 +1,28 @@
+{
+  "name": "irodori-a2-kanji-studio",
+  "version": "1.0.0",
+  "description": "Aplikasi Web & Generator Lembar Latihan Kanji IRODORI A2.2 (Bab 1 - 18) dengan Claymorphism Pastel Calm, 10-Grid Tianzige & Nomor Urutan Goresan",
+  "main": "index.html",
+  "scripts": {
+    "build:data": "node scripts/build_dataset.js",
+    "build:html": "node scripts/generate_html.js",
+    "build:docx": "node scripts/generate_docx.js",
+    "build": "node scripts/build_dataset.js && node scripts/generate_html.js && node scripts/generate_docx.js"
+  },
+  "keywords": [
+    "irodori",
+    "japanese",
+    "kanji",
+    "jft-basic",
+    "worksheet",
+    "tianzige",
+    "stroke-order",
+    "claymorphism"
+  ],
+  "author": "Iqbal Nurdiana",
+  "license": "MIT",
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "docx": "^9.8.1"
+  }
+}

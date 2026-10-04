@@ -1,0 +1,4318 @@
+[
+  {
+    "bab": 1,
+    "titleJp": "第1課 レストランで働いています",
+    "titleId": "Bab 1: Saya Bekerja di Restoran",
+    "topic": "今の私 (Diri Saya Saat Ini)",
+    "kanjiList": [
+      {
+        "kanji": "働",
+        "on": "ドウ",
+        "kun": "はたら-く",
+        "strokes": 13,
+        "radical": "亻 (orang)",
+        "meaning": "Bekerja",
+        "strokeRule": "Radikal orang 亻 di kiri (2 goresan), lalu bergerak 動 di kanan (11 goresan).",
+        "words": [
+          {
+            "word": "働く",
+            "reading": "はたらく",
+            "meaning": "bekerja"
+          },
+          {
+            "word": "労働",
+            "reading": "ろうどう",
+            "meaning": "tenaga kerja / buruh"
+          }
+        ],
+        "sentence": "レストランで働いています。",
+        "sentenceFurigana": "レストランで働(はたら)いています。",
+        "sentenceId": "Saya bekerja di restoran."
+      },
+      {
+        "kanji": "作",
+        "on": "サク / サ",
+        "kun": "つく-る",
+        "strokes": 7,
+        "radical": "亻 (orang)",
+        "meaning": "Membuat / Menciptakan",
+        "strokeRule": "Radikal orang 亻 di kiri (2 goresan), lalu 乍 di kanan (5 goresan).",
+        "words": [
+          {
+            "word": "作る",
+            "reading": "つくる",
+            "meaning": "membuat"
+          },
+          {
+            "word": "作文",
+            "reading": "さくぶん",
+            "meaning": "karangan / esai"
+          },
+          {
+            "word": "作品",
+            "reading": "さくひん",
+            "meaning": "karya seni / produk"
+          }
+        ],
+        "sentence": "畑で野菜を作っています。",
+        "sentenceFurigana": "畑(はたけ)で野(や)菜(さい)を作(つく)っています。",
+        "sentenceId": "Saya menanam dan menghasilkan sayuran di ladang."
+      },
+      {
+        "kanji": "会",
+        "on": "カイ / エ",
+        "kun": "あ-う",
+        "strokes": 6,
+        "radical": "人 (orang)",
+        "meaning": "Bertemu / Perkumpulan",
+        "strokeRule": "Atap payung 人 di atas (2 goresan), satu garis horizontal pendek, lalu 厶 di bawah (2 goresan).",
+        "words": [
+          {
+            "word": "会う",
+            "reading": "あう",
+            "meaning": "bertemu"
+          },
+          {
+            "word": "会社",
+            "reading": "かいしゃ",
+            "meaning": "perusahaan"
+          },
+          {
+            "word": "会話",
+            "reading": "かいわ",
+            "meaning": "percakapan"
+          }
+        ],
+        "sentence": "明日、友達に会います。",
+        "sentenceFurigana": "明(あ)日(した)、友(とも)達(だち)に会(あ)います。",
+        "sentenceId": "Besok saya akan bertemu teman."
+      },
+      {
+        "kanji": "社",
+        "on": "シャ",
+        "kun": "やしろ",
+        "strokes": 7,
+        "radical": "礻 (dewa/pemujaan)",
+        "meaning": "Perusahaan / Kuil",
+        "strokeRule": "Radikal pemujaan 礻 di kiri (4 goresan), lalu tanah 土 di kanan (3 goresan).",
+        "words": [
+          {
+            "word": "会社",
+            "reading": "かいしゃ",
+            "meaning": "perusahaan"
+          },
+          {
+            "word": "社会",
+            "reading": "しゃかい",
+            "meaning": "masyarakat"
+          },
+          {
+            "word": "社長",
+            "reading": "しゃちょう",
+            "meaning": "direktur perusahaan"
+          }
+        ],
+        "sentence": "自動車の会社で働いています。",
+        "sentenceFurigana": "自(じ)動(どう)車(しゃ)の会(かい)社(しゃ)で働(はたら)いています。",
+        "sentenceId": "Saya bekerja di perusahaan otomotif."
+      },
+      {
+        "kanji": "員",
+        "on": "イン",
+        "kun": "-",
+        "strokes": 10,
+        "radical": "口 (mulut)",
+        "meaning": "Anggota / Staf",
+        "strokeRule": "Mulut 口 di atas (3 goresan), kerang 貝 di bawah (7 goresan).",
+        "words": [
+          {
+            "word": "会社員",
+            "reading": "かいしゃいん",
+            "meaning": "karyawan perusahaan"
+          },
+          {
+            "word": "店員",
+            "reading": "てんいん",
+            "meaning": "pelayan toko"
+          },
+          {
+            "word": "全員",
+            "reading": "ぜんいん",
+            "meaning": "semua orang / seluruh anggota"
+          }
+        ],
+        "sentence": "私はIT企業の会社員です。",
+        "sentenceFurigana": "私(わたし)はIT企(き)業(ぎょう)の会(かい)社(しゃ)員(いん)です。",
+        "sentenceId": "Saya adalah karyawan perusahaan IT."
+      }
+    ],
+    "readingExercise": [
+      {
+        "q": "① 工場で [働いて] います。",
+        "a": "はたらいて"
+      },
+      {
+        "q": "② 日本料理を [作ります] 。",
+        "a": "つくります"
+      },
+      {
+        "q": "③ 駅前で先輩に [会いました] 。",
+        "a": "あいました"
+      },
+      {
+        "q": "④ 大きい [会社] に勤めています。",
+        "a": "かいしゃ"
+      },
+      {
+        "q": "⑤ 兄は [会社員] です。",
+        "a": "かいしゃいん"
+      },
+      {
+        "q": "⑥ [店員] さんを呼びました。",
+        "a": "てんいん"
+      },
+      {
+        "q": "⑦ [日本語] の作文を書きます。",
+        "a": "さくぶん"
+      },
+      {
+        "q": "⑧ [全員] で写真を撮ります。",
+        "a": "ぜんいん"
+      },
+      {
+        "q": "⑨ 日本の [社会] について学びます。",
+        "a": "しゃかい"
+      },
+      {
+        "q": "⑩ 毎朝 [早く] から働きます。",
+        "a": "はたらきます"
+      }
+    ],
+    "writingExercise": [
+      {
+        "q": "① ホテルで ( _________ ) [はたらいて] います。",
+        "a": "働いて"
+      },
+      {
+        "q": "② ケーキを ( _________ ) [つくります] 。",
+        "a": "作ります"
+      },
+      {
+        "q": "③ ともだちに ( _________ ) [あいます] 。",
+        "a": "会います"
+      },
+      {
+        "q": "④ ゆうめいな ( _________ ) [かいしゃ] です。",
+        "a": "会社"
+      },
+      {
+        "q": "⑤ わたしは ( _________ ) [かいしゃいん] です。",
+        "a": "会社員"
+      },
+      {
+        "q": "⑥ ( _________ ) [てんいん] に ききます。",
+        "a": "店員"
+      },
+      {
+        "q": "⑦ にほんごの ( _________ ) [さくぶん] です。",
+        "a": "作文"
+      },
+      {
+        "q": "⑧ ( _________ ) [ぜんいん] あつまりました。",
+        "a": "全員"
+      },
+      {
+        "q": "⑨ ( _________ ) [しゃかい] じん に なります。",
+        "a": "社会"
+      },
+      {
+        "q": "⑩ げんきに ( _________ ) [はたらきます] 。",
+        "a": "働きます"
+      }
+    ]
+  },
+  {
+    "bab": 2,
+    "titleJp": "第2課 ゲームをするのが好きです",
+    "titleId": "Bab 2: Saya Suka Bermain Game",
+    "topic": "今の私 (Diri Saya Saat Ini)",
+    "kanjiList": [
+      {
+        "kanji": "好",
+        "on": "コウ",
+        "kun": "この-む / す-く / す-き",
+        "strokes": 6,
+        "radical": "女 (wanita)",
+        "meaning": "Suka / Gemar",
+        "strokeRule": "Radikal wanita 女 di kiri (3 goresan), anak 子 di kanan (3 goresan).",
+        "words": [
+          {
+            "word": "好き",
+            "reading": "すき",
+            "meaning": "suka"
+          },
+          {
+            "word": "大好物",
+            "reading": "だいこうぶつ",
+            "meaning": "makanan favorit sekali"
+          }
+        ],
+        "sentence": "映画を見るのが好きです。",
+        "sentenceFurigana": "映(えい)画(が)を見(み)るのが好(す)きです。",
+        "sentenceId": "Saya suka menonton film."
+      },
+      {
+        "kanji": "得",
+        "on": "トク",
+        "kun": "え-る / う-る",
+        "strokes": 11,
+        "radical": "彳 (langkah)",
+        "meaning": "Memperoleh / Mahir / Beruntung",
+        "strokeRule": "Langkah 彳 di kiri (3 goresan), matahari 日 (4 goresan), dan 寸 (3 goresan) di kanan.",
+        "words": [
+          {
+            "word": "得意",
+            "reading": "とくい",
+            "meaning": "mahir / andalan"
+          },
+          {
+            "word": "納得",
+            "reading": "なっとく",
+            "meaning": "paham / menerima"
+          }
+        ],
+        "sentence": "料理を作るのが得意です。",
+        "sentenceFurigana": "料(りょう)理(り)を作(つく)るのが得(とく)意(い)です。",
+        "sentenceId": "Saya mahir membuat masakan."
+      },
+      {
+        "kanji": "意",
+        "on": "イ",
+        "kun": "-",
+        "strokes": 13,
+        "radical": "心 (hati)",
+        "meaning": "Maksud / Pikiran / Perasaan",
+        "strokeRule": "Suara 音 di atas (9 goresan), ditopang hati 心 di bawah (4 goresan).",
+        "words": [
+          {
+            "word": "得意",
+            "reading": "とくい",
+            "meaning": "mahir"
+          },
+          {
+            "word": "意味",
+            "reading": "いみ",
+            "meaning": "arti / makna"
+          },
+          {
+            "word": "意見",
+            "reading": "いけん",
+            "meaning": "pendapat"
+          }
+        ],
+        "sentence": "歌うのが得意です。",
+        "sentenceFurigana": "歌(うた)うのが得(とく)意(い)です。",
+        "sentenceId": "Saya mahir bernyanyi."
+      },
+      {
+        "kanji": "体",
+        "on": "タイ / テイ",
+        "kun": "からだ / かたち",
+        "strokes": 7,
+        "radical": "亻 (orang)",
+        "meaning": "Tubuh / Badan",
+        "strokeRule": "Orang 亻 di kiri (2 goresan), dasar 本 di kanan (5 goresan).",
+        "words": [
+          {
+            "word": "体",
+            "reading": "からだ",
+            "meaning": "tubuh / badan"
+          },
+          {
+            "word": "運動",
+            "reading": "うんどう",
+            "meaning": "olahraga"
+          },
+          {
+            "word": "体重",
+            "reading": "たいじゅう",
+            "meaning": "berat badan"
+          }
+        ],
+        "sentence": "体を動かすのが好きです。",
+        "sentenceFurigana": "体(からだ)を動(うご)かすのが好(す)きです。",
+        "sentenceId": "Saya suka menggerakkan badan (berolahraga)."
+      },
+      {
+        "kanji": "動",
+        "on": "ドウ",
+        "kun": "うご-く / うご-かす",
+        "strokes": 11,
+        "radical": "力 (tenaga)",
+        "meaning": "Bergerak",
+        "strokeRule": "Berat 重 di kiri (9 goresan), tenaga 力 di kanan (2 goresan).",
+        "words": [
+          {
+            "word": "動く",
+            "reading": "うごく",
+            "meaning": "bergerak"
+          },
+          {
+            "word": "運動",
+            "reading": "うんどう",
+            "meaning": "olahraga"
+          },
+          {
+            "word": "動物",
+            "reading": "どうぶつ",
+            "meaning": "hewan"
+          }
+        ],
+        "sentence": "毎朝、公園で運動します。",
+        "sentenceFurigana": "毎(まい)朝(あさ)、公(こう)園(えん)で運(うん)動(どう)します。",
+        "sentenceId": "Setiap pagi saya berolahraga di taman."
+      }
+    ],
+    "readingExercise": [
+      {
+        "q": "① サッカーが [好き] です。",
+        "a": "すき"
+      },
+      {
+        "q": "② ギターを弾くのが [得意] です。",
+        "a": "とくい"
+      },
+      {
+        "q": "③ [体] の調子がいいです。",
+        "a": "からだ"
+      },
+      {
+        "q": "④ 電車が [動きました] 。",
+        "a": "うごきました"
+      },
+      {
+        "q": "⑤ 週末に [運動] します。",
+        "a": "うんどう"
+      },
+      {
+        "q": "⑥ この言葉の [意味] は何ですか。",
+        "a": "いみ"
+      },
+      {
+        "q": "⑦ [動物] 園へ行きました。",
+        "a": "どうぶつ"
+      },
+      {
+        "q": "⑧ [意見] を言ってください。",
+        "a": "いけん"
+      },
+      {
+        "q": "⑨ [大好物] のカレーを食べます。",
+        "a": "だいこうぶつ"
+      },
+      {
+        "q": "⑩ [体重] を測ります。",
+        "a": "たいじゅう"
+      }
+    ],
+    "writingExercise": [
+      {
+        "q": "① ダンスが ( _________ ) [すき] です。",
+        "a": "好き"
+      },
+      {
+        "q": "② りょうりが ( _________ ) [とくい] です。",
+        "a": "得意"
+      },
+      {
+        "q": "③ ( _________ ) [からだ] に きをつけてください。",
+        "a": "体"
+      },
+      {
+        "q": "④ きかいが ( _________ ) [うごきます] 。",
+        "a": "動きます"
+      },
+      {
+        "q": "⑤ まいにち ( _________ ) [うんどう] します。",
+        "a": "運動"
+      },
+      {
+        "q": "⑥ ことばの ( _________ ) [いみ] です。",
+        "a": "意味"
+      },
+      {
+        "q": "⑦ かわいい ( _________ ) [どうぶつ] です。",
+        "a": "動物"
+      },
+      {
+        "q": "⑧ じぶんの ( _________ ) [いけん] です。",
+        "a": "意見"
+      },
+      {
+        "q": "⑨ ( _________ ) [たいじゅう] が へりました。",
+        "a": "体重"
+      },
+      {
+        "q": "⑩ ゲームが ( _________ ) [だいすき] です。",
+        "a": "大好き"
+      }
+    ]
+  },
+  {
+    "bab": 3,
+    "titleJp": "第3課 冬はとても寒くなります",
+    "titleId": "Bab 3: Musim Dingin Menjadi Sangat Dingin",
+    "topic": "季節と天気 (Musim & Cuaca)",
+    "kanjiList": [
+      {
+        "kanji": "春",
+        "on": "シュン",
+        "kun": "はる",
+        "strokes": 9,
+        "radical": "日 (matahari)",
+        "meaning": "Musim Semi",
+        "strokeRule": "Tiga horizontal bertingkat dipotong miring kiri melengkung dan miring kanan, matahari 日 di bawah.",
+        "words": [
+          {
+            "word": "春",
+            "reading": "はる",
+            "meaning": "musim semi"
+          },
+          {
+            "word": "春休み",
+            "reading": "はるやすみ",
+            "meaning": "liburan musim semi"
+          }
+        ],
+        "sentence": "春になると桜が咲きます。",
+        "sentenceFurigana": "春(はる)になると桜(さくら)が咲(さ)きます。",
+        "sentenceId": "Saat musim semi tiba, bunga sakura bermekaran."
+      },
+      {
+        "kanji": "夏",
+        "on": "カ / ゲ",
+        "kun": "なつ",
+        "strokes": 10,
+        "radical": "夂 (kaki melangkah)",
+        "meaning": "Musim Panas",
+        "strokeRule": "Horizontal atas, kepala kotak 目 modifikasi di tengah, kaki melangkah 夂 di bawah.",
+        "words": [
+          {
+            "word": "夏",
+            "reading": "なつ",
+            "meaning": "musim panas"
+          },
+          {
+            "word": "夏休み",
+            "reading": "なつやすみ",
+            "meaning": "liburan musim panas"
+          }
+        ],
+        "sentence": "日本の夏はとても蒸し暑いです。",
+        "sentenceFurigana": "日本(にほん)の夏(なつ)はとても蒸(む)し暑(あつ)いです。",
+        "sentenceId": "Musim panas di Jepang sangat lembap dan panas."
+      },
+      {
+        "kanji": "秋",
+        "on": "シュウ",
+        "kun": "あき",
+        "strokes": 9,
+        "radical": "禾 (padi)",
+        "meaning": "Musim Gugur",
+        "strokeRule": "Padi 禾 di kiri (5 goresan), api 火 di kanan (4 goresan). (Masa panen dan daun kemerahan).",
+        "words": [
+          {
+            "word": "秋",
+            "reading": "あき",
+            "meaning": "musim gugur"
+          },
+          {
+            "word": "秋分の日",
+            "reading": "しゅうぶんのひ",
+            "meaning": "hari ekuinoks musim gugur"
+          }
+        ],
+        "sentence": "秋の紅葉がとても美しいです。",
+        "sentenceFurigana": "秋(あき)の紅(こう)葉(よう)がとても美(うつく)しいです。",
+        "sentenceId": "Daun-daun musim gugur yang memerah sangat indah."
+      },
+      {
+        "kanji": "冬",
+        "on": "トウ",
+        "kun": "ふゆ",
+        "strokes": 5,
+        "radical": "冫 (es)",
+        "meaning": "Musim Dingin",
+        "strokeRule": "Garis lipatan atas 夂 variasi (3 goresan), lalu dua titik butiran es 冫 di bawah (2 goresan).",
+        "words": [
+          {
+            "word": "冬",
+            "reading": "ふゆ",
+            "meaning": "musim dingin"
+          },
+          {
+            "word": "冬休み",
+            "reading": "ふゆやすみ",
+            "meaning": "liburan musim dingin"
+          }
+        ],
+        "sentence": "冬は雪がたくさん降ります。",
+        "sentenceFurigana": "冬(ふゆ)は雪(ゆき)がたくさん降(ふ)ります。",
+        "sentenceId": "Di musim dingin salju banyak turun."
+      },
+      {
+        "kanji": "寒",
+        "on": "カン",
+        "kun": "さむ-い",
+        "strokes": 12,
+        "radical": "宀 (atap)",
+        "meaning": "Dingin (Suhu Udara)",
+        "strokeRule": "Atap 宀 di atas, jerami/garis horizontal bersusun di tengah, dua titik es di bawah.",
+        "words": [
+          {
+            "word": "寒い",
+            "reading": "さむい",
+            "meaning": "dingin (cuaca/hawa)"
+          },
+          {
+            "word": "寒さ",
+            "reading": "さむさ",
+            "meaning": "hawa dingin"
+          }
+        ],
+        "sentence": "今日は風が強くて寒いですね。",
+        "sentenceFurigana": "今(きょう)日(は)風(かぜ)が強(つよ)くて寒(さむ)いですね。",
+        "sentenceId": "Hari ini angin kencang dan dingin ya."
+      },
+      {
+        "kanji": "暑",
+        "on": "ショ",
+        "kun": "あつ-い",
+        "strokes": 12,
+        "radical": "日 (matahari)",
+        "meaning": "Panas (Suhu Udara)",
+        "strokeRule": "Matahari 日 di atas (4 goresan), orang 者 di bawah (8 goresan).",
+        "words": [
+          {
+            "word": "暑い",
+            "reading": "あつい",
+            "meaning": "panas (cuaca/hawa)"
+          },
+          {
+            "word": "残暑",
+            "reading": "ざんしょ",
+            "meaning": "hawa panas akhir musim"
+          }
+        ],
+        "sentence": "エアコンをつけても暑いです。",
+        "sentenceFurigana": "エアコンをつけても暑(あつ)いです。",
+        "sentenceId": "Meskipun sudah menyalakan AC tetap terasa panas."
+      }
+    ],
+    "readingExercise": [
+      {
+        "q": "① [春] に花見をします。",
+        "a": "はる"
+      },
+      {
+        "q": "② [夏] は海で泳ぎます。",
+        "a": "なつ"
+      },
+      {
+        "q": "③ [秋] の風が涼しいです。",
+        "a": "あき"
+      },
+      {
+        "q": "④ [冬] はスキーに行きます。",
+        "a": "ふゆ"
+      },
+      {
+        "q": "⑤ 外はとても [寒い] です。",
+        "a": "さむい"
+      },
+      {
+        "q": "⑥ 今日は本当に [暑い] ですね。",
+        "a": "あつい"
+      },
+      {
+        "q": "⑦ [夏休み] に帰国します。",
+        "a": "なつやすみ"
+      },
+      {
+        "q": "⑧ [冬休み] の旅行です。",
+        "a": "ふゆやすみ"
+      },
+      {
+        "q": "⑨ [春休み] に勉強します。",
+        "a": "はるやすみ"
+      },
+      {
+        "q": "⑩ [寒さ] に慣れました。",
+        "a": "さむさ"
+      }
+    ],
+    "writingExercise": [
+      {
+        "q": "① ( _________ ) [はる] が きました。",
+        "a": "春"
+      },
+      {
+        "q": "② にほんの ( _________ ) [なつ] は あついです。",
+        "a": "夏"
+      },
+      {
+        "q": "③ ( _________ ) [あき] の くだものです。",
+        "a": "秋"
+      },
+      {
+        "q": "④ ( _________ ) [ふゆ] に ゆきが ふります。",
+        "a": "冬"
+      },
+      {
+        "q": "⑤ へやが ( _________ ) [さむい] です。",
+        "a": "寒い"
+      },
+      {
+        "q": "⑥ きょうは ( _________ ) [あつい] ですね。",
+        "a": "暑い"
+      },
+      {
+        "q": "⑦ たのしい ( _________ ) [なつやすみ] です。",
+        "a": "夏休み"
+      },
+      {
+        "q": "⑧ ( _________ ) [ふゆやすみ] に スキーをします。",
+        "a": "冬休み"
+      },
+      {
+        "q": "⑨ ( _________ ) [はるやすみ] の よていです。",
+        "a": "春休み"
+      },
+      {
+        "q": "⑩ ( _________ ) [さむさ] に まけません。",
+        "a": "寒さ"
+      }
+    ]
+  },
+  {
+    "bab": 4,
+    "titleJp": "第4課 明日は雨が降るでしょう",
+    "titleId": "Bab 4: Besok Kemungkinan Hujan Turun",
+    "topic": "季節と天気 (Musim & Cuaca)",
+    "kanjiList": [
+      {
+        "kanji": "雨",
+        "on": "ウ",
+        "kun": "あめ / あま-",
+        "strokes": 8,
+        "radical": "雨 (hujan)",
+        "meaning": "Hujan",
+        "strokeRule": "Garis horizontal atap, bingkai 冂 dengan garis vertikal tengah, lalu 4 titik butir tetesan air hujan.",
+        "words": [
+          {
+            "word": "雨",
+            "reading": "あめ",
+            "meaning": "hujan"
+          },
+          {
+            "word": "大雨",
+            "reading": "おおあめ",
+            "meaning": "hujan lebat"
+          },
+          {
+            "word": "雨天",
+            "reading": "うてん",
+            "meaning": "cuaca hujan"
+          }
+        ],
+        "sentence": "午後から雨が降ります。",
+        "sentenceFurigana": "午(ご)後(ご)から雨(あめ)が降(ふ)ります。",
+        "sentenceId": "Mulai siang nanti hujan akan turun."
+      },
+      {
+        "kanji": "雪",
+        "on": "セツ",
+        "kun": "ゆき",
+        "strokes": 11,
+        "radical": "雨 (hujan)",
+        "meaning": "Salju",
+        "strokeRule": "Hujan 雨 di atas (8 goresan), sapu ヨ di bawah (3 goresan).",
+        "words": [
+          {
+            "word": "雪",
+            "reading": "ゆき",
+            "meaning": "salju"
+          },
+          {
+            "word": "大雪",
+            "reading": "おおゆき",
+            "meaning": "salju lebat"
+          },
+          {
+            "word": "雪だるま",
+            "reading": "ゆきだるま",
+            "meaning": "manusia salju"
+          }
+        ],
+        "sentence": "山にきれいな雪が積もりました。",
+        "sentenceFurigana": "山(やま)にきれいな雪(ゆき)が積(つ)もりました。",
+        "sentenceId": "Salju yang indah menumpuk di gunung."
+      },
+      {
+        "kanji": "風",
+        "on": "フウ / フ",
+        "kun": "かぜ / かざ-",
+        "strokes": 9,
+        "radical": "風 (angin)",
+        "meaning": "Angin / Gaya",
+        "strokeRule": "Bingkai luar 几 melengkung berkait (4 goresan), serangga 虫 di dalam (5 goresan).",
+        "words": [
+          {
+            "word": "風",
+            "reading": "かぜ",
+            "meaning": "angin"
+          },
+          {
+            "word": "台風",
+            "reading": "たいふう",
+            "meaning": "angin topan"
+          },
+          {
+            "word": "強風",
+            "reading": "きょうふう",
+            "meaning": "angin kencang"
+          }
+        ],
+        "sentence": "強い風が吹いています。",
+        "sentenceFurigana": "強(つよ)い風(かぜ)が吹(ふ)いています。",
+        "sentenceId": "Angin kencang sedang bertiup."
+      },
+      {
+        "kanji": "天",
+        "on": "テン",
+        "kun": "あまつ / あめ",
+        "strokes": 4,
+        "radical": "大 (besar)",
+        "meaning": "Langit / Surga",
+        "strokeRule": "Garis horizontal atas pendek, garis horizontal bawah panjang, garis miring kiri tengah, miring kanan.",
+        "words": [
+          {
+            "word": "天気",
+            "reading": "てんき",
+            "meaning": "cuaca"
+          },
+          {
+            "word": "天国",
+            "reading": "てんごく",
+            "meaning": "surga"
+          }
+        ],
+        "sentence": "今日の天気は曇りです。",
+        "sentenceFurigana": "今(きょう)日(の)天(てん)気(き)は曇(くも)りです。",
+        "sentenceId": "Cuaca hari ini berawan."
+      },
+      {
+        "kanji": "気",
+        "on": "キ / ケ",
+        "kun": "いき",
+        "strokes": 6,
+        "radical": "气 (uap/energi)",
+        "meaning": "Udara / Perasaan / Hawa",
+        "strokeRule": "Garis miring kiri atas, dua horizontal, garis siku melengkung kait, goresan menyilang di dalam.",
+        "words": [
+          {
+            "word": "天気",
+            "reading": "てんき",
+            "meaning": "cuaca"
+          },
+          {
+            "word": "気分",
+            "reading": "きぶん",
+            "meaning": "kondisi badan / suasana hati"
+          },
+          {
+            "word": "気温",
+            "reading": "きおん",
+            "meaning": "suhu udara"
+          }
+        ],
+        "sentence": "明日は気温が下がります。",
+        "sentenceFurigana": "明(あ)日(した)は気(き)温(おん)が下(さ)がります。",
+        "sentenceId": "Besok suhu udara akan turun."
+      },
+      {
+        "kanji": "度",
+        "on": "ド / ト / タク",
+        "kun": "たび",
+        "strokes": 9,
+        "radical": "广 (rumah tebing)",
+        "meaning": "Derajat / Kali / Frekuensi",
+        "strokeRule": "Atap 广 (3 goresan),廿 (4 goresan), dan 又 (2 goresan) di bawah.",
+        "words": [
+          {
+            "word": "一度",
+            "reading": "いちど",
+            "meaning": "satu kali"
+          },
+          {
+            "word": "今度",
+            "reading": "こんど",
+            "meaning": "kali ini / lain kali"
+          },
+          {
+            "word": "温度",
+            "reading": "おんど",
+            "meaning": "derajat suhu"
+          }
+        ],
+        "sentence": "もう一度お願いします。",
+        "sentenceFurigana": "もう一(いち)度(ど)お願(ねが)いします。",
+        "sentenceId": "Tolong ulangi sekali lagi."
+      }
+    ],
+    "readingExercise": [
+      {
+        "q": "① 傘がありません。[雨] が降っています。",
+        "a": "あめ"
+      },
+      {
+        "q": "② 冬に [雪] が降りました。",
+        "a": "ゆき"
+      },
+      {
+        "q": "③ [強い風] が吹きます。",
+        "a": "かぜ"
+      },
+      {
+        "q": "④ 今日の [天気] は晴れです。",
+        "a": "てんき"
+      },
+      {
+        "q": "⑤ 今日の [気温] は25度です。",
+        "a": "きおん"
+      },
+      {
+        "q": "⑥ もう [一度] 言ってください。",
+        "a": "いちど"
+      },
+      {
+        "q": "⑦ 大型 [台風] が近づいています。",
+        "a": "たいふう"
+      },
+      {
+        "q": "⑧ [今度] の日曜日に会いましょう。",
+        "a": "こんど"
+      },
+      {
+        "q": "⑨ [気分] が悪くなりました。",
+        "a": "きぶん"
+      },
+      {
+        "q": "⑩ [大雨] に注意してください。",
+        "a": "おおあめ"
+      }
+    ],
+    "writingExercise": [
+      {
+        "q": "① つよい ( _________ ) [あめ] です。",
+        "a": "雨"
+      },
+      {
+        "q": "② しろい ( _________ ) [ゆき] が つもりました。",
+        "a": "雪"
+      },
+      {
+        "q": "③ つめたい ( _________ ) [かぜ] です。",
+        "a": "風"
+      },
+      {
+        "q": "④ あしたの ( _________ ) [てんき] です。",
+        "a": "天気"
+      },
+      {
+        "q": "⑤ たかい ( _________ ) [きおん] です。",
+        "a": "気温"
+      },
+      {
+        "q": "⑥ もう ( _________ ) [いちど] おしえてください。",
+        "a": "一度"
+      },
+      {
+        "q": "⑦ ( _________ ) [たいふう] が きました。",
+        "a": "台風"
+      },
+      {
+        "q": "⑧ ( _________ ) [こんど] あそびましょう。",
+        "a": "今度"
+      },
+      {
+        "q": "⑨ ( _________ ) [きぶん] が いいです。",
+        "a": "気分"
+      },
+      {
+        "q": "⑩ ( _________ ) [おおあめ] が ふります。",
+        "a": "大雨"
+      }
+    ]
+  },
+  {
+    "bab": 5,
+    "titleJp": "第5課 静かで便利な町です",
+    "titleId": "Bab 5: Kota yang Tenang dan Praktis",
+    "topic": "私の町 (Kota Tempat Tinggal Saya)",
+    "kanjiList": [
+      {
+        "kanji": "広",
+        "on": "コウ",
+        "kun": "ひろ-い / ひろ-がる",
+        "strokes": 5,
+        "radical": "广 (rumah tebing)",
+        "meaning": "Luas / Lebar",
+        "strokeRule": "Atap 广 (3 goresan), lalu huruf 厶 di bawah (2 goresan).",
+        "words": [
+          {
+            "word": "広い",
+            "reading": "ひろい",
+            "meaning": "luas"
+          },
+          {
+            "word": "広場",
+            "reading": "ひろば",
+            "meaning": "alun-alun / lapangan luas"
+          }
+        ],
+        "sentence": "私の部屋は広くて明るいです。",
+        "sentenceFurigana": "私(わたし)の部(へ)屋(や)は広(ひろ)くて明(あか)るいです。",
+        "sentenceId": "Kamar saya luas dan terang."
+      },
+      {
+        "kanji": "近",
+        "on": "キン",
+        "kun": "ちか-い",
+        "strokes": 7,
+        "radical": "辶 (berjalan)",
+        "meaning": "Dekat",
+        "strokeRule": "Kapak 斤 di kanan atas (4 goresan), ditopang jalan 辶 di kiri bawah (3 goresan).",
+        "words": [
+          {
+            "word": "近い",
+            "reading": "ちかい",
+            "meaning": "dekat"
+          },
+          {
+            "word": "近く",
+            "reading": "ちかく",
+            "meaning": "dekat / sekitar sini"
+          },
+          {
+            "word": "近所",
+            "reading": "きんじょ",
+            "meaning": "lingkungan tetangga"
+          }
+        ],
+        "sentence": "スーパーは駅から近いです。",
+        "sentenceFurigana": "スーパーは駅(えき)から近(ちか)いです。",
+        "sentenceId": "Supermarket dekat dari stasiun."
+      },
+      {
+        "kanji": "遠",
+        "on": "エン / オン",
+        "kun": "とお-い",
+        "strokes": 13,
+        "radical": "辶 (berjalan)",
+        "meaning": "Jauh",
+        "strokeRule": "Bentuk 袁 di kanan atas (10 goresan), ditopang jalan 辶 di kiri bawah (3 goresan).",
+        "words": [
+          {
+            "word": "遠い",
+            "reading": "とおい",
+            "meaning": "jauh"
+          },
+          {
+            "word": "遠慮",
+            "reading": "えんりょ",
+            "meaning": "sungkan / menahan diri"
+          }
+        ],
+        "sentence": "会社まで歩くと遠いです。",
+        "sentenceFurigana": "会(かい)社(しゃ)まで歩(ある)くと遠(とお)いです。",
+        "sentenceId": "Jauh bila berjalan kaki sampai ke kantor."
+      },
+      {
+        "kanji": "便",
+        "on": "ベン / ビン",
+        "kun": "たよ-り",
+        "strokes": 9,
+        "radical": "亻 (orang)",
+        "meaning": "Kemudahan / Praktis / Berita",
+        "strokeRule": "Orang 亻 di kiri (2 goresan), 更 di kanan (7 goresan).",
+        "words": [
+          {
+            "word": "便利",
+            "reading": "べんり",
+            "meaning": "praktis / nyaman"
+          },
+          {
+            "word": "不便",
+            "reading": "ふべん",
+            "meaning": "tidak praktis / repot"
+          },
+          {
+            "word": "郵便局",
+            "reading": "ゆうびんきょく",
+            "meaning": "kantor pos"
+          }
+        ],
+        "sentence": "駅の近くは買い物に便利です。",
+        "sentenceFurigana": "駅(えき)の近(ちか)くは買(か)い物(もの)に便(べん)利(り)です。",
+        "sentenceId": "Dekat stasiun sangat praktis untuk berbelanja."
+      },
+      {
+        "kanji": "利",
+        "on": "リ",
+        "kun": "き-く",
+        "strokes": 7,
+        "radical": "刂 (pedang)",
+        "meaning": "Manfaat / Keuntungan / Lancar",
+        "strokeRule": "Padi 禾 di kiri (5 goresan), pisau 刂 di kanan (2 goresan). (Alat tajam menuai hasil panen).",
+        "words": [
+          {
+            "word": "便利",
+            "reading": "べんり",
+            "meaning": "praktis"
+          },
+          {
+            "word": "利用",
+            "reading": "りよう",
+            "meaning": "memanfaatkan / menggunakan"
+          }
+        ],
+        "sentence": "地下鉄を利用します。",
+        "sentenceFurigana": "地(ち)下(か)鉄(てつ)を利(り)用(よう)します。",
+        "sentenceId": "Saya memanfaatkan/menggunakan kereta bawah tanah."
+      },
+      {
+        "kanji": "不",
+        "on": "フ / ブ",
+        "kun": "-",
+        "strokes": 4,
+        "radical": "一 (satu)",
+        "meaning": "Tidak / Bukan (Prefiks Negatif)",
+        "strokeRule": "Horizontal atas, garis miring kiri melengkung memotong, vertikal tegak, titik miring kanan.",
+        "words": [
+          {
+            "word": "不便",
+            "reading": "ふべん",
+            "meaning": "tidak praktis / menyulitkan"
+          },
+          {
+            "word": "不安",
+            "reading": "ふあん",
+            "meaning": "cemas / gelisah"
+          }
+        ],
+        "sentence": "車がないと不便です。",
+        "sentenceFurigana": "車(くるま)がないと不(ふ)便(べん)です。",
+        "sentenceId": "Bila tidak ada mobil akan tidak praktis."
+      }
+    ],
+    "readingExercise": [
+      {
+        "q": "① 新しい公園は [広い] です。",
+        "a": "ひろい"
+      },
+      {
+        "q": "② 寮から会社まで [近い] です。",
+        "a": "ちかい"
+      },
+      {
+        "q": "③ 空港まではとても [遠い] です。",
+        "a": "とおい"
+      },
+      {
+        "q": "④ この町はとても [便利] です。",
+        "a": "べんり"
+      },
+      {
+        "q": "⑤ バスが少なくて [不便] です。",
+        "a": "ふべん"
+      },
+      {
+        "q": "⑥ 駅前の [広場] で集まります。",
+        "a": "ひろば"
+      },
+      {
+        "q": "⑦ [近所] の人と挨拶します。",
+        "a": "きんじょ"
+      },
+      {
+        "q": "⑧ [郵便局] はどこですか。",
+        "a": "ゆうびんきょく"
+      },
+      {
+        "q": "⑨ 図書館を [利用] します。",
+        "a": "りよう"
+      },
+      {
+        "q": "⑩ 初めてで少し [不安] です。",
+        "a": "ふあん"
+      }
+    ],
+    "writingExercise": [
+      {
+        "q": "① ( _________ ) [ひろい] へやに すみたいです。",
+        "a": "広い"
+      },
+      {
+        "q": "② えきの ( _________ ) [ちかく] です。",
+        "a": "近く"
+      },
+      {
+        "q": "③ がっこうは ( _________ ) [とおい] です。",
+        "a": "遠い"
+      },
+      {
+        "q": "④ でんしゃは ( _________ ) [べんり] です。",
+        "a": "便利"
+      },
+      {
+        "q": "⑤ くるまがないと ( _________ ) [ふべん] です。",
+        "a": "不便"
+      },
+      {
+        "q": "⑥ ( _________ ) [ひろば] に いきます。",
+        "a": "広場"
+      },
+      {
+        "q": "⑦ ( _________ ) [きんじょ] の スーパーです。",
+        "a": "近所"
+      },
+      {
+        "q": "⑧ ( _________ ) [ゆうびん] を だします。",
+        "a": "郵便"
+      },
+      {
+        "q": "⑨ バスを ( _________ ) [りよう] します。",
+        "a": "利用"
+      },
+      {
+        "q": "⑩ ( _________ ) [ふあん] が なくなりました。",
+        "a": "不安"
+      }
+    ]
+  },
+  {
+    "bab": 6,
+    "titleJp": "第6課 電車を乗り換えます",
+    "titleId": "Bab 6: Transit Ganti Kereta",
+    "topic": "私の町 (Kota Tempat Tinggal Saya)",
+    "kanjiList": [
+      {
+        "kanji": "駅",
+        "on": "エキ",
+        "kun": "-",
+        "strokes": 14,
+        "radical": "馬 (kuda)",
+        "meaning": "Stasiun",
+        "strokeRule": "Kuda 馬 di kiri (10 goresan),尺 di kanan (4 goresan).",
+        "words": [
+          {
+            "word": "駅",
+            "reading": "えき",
+            "meaning": "stasiun"
+          },
+          {
+            "word": "駅前",
+            "reading": "えきまえ",
+            "meaning": "depan stasiun"
+          }
+        ],
+        "sentence": "次の駅で降ります。",
+        "sentenceFurigana": "次(つぎ)の駅(えき)で降(お)ります。",
+        "sentenceId": "Saya turun di stasiun berikutnya."
+      },
+      {
+        "kanji": "乗",
+        "on": "ジョウ",
+        "kun": "の-る / の-せる",
+        "strokes": 9,
+        "radical": "丿 (garis miring)",
+        "meaning": "Naik (Kendaraan)",
+        "strokeRule": "Sapuan miring atas, tiga horizontal bertingkat dipotong dua garis vertikal, dua kaki menopang bawah.",
+        "words": [
+          {
+            "word": "乗る",
+            "reading": "のる",
+            "meaning": "naik kendaraan"
+          },
+          {
+            "word": "乗り換える",
+            "reading": "のりかえる",
+            "meaning": "transit / ganti kendaraan"
+          },
+          {
+            "word": "乗客",
+            "reading": "じょうきゃく",
+            "meaning": "penumpang"
+          }
+        ],
+        "sentence": "バスに乗って行きます。",
+        "sentenceFurigana": "バスに乗(の)って行(い)きます。",
+        "sentenceId": "Saya pergi naik bus."
+      },
+      {
+        "kanji": "降",
+        "on": "コウ",
+        "kun": "お-りる / お-ろす / ふ-る",
+        "strokes": 10,
+        "radical": "阝 (bukit kiri)",
+        "meaning": "Turun (Kendaraan/Hujan)",
+        "strokeRule": "Bukit 阝 di kiri (3 goresan), lalu 夅 di kanan (7 goresan).",
+        "words": [
+          {
+            "word": "降りる",
+            "reading": "おりる",
+            "meaning": "turun (kendaraan)"
+          },
+          {
+            "word": "降る",
+            "reading": "ふる",
+            "meaning": "turun (hujan/salju)"
+          }
+        ],
+        "sentence": "ここで電車を降ります。",
+        "sentenceFurigana": "ここで電(でん)車(しゃ)を降(お)ります。",
+        "sentenceId": "Saya turun dari kereta di sini."
+      },
+      {
+        "kanji": "換",
+        "on": "カン",
+        "kun": "か-える / か-わる",
+        "strokes": 12,
+        "radical": "扌 (tangan)",
+        "meaning": "Menukar / Mengganti",
+        "strokeRule": "Tangan 扌 di kiri (3 goresan), 奐 di kanan (9 goresan).",
+        "words": [
+          {
+            "word": "乗り換える",
+            "reading": "のりかえる",
+            "meaning": "transit pindah kendaraan"
+          },
+          {
+            "word": "交換",
+            "reading": "こうかん",
+            "meaning": "bertukar"
+          }
+        ],
+        "sentence": "新宿駅で地下鉄に乗り換えます。",
+        "sentenceFurigana": "新(しん)宿(じゅく)駅(えき)で地(ち)下(か)鉄(てつ)に乗(の)り換(か)えます。",
+        "sentenceId": "Di Stasiun Shinjuku saya berpindah naik kereta bawah tanah."
+      },
+      {
+        "kanji": "歩",
+        "on": "ホ / ブ / フ",
+        "kun": "ある-く / あゆ-む",
+        "strokes": 8,
+        "radical": "止 (berhenti/kaki)",
+        "meaning": "Berjalan Kaki",
+        "strokeRule": "Berhenti 止 di atas (4 goresan), 少 modifikasi di bawah (4 goresan).",
+        "words": [
+          {
+            "word": "歩く",
+            "reading": "あるく",
+            "meaning": "berjalan kaki"
+          },
+          {
+            "word": "散歩",
+            "reading": "さんぽ",
+            "meaning": "jalan-jalan santai"
+          },
+          {
+            "word": "歩道",
+            "reading": "ほどう",
+            "meaning": "trotoar"
+          }
+        ],
+        "sentence": "駅から寮まで歩いて帰ります。",
+        "sentenceFurigana": "駅(えき)から寮(りょう)まで歩(ある)いて帰(かえ)ります。",
+        "sentenceId": "Saya pulang jalan kaki dari stasiun ke asrama."
+      },
+      {
+        "kanji": "走",
+        "on": "ソウ",
+        "kun": "はし-る",
+        "strokes": 7,
+        "radical": "走 (lari)",
+        "meaning": "Berlari / Melaju",
+        "strokeRule": "Tanah 土 di atas (3 goresan), lalu garis melengkung panjang kaki penopang di bawah (4 goresan).",
+        "words": [
+          {
+            "word": "走る",
+            "reading": "はしる",
+            "meaning": "berlari"
+          }
+        ],
+        "sentence": "遅刻しそうなので走りました。",
+        "sentenceFurigana": "遅(ち)刻(こく)しそうなので走(はし)りました。",
+        "sentenceId": "Karena hampir terlambat, saya berlari."
+      }
+    ],
+    "readingExercise": [
+      {
+        "q": "① 新しい [駅] ができました。",
+        "a": "えき"
+      },
+      {
+        "q": "② 電車に [乗ります] 。",
+        "a": "のります"
+      },
+      {
+        "q": "③ 次のバス停で [降ります] 。",
+        "a": "おります"
+      },
+      {
+        "q": "④ 東京駅で [乗り換えます] 。",
+        "a": "のりかえます"
+      },
+      {
+        "q": "⑤ 毎日30分 [歩きます] 。",
+        "a": "あるきます"
+      },
+      {
+        "q": "⑥ 急いで [走りました] 。",
+        "a": "はしりました"
+      },
+      {
+        "q": "⑦ 公園を [散歩] します。",
+        "a": "さんぽ"
+      },
+      {
+        "q": "⑧ 雨が [降って] います。",
+        "a": "ふって"
+      },
+      {
+        "q": "⑨ [歩道] を歩いてください。",
+        "a": "ほどう"
+      },
+      {
+        "q": "⑩ [駅前] のカフェです。",
+        "a": "えきまえ"
+      }
+    ],
+    "writingExercise": [
+      {
+        "q": "① ( _________ ) [えき] に つきました。",
+        "a": "駅"
+      },
+      {
+        "q": "② タクシーに ( _________ ) [のります] 。",
+        "a": "乗ります"
+      },
+      {
+        "q": "③ ここで ( _________ ) [おります] 。",
+        "a": "降ります"
+      },
+      {
+        "q": "④ でんしゃを ( _________ ) [のりかえます] 。",
+        "a": "乗り換えます"
+      },
+      {
+        "q": "⑤ ゆっくり ( _________ ) [あるきます] 。",
+        "a": "歩きます"
+      },
+      {
+        "q": "⑥ あさ ( _________ ) [はしります] 。",
+        "a": "走ります"
+      },
+      {
+        "q": "⑦ いぬと ( _________ ) [さんぽ] します。",
+        "a": "散歩"
+      },
+      {
+        "q": "⑧ ゆきが ( _________ ) [ふります] 。",
+        "a": "降ります"
+      },
+      {
+        "q": "⑨ ( _________ ) [ほどう] を いきます。",
+        "a": "歩道"
+      },
+      {
+        "q": "⑩ ( _________ ) [えきまえ] の こうばんです。",
+        "a": "駅前"
+      }
+    ]
+  },
+  {
+    "bab": 7,
+    "titleJp": "第7課 道に迷って遅れました",
+    "titleId": "Bab 7: Tersesat di Jalan dan Terlambat",
+    "topic": "トラブル (Kendala & Masalah)",
+    "kanjiList": [
+      {
+        "kanji": "迷",
+        "on": "メイ",
+        "kun": "まよ-う",
+        "strokes": 9,
+        "radical": "辶 (berjalan)",
+        "meaning": "Tersesat / Bingung / Ragu",
+        "strokeRule": "Beras 米 di kanan atas (6 goresan), ditopang jalan 辶 di kiri bawah (3 goresan).",
+        "words": [
+          {
+            "word": "迷う",
+            "reading": "まよう",
+            "meaning": "tersesat / bingung"
+          },
+          {
+            "word": "道に迷う",
+            "reading": "みちにまよう",
+            "meaning": "tersesat di jalan"
+          },
+          {
+            "word": "迷惑",
+            "reading": "めいわく",
+            "meaning": "mengganggu / menyusahkan"
+          }
+        ],
+        "sentence": "道に迷ってしまいました。",
+        "sentenceFurigana": "道(みち)に迷(まよ)ってしまいました。",
+        "sentenceId": "Saya tersesat di jalan."
+      },
+      {
+        "kanji": "止",
+        "on": "シ",
+        "kun": "と-まる / と-める / や-む",
+        "strokes": 4,
+        "radical": "止 (berhenti)",
+        "meaning": "Berhenti / Menyetop",
+        "strokeRule": "Garis vertikal tengah, garis horizontal tengah kanan, vertikal kiri bawah, penutup horizontal dasar.",
+        "words": [
+          {
+            "word": "止まる",
+            "reading": "とまる",
+            "meaning": "berhenti"
+          },
+          {
+            "word": "止める",
+            "reading": "とめる",
+            "meaning": "menghentikan / memarkir"
+          },
+          {
+            "word": "通行止め",
+            "reading": "つうこうどめ",
+            "meaning": "jalan ditutup"
+          }
+        ],
+        "sentence": "事故で電車が止まりました。",
+        "sentenceFurigana": "事(じ)故(こ)で電(でん)車(しゃ)が止(と)まりました。",
+        "sentenceId": "Kereta berhenti karena kecelakaan."
+      },
+      {
+        "kanji": "遅",
+        "on": "チ",
+        "kun": "おく-れる / おく-らす / おそ-い",
+        "strokes": 12,
+        "radical": "辶 (berjalan)",
+        "meaning": "Terlambat / Lambat",
+        "strokeRule": "Badan 犀 di kanan atas (9 goresan), ditopang jalan 辶 di kiri bawah (3 goresan).",
+        "words": [
+          {
+            "word": "遅れる",
+            "reading": "おくれる",
+            "meaning": "terlambat"
+          },
+          {
+            "word": "遅い",
+            "reading": "おそい",
+            "meaning": "lambat / larut"
+          },
+          {
+            "word": "遅刻",
+            "reading": "ちこく",
+            "meaning": "keterlambatan"
+          }
+        ],
+        "sentence": "10分くらい遅れます。",
+        "sentenceFurigana": "10分(ぷん)くらい遅(おく)れます。",
+        "sentenceId": "Saya akan terlambat sekitar 10 menit."
+      },
+      {
+        "kanji": "約",
+        "on": "ヤク",
+        "kun": "-",
+        "strokes": 9,
+        "radical": "糸 (benang)",
+        "meaning": "Janji / Kira-kira / Mengikat",
+        "strokeRule": "Benang 糸 di kiri (6 goresan),勺 di kanan (3 goresan).",
+        "words": [
+          {
+            "word": "約束",
+            "reading": "やくそく",
+            "meaning": "janji"
+          },
+          {
+            "word": "予約",
+            "reading": "よやく",
+            "meaning": "reservasi / memesan tempat"
+          }
+        ],
+        "sentence": "友達と約束があります。",
+        "sentenceFurigana": "友(とも)達(だち)と約(やく)束(そく)があります。",
+        "sentenceId": "Saya ada janji dengan teman."
+      },
+      {
+        "kanji": "束",
+        "on": "ソク",
+        "kun": "たば / たば-ねる",
+        "strokes": 7,
+        "radical": "木 (pohon)",
+        "meaning": "Ikatan / Berkas",
+        "strokeRule": "Pohon 木 dengan mulut 口 melingkar di tengah batangnya (kayu diikat menjadi satu ikatan).",
+        "words": [
+          {
+            "word": "約束",
+            "reading": "やくそく",
+            "meaning": "janji"
+          },
+          {
+            "word": "花束",
+            "reading": "はなたば",
+            "meaning": "buket bunga"
+          }
+        ],
+        "sentence": "約束の時間を守ります。",
+        "sentenceFurigana": "約(やく)束(そく)の時(じ)間(かん)を守(まも)ります。",
+        "sentenceId": "Saya menepati waktu janji."
+      }
+    ],
+    "readingExercise": [
+      {
+        "q": "① 道に [迷いました] 。",
+        "a": "まよいました"
+      },
+      {
+        "q": "② バスが [止まりました] 。",
+        "a": "とまりました"
+      },
+      {
+        "q": "③ 電車が遅れて [遅れました] 。",
+        "a": "おくれました"
+      },
+      {
+        "q": "④ 友達と [約束] をしました。",
+        "a": "やくそく"
+      },
+      {
+        "q": "⑤ ホテルを [予約] します。",
+        "a": "よやく"
+      },
+      {
+        "q": "⑥ 返事が [遅い] ですね。",
+        "a": "おそい"
+      },
+      {
+        "q": "⑦ ここに車を [止めます] 。",
+        "a": "とめます"
+      },
+      {
+        "q": "⑧ 学校に [遅刻] しました。",
+        "a": "ちこく"
+      },
+      {
+        "q": "⑨ きれいな [花束] を贈ります。",
+        "a": "はなたば"
+      },
+      {
+        "q": "⑩ 人に [迷惑] をかけません。",
+        "a": "めいわく"
+      }
+    ],
+    "writingExercise": [
+      {
+        "q": "① みちに ( _________ ) [まよって] しまいました。",
+        "a": "迷って"
+      },
+      {
+        "q": "② ここで くるまが ( _________ ) [とまります] 。",
+        "a": "止まります"
+      },
+      {
+        "q": "③ じかんに ( _________ ) [おくれます] 。",
+        "a": "遅れます"
+      },
+      {
+        "q": "④ ( _________ ) [やくそく] を まもります。",
+        "a": "約束"
+      },
+      {
+        "q": "⑤ ひこうきを ( _________ ) [よやく] します。",
+        "a": "予約"
+      },
+      {
+        "q": "⑥ あしが ( _________ ) [おそい] です。",
+        "a": "遅い"
+      },
+      {
+        "q": "⑦ くるまを ( _________ ) [とめて] ください。",
+        "a": "止めて"
+      },
+      {
+        "q": "⑧ ( _________ ) [ちこく] して すみません。",
+        "a": "遅刻"
+      },
+      {
+        "q": "⑨ ははに ( _________ ) [はなたば] を あげます。",
+        "a": "花束"
+      },
+      {
+        "q": "⑩ ご ( _________ ) [めいわく] を おかけします。",
+        "a": "迷惑"
+      }
+    ]
+  },
+  {
+    "bab": 8,
+    "titleJp": "第8課 野球をしたことがあります",
+    "titleId": "Bab 8: Pernah Bermain Bisbol",
+    "topic": "休日の楽しみ (Kesenangan di Hari Libur)",
+    "kanjiList": [
+      {
+        "kanji": "野",
+        "on": "ヤ / ショ",
+        "kun": "の",
+        "strokes": 11,
+        "radical": "里 (desa)",
+        "meaning": "Padang / Lapangan / Luar Ruang",
+        "strokeRule": "Desa 里 di kiri (7 goresan),予 di kanan (4 goresan).",
+        "words": [
+          {
+            "word": "野球",
+            "reading": "やきゅう",
+            "meaning": "bisbol"
+          },
+          {
+            "word": "野菜",
+            "reading": "やさい",
+            "meaning": "sayur"
+          },
+          {
+            "word": "分野",
+            "reading": "ぶんや",
+            "meaning": "bidang / ranah"
+          }
+        ],
+        "sentence": "テレビで野球の試合を見ます。",
+        "sentenceFurigana": "テレビで野(や)球(きゅう)の試(し)合(あい)を見(み)ます。",
+        "sentenceId": "Saya menonton pertandingan bisbol di TV."
+      },
+      {
+        "kanji": "球",
+        "on": "キュウ",
+        "kun": "たま",
+        "strokes": 11,
+        "radical": "王 (raja/giok)",
+        "meaning": "Bola / Bulatan",
+        "strokeRule": "Giok 王 di kiri (4 goresan),求 di kanan (7 goresan).",
+        "words": [
+          {
+            "word": "野球",
+            "reading": "やきゅう",
+            "meaning": "bisbol"
+          },
+          {
+            "word": "地球",
+            "reading": "ちきゅう",
+            "meaning": "bumi"
+          },
+          {
+            "word": "電球",
+            "reading": "でんきゅう",
+            "meaning": "bola lampu"
+          }
+        ],
+        "sentence": "日曜日に野球をします。",
+        "sentenceFurigana": "日(にち)曜(よう)日(び)に野(や)球(きゅう)をします。",
+        "sentenceId": "Saya bermain bisbol pada hari Minggu."
+      },
+      {
+        "kanji": "泳",
+        "on": "エイ",
+        "kun": "およ-ぐ",
+        "strokes": 8,
+        "radical": "氵 (air)",
+        "meaning": "Berenang",
+        "strokeRule": "Air 氵 di kiri (3 goresan),永 (abadi/menyelam) di kanan (5 goresan).",
+        "words": [
+          {
+            "word": "泳ぐ",
+            "reading": "およぐ",
+            "meaning": "berenang"
+          },
+          {
+            "word": "水泳",
+            "reading": "すいえい",
+            "meaning": "olahraga renang"
+          }
+        ],
+        "sentence": "市民プールで泳ぎます。",
+        "sentenceFurigana": "市(し)民(みん)プールで泳(およ)ぎます。",
+        "sentenceId": "Saya berenang di kolam renang umum kota."
+      },
+      {
+        "kanji": "登",
+        "on": "トウ / ト",
+        "kun": "のぼ-る",
+        "strokes": 12,
+        "radical": "癶 (kaki melangkah)",
+        "meaning": "Mendaki / Memanjat / Masuk",
+        "strokeRule": "Kaki melangkah 癶 di atas (5 goresan),豆 di bawah (7 goresan).",
+        "words": [
+          {
+            "word": "登る",
+            "reading": "のぼる",
+            "meaning": "mendaki"
+          },
+          {
+            "word": "山登り",
+            "reading": "やまのぼり",
+            "meaning": "naik gunung"
+          },
+          {
+            "word": "登山",
+            "reading": "とざん",
+            "meaning": "pendakian gunung"
+          }
+        ],
+        "sentence": "富士山に登ったことがありますか？",
+        "sentenceFurigana": "富(ふ)士(じ)山(さん)に登(のぼ)ったことがありますか？",
+        "sentenceId": "Pernahkah Anda mendaki Gunung Fuji?"
+      },
+      {
+        "kanji": "験",
+        "on": "ケン / ゲン",
+        "kun": "ため-す",
+        "strokes": 18,
+        "radical": "馬 (kuda)",
+        "meaning": "Uji / Percobaan / Pengalaman",
+        "strokeRule": "Kuda 馬 di kiri (10 goresan), 僉 di kanan (8 goresan).",
+        "words": [
+          {
+            "word": "経験",
+            "reading": "けいけん",
+            "meaning": "pengalaman"
+          },
+          {
+            "word": "試験",
+            "reading": "しけん",
+            "meaning": "ujian / tes"
+          },
+          {
+            "word": "実験",
+            "reading": "じっけん",
+            "meaning": "eksperimen"
+          }
+        ],
+        "sentence": "日本でたくさんの経験をしました。",
+        "sentenceFurigana": "日本(にほん)でたくさんの経(けい)験(けん)をしました。",
+        "sentenceId": "Saya mendapat banyak pengalaman di Jepang."
+      }
+    ],
+    "readingExercise": [
+      {
+        "q": "① 週末に [野球] を見に行きます。",
+        "a": "やきゅう"
+      },
+      {
+        "q": "② プールで [泳ぎます] 。",
+        "a": "およぎます"
+      },
+      {
+        "q": "③ 夏休みに山に [登りました] 。",
+        "a": "のぼりました"
+      },
+      {
+        "q": "④ 日本で仕事の [経験] があります。",
+        "a": "けいけん"
+      },
+      {
+        "q": "⑤ 来週、日本語の [試験] があります。",
+        "a": "しけん"
+      },
+      {
+        "q": "⑥ [水泳] が得意です。",
+        "a": "すいえい"
+      },
+      {
+        "q": "⑦ 趣味は [山登り] です。",
+        "a": "やまのぼり"
+      },
+      {
+        "q": "⑧ 毎日 [野菜] を食べます。",
+        "a": "やさい"
+      },
+      {
+        "q": "⑨ 美しい [地球] を守ります。",
+        "a": "ちきゅう"
+      },
+      {
+        "q": "⑩ 理科の [実験] をします。",
+        "a": "じっけん"
+      }
+    ],
+    "writingExercise": [
+      {
+        "q": "① ともだちと ( _________ ) [やきゅう] を します。",
+        "a": "野球"
+      },
+      {
+        "q": "② うみで ( _________ ) [およぎます] 。",
+        "a": "泳ぎます"
+      },
+      {
+        "q": "③ たかい やまに ( _________ ) [のぼります] 。",
+        "a": "登ります"
+      },
+      {
+        "q": "④ いい ( _________ ) [けいけん] に なりました。",
+        "a": "経験"
+      },
+      {
+        "q": "⑤ あした ( _________ ) [しけん] を うけます。",
+        "a": "試験"
+      },
+      {
+        "q": "⑥ ( _________ ) [すいえい] の せんしゅです。",
+        "a": "水泳"
+      },
+      {
+        "q": "⑦ ( _________ ) [やまのぼり] が すきです。",
+        "a": "山登り"
+      },
+      {
+        "q": "⑧ しんせんな ( _________ ) [やさい] です。",
+        "a": "野菜"
+      },
+      {
+        "q": "⑨ ( _________ ) [ちきゅう] の かんきょうです。",
+        "a": "地球"
+      },
+      {
+        "q": "⑩ おもしろい ( _________ ) [じっけん] です。",
+        "a": "実験"
+      }
+    ]
+  },
+  {
+    "bab": 9,
+    "titleJp": "第9課 読み方を教えてください",
+    "titleId": "Bab 9: Tolong Ajarkan Cara Membacanya",
+    "topic": "休日の楽しみ (Kesenangan di Hari Libur)",
+    "kanjiList": [
+      {
+        "kanji": "教",
+        "on": "キョウ",
+        "kun": "おし-える / おそわ-る",
+        "strokes": 11,
+        "radical": "攵 (ketukan/cambuk)",
+        "meaning": "Mengajar / Memberitahu / Agama",
+        "strokeRule": "Anak berbakti 孝 di kiri (7 goresan), cambuk/tindakan 攵 di kanan (4 goresan).",
+        "words": [
+          {
+            "word": "教える",
+            "reading": "おしえる",
+            "meaning": "mengajar / memberitahu"
+          },
+          {
+            "word": "教室",
+            "reading": "きょうしつ",
+            "meaning": "ruang kelas"
+          },
+          {
+            "word": "教科書",
+            "reading": "きょうかしょ",
+            "meaning": "buku teks pelajaran"
+          }
+        ],
+        "sentence": "漢字の読み方を教えてください。",
+        "sentenceFurigana": "漢(かん)字(じ)の読(よ)み方(かた)を教(おし)えてください。",
+        "sentenceId": "Tolong ajarkan cara membaca kanji ini."
+      },
+      {
+        "kanji": "習",
+        "on": "シュウ",
+        "kun": "なら-う",
+        "strokes": 11,
+        "radical": "羽 (sayap)",
+        "meaning": "Belajar / Berlatih",
+        "strokeRule": "Sayap 羽 di atas (6 goresan), putih 白 di bawah (5 goresan). (Anak burung mengepakkan sayap berlatih terbang).",
+        "words": [
+          {
+            "word": "習う",
+            "reading": "ならう",
+            "meaning": "belajar (keterampilan/les)"
+          },
+          {
+            "word": "練習",
+            "reading": "れんしゅう",
+            "meaning": "latihan"
+          },
+          {
+            "word": "復習",
+            "reading": "ふくしゅう",
+            "meaning": "mengulang pelajaran / review"
+          }
+        ],
+        "sentence": "柔道を習っています。",
+        "sentenceFurigana": "柔(じゅう)道(どう)を習(なら)っています。",
+        "sentenceId": "Saya sedang belajar (berlatih) judo."
+      },
+      {
+        "kanji": "貸",
+        "on": "タイ",
+        "kun": "か-す",
+        "strokes": 12,
+        "radical": "貝 (kerang/uang)",
+        "meaning": "Meminjamkan",
+        "strokeRule": "Pengganti 代 di atas (5 goresan), kerang/harta 貝 di bawah (7 goresan).",
+        "words": [
+          {
+            "word": "貸す",
+            "reading": "かす",
+            "meaning": "meminjamkan"
+          },
+          {
+            "word": "賃貸",
+            "reading": "ちんたい",
+            "meaning": "sewa menyewa"
+          }
+        ],
+        "sentence": "傘を貸しましょうか？",
+        "sentenceFurigana": "傘(かさ)を貸(か)しましょうか？",
+        "sentenceId": "Bolehkah saya meminjamkan payung kepada Anda?"
+      },
+      {
+        "kanji": "借",
+        "on": "シャク",
+        "kun": "か-りる",
+        "strokes": 10,
+        "radical": "亻 (orang)",
+        "meaning": "Meminjam",
+        "strokeRule": "Orang 亻 di kiri (2 goresan),昔 (dulu) di kanan (8 goresan).",
+        "words": [
+          {
+            "word": "借りる",
+            "reading": "かりる",
+            "meaning": "meminjam"
+          },
+          {
+            "word": "借金",
+            "reading": "しゃっきん",
+            "meaning": "utang pinjaman"
+          }
+        ],
+        "sentence": "図書館で本を借りました。",
+        "sentenceFurigana": "図(と)書(しょ)館(かん)で本(ほん)を借(か)りました。",
+        "sentenceId": "Saya meminjam buku di perpustakaan."
+      },
+      {
+        "kanji": "説",
+        "on": "セツ / ゼイ",
+        "kun": "と-く",
+        "strokes": 14,
+        "radical": "言 (kata)",
+        "meaning": "Menjelaskan / Teori",
+        "strokeRule": "Kata 言 di kiri (7 goresan),兌 di kanan (7 goresan).",
+        "words": [
+          {
+            "word": "説明",
+            "reading": "せつめい",
+            "meaning": "penjelasan / menerangkan"
+          },
+          {
+            "word": "小説",
+            "reading": "しょうせつ",
+            "meaning": "novel"
+          }
+        ],
+        "sentence": "マニュアルの説明を読みます。",
+        "sentenceFurigana": "マニュアルの説(せつ)明(めい)を読(よ)みます。",
+        "sentenceId": "Saya membaca penjelasan buku panduan."
+      },
+      {
+        "kanji": "明",
+        "on": "メイ / ミョウ",
+        "kun": "あ-かり / あか-るい / あき-らか",
+        "strokes": 8,
+        "radical": "日 (matahari)",
+        "meaning": "Terang / Jelas",
+        "strokeRule": "Matahari 日 di kiri (4 goresan), bulan 月 di kanan (4 goresan). (Dua benda penerang langit).",
+        "words": [
+          {
+            "word": "明るい",
+            "reading": "あかるい",
+            "meaning": "terang / ceria"
+          },
+          {
+            "word": "説明",
+            "reading": "せつめい",
+            "meaning": "penjelasan"
+          },
+          {
+            "word": "明日",
+            "reading": "あした / みょうにち",
+            "meaning": "besok"
+          }
+        ],
+        "sentence": "部屋がとても明るいです。",
+        "sentenceFurigana": "部(へ)屋(や)がとても明(あか)るいです。",
+        "sentenceId": "Kamarnya sangat terang."
+      }
+    ],
+    "readingExercise": [
+      {
+        "q": "① 先生が日本語を [教えて] くれます。",
+        "a": "おしえて"
+      },
+      {
+        "q": "② ピアノを [習って] います。",
+        "a": "ならって"
+      },
+      {
+        "q": "③ ペンを [貸して] ください。",
+        "a": "かして"
+      },
+      {
+        "q": "④ 友達に辞書を [借りました] 。",
+        "a": "かりました"
+      },
+      {
+        "q": "⑤ 先生の [説明] を聞きます。",
+        "a": "せつめい"
+      },
+      {
+        "q": "⑥ この教室は [明るい] です。",
+        "a": "あかるい"
+      },
+      {
+        "q": "⑦ 会話の [練習] をします。",
+        "a": "れんしゅう"
+      },
+      {
+        "q": "⑧ [教科書] を開いてください。",
+        "a": "きょうかしょ"
+      },
+      {
+        "q": "⑨ 面白い [小説] を読みます。",
+        "a": "しょうせつ"
+      },
+      {
+        "q": "⑩ 昨日の授業を [復習] します。",
+        "a": "ふくしゅう"
+      }
+    ],
+    "writingExercise": [
+      {
+        "q": "① つかいかたを ( _________ ) [おしえて] ください。",
+        "a": "教えて"
+      },
+      {
+        "q": "② ダンスを ( _________ ) [ならいます] 。",
+        "a": "習います"
+      },
+      {
+        "q": "③ かさを ( _________ ) [かします] 。",
+        "a": "貸します"
+      },
+      {
+        "q": "④ おかねを ( _________ ) [かりました] 。",
+        "a": "借りました"
+      },
+      {
+        "q": "⑤ ルールを ( _________ ) [せつめい] します。",
+        "a": "説明"
+      },
+      {
+        "q": "⑥ ( _________ ) [あかるい] へやです。",
+        "a": "明るい"
+      },
+      {
+        "q": "⑦ はつおんの ( _________ ) [れんしゅう] です。",
+        "a": "練習"
+      },
+      {
+        "q": "⑧ ( _________ ) [きょうかしょ] を みます。",
+        "a": "教科書"
+      },
+      {
+        "q": "⑨ ( _________ ) [しょうせつ] を かきます。",
+        "a": "小説"
+      },
+      {
+        "q": "⑩ いえで ( _________ ) [ふくしゅう] します。",
+        "a": "復習"
+      }
+    ]
+  },
+  {
+    "bab": 10,
+    "titleJp": "第10課 日本語教室に参加したいんですが",
+    "titleId": "Bab 10: Ingin Mengikuti Kelas Bahasa Jepang",
+    "topic": "交流とイベント (Interaksi & Acara Komunitas)",
+    "kanjiList": [
+      {
+        "kanji": "参",
+        "on": "サン / シン",
+        "kun": "まい-る",
+        "strokes": 8,
+        "radical": "厶 (pribadi)",
+        "meaning": "Ikut Serta / Berkunjung",
+        "strokeRule": "厶 di atas (2 goresan), tiga goresan horizontal kecil di tengah, dan tiga sapuan bawah 彡 (3 goresan).",
+        "words": [
+          {
+            "word": "参加",
+            "reading": "さんか",
+            "meaning": "partisipasi / ikut serta"
+          },
+          {
+            "word": "参る",
+            "reading": "まいる",
+            "meaning": "pergi / datang (bahasa halus)"
+          }
+        ],
+        "sentence": "地域の祭りに参加します。",
+        "sentenceFurigana": "地(ち)域(いき)の祭(まつ)りに参(さん)加(か)します。",
+        "sentenceId": "Saya ikut serta dalam festival daerah."
+      },
+      {
+        "kanji": "加",
+        "on": "カ",
+        "kun": "くわ-える / くわ-わる",
+        "strokes": 5,
+        "radical": "力 (tenaga)",
+        "meaning": "Menambah / Bergabung",
+        "strokeRule": "Tenaga 力 di kiri (2 goresan), mulut 口 di kanan (3 goresan).",
+        "words": [
+          {
+            "word": "参加",
+            "reading": "さんか",
+            "meaning": "bergabung / ikut serta"
+          },
+          {
+            "word": "加える",
+            "reading": "くわえる",
+            "meaning": "menambahkan"
+          }
+        ],
+        "sentence": "イベントに参加したいです。",
+        "sentenceFurigana": "イベントに参(さん)加(か)したいです。",
+        "sentenceId": "Saya ingin berpartisipasi dalam acara ini."
+      },
+      {
+        "kanji": "申",
+        "on": "シン",
+        "kun": "もう-す",
+        "strokes": 5,
+        "radical": "田 (sawah)",
+        "meaning": "Menyampaikan / Melapor / Memohon",
+        "strokeRule": "Kotak 日 di tengah (4 goresan), garis vertikal panjang menembus lurus dari atas ke bawah.",
+        "words": [
+          {
+            "word": "申し込む",
+            "reading": "もうしこむ",
+            "meaning": "mendaftar / mengajukan"
+          },
+          {
+            "word": "申す",
+            "reading": "もうす",
+            "meaning": "bernama / berkata (kenjougo)"
+          }
+        ],
+        "sentence": "ボランティア教室に申し込みます。",
+        "sentenceFurigana": "ボランティア教(きょう)室(しつ)に申(もう)し込(こ)みます。",
+        "sentenceId": "Saya mendaftar ke kelas sukarelawan."
+      },
+      {
+        "kanji": "込",
+        "on": "-",
+        "kun": "こ-む / こ-める",
+        "strokes": 5,
+        "radical": "辶 (berjalan)",
+        "meaning": "Masuk ke Dalam / Ramai",
+        "strokeRule": "Huruf 入 di kanan atas (2 goresan), ditopang jalan 辶 di kiri bawah (3 goresan).",
+        "words": [
+          {
+            "word": "申し込む",
+            "reading": "もうしこむ",
+            "meaning": "mendaftar"
+          },
+          {
+            "word": "人込み",
+            "reading": "ひとごみ",
+            "meaning": "kerumunan orang"
+          }
+        ],
+        "sentence": "インターネットで申し込みました。",
+        "sentenceFurigana": "インターネットで申(もう)し込(こ)みました。",
+        "sentenceId": "Saya mendaftar melalui internet."
+      },
+      {
+        "kanji": "連",
+        "on": "レン",
+        "kun": "つ-れる / つら-なる",
+        "strokes": 10,
+        "radical": "辶 (berjalan)",
+        "meaning": "Menghubungkan / Berantai",
+        "strokeRule": "Mobil 車 di kanan atas (7 goresan), ditopang jalan 辶 di kiri bawah (3 goresan).",
+        "words": [
+          {
+            "word": "連絡",
+            "reading": "れんらく",
+            "meaning": "menghubungi / kontak"
+          },
+          {
+            "word": "連れて行く",
+            "reading": "つれていく",
+            "meaning": "mengajak pergi"
+          }
+        ],
+        "sentence": "後で電話で連絡します。",
+        "sentenceFurigana": "後(あと)で電(でん)話(わ)で連(れん)絡(らく)します。",
+        "sentenceId": "Nanti saya hubungi lewat telepon."
+      },
+      {
+        "kanji": "絡",
+        "on": "ラク",
+        "kun": "から-む / から-まる",
+        "strokes": 12,
+        "radical": "糸 (benang)",
+        "meaning": "Terjalin / Hubungan",
+        "strokeRule": "Benang 糸 di kiri (6 goresan), 各 di kanan (6 goresan).",
+        "words": [
+          {
+            "word": "連絡",
+            "reading": "れんらく",
+            "meaning": "kontak / komunikasi"
+          },
+          {
+            "word": "連絡先",
+            "reading": "れんらくさき",
+            "meaning": "kontak yang bisa dihubungi"
+          }
+        ],
+        "sentence": "連絡先を教えてください。",
+        "sentenceFurigana": "連(れん)絡(らく)先(さき)を教(おし)えてください。",
+        "sentenceId": "Tolong beritahu nomor kontak yang dapat dihubungi."
+      }
+    ],
+    "readingExercise": [
+      {
+        "q": "① スピーチコンテストに [参加] します。",
+        "a": "さんか"
+      },
+      {
+        "q": "② ボランティアに [申し込みました] 。",
+        "a": "もうしこみました"
+      },
+      {
+        "q": "③ メールで [連絡] してください。",
+        "a": "れんらく"
+      },
+      {
+        "q": "④ こちらが [連絡先] です。",
+        "a": "れんらくさき"
+      },
+      {
+        "q": "⑤ 砂糖を少し [加えます] 。",
+        "a": "くわえます"
+      },
+      {
+        "q": "⑥ 鈴木と [申します] 。",
+        "a": "もうします"
+      },
+      {
+        "q": "⑦ 子供を公園へ [連れて行きます] 。",
+        "a": "つれていきます"
+      },
+      {
+        "q": "⑧ 駅前は [人込み] がすごいです。",
+        "a": "ひとごみ"
+      },
+      {
+        "q": "⑨ 会議に [参加] できますか。",
+        "a": "さんか"
+      },
+      {
+        "q": "⑩ ホームページから [申し込みます] 。",
+        "a": "もうしこみます"
+      }
+    ],
+    "writingExercise": [
+      {
+        "q": "① イベントに ( _________ ) [さんか] します。",
+        "a": "参加"
+      },
+      {
+        "q": "② けんがくに ( _________ ) [もうしこみます] 。",
+        "a": "申し込みます"
+      },
+      {
+        "q": "③ あした ( _________ ) [れんらく] します。",
+        "a": "連絡"
+      },
+      {
+        "q": "④ でんわで ( _________ ) [れんらく] してください。",
+        "a": "連絡"
+      },
+      {
+        "q": "⑤ しおを ( _________ ) [くわえます] 。",
+        "a": "加えます"
+      },
+      {
+        "q": "⑥ やまだと ( _________ ) [もうします] 。",
+        "a": "申します"
+      },
+      {
+        "q": "⑦ いぬを ( _________ ) [つれていきます] 。",
+        "a": "連れて行きます"
+      },
+      {
+        "q": "⑧ あなたの ( _________ ) [れんらくさき] です。",
+        "a": "連絡先"
+      },
+      {
+        "q": "⑨ マラソンに ( _________ ) [さんか] しました。",
+        "a": "参加"
+      },
+      {
+        "q": "⑩ ( _________ ) [もうしこみ] ようし を だします。",
+        "a": "申し込み"
+      }
+    ]
+  },
+  {
+    "bab": 11,
+    "titleJp": "第11課 肉と野菜は私が買って行きます",
+    "titleId": "Bab 11: Daging dan Sayuran Akan Saya Beli dan Bawa",
+    "topic": "交流とイベント (Interaksi & Acara Komunitas)",
+    "kanjiList": [
+      {
+        "kanji": "準",
+        "on": "ジュン",
+        "kun": "-",
+        "strokes": 13,
+        "radical": "氵 (air)",
+        "meaning": "Standar / Menyiapkan",
+        "strokeRule": "Air 氵 di kiri (3 goresan), 隼 di kanan (10 goresan).",
+        "words": [
+          {
+            "word": "準備",
+            "reading": "じゅんび",
+            "meaning": "persiapan"
+          },
+          {
+            "word": "基準",
+            "reading": "きじゅん",
+            "meaning": "standar / kriteria"
+          }
+        ],
+        "sentence": "パーティーの準備をしましょう。",
+        "sentenceFurigana": "パーティーの準(じゅん)備(び)をしましょう。",
+        "sentenceId": "Mari kita lakukan persiapan pesta."
+      },
+      {
+        "kanji": "備",
+        "on": "ビ",
+        "kun": "そな-える / そな-わる",
+        "strokes": 12,
+        "radical": "亻 (orang)",
+        "meaning": "Menyediakan / Memperlengkapi",
+        "strokeRule": "Orang 亻 di kiri (2 goresan), di kanan terdiri atas bagian atas dan 用 (10 goresan).",
+        "words": [
+          {
+            "word": "準備",
+            "reading": "じゅんび",
+            "meaning": "persiapan"
+          },
+          {
+            "word": "設備",
+            "reading": "せつび",
+            "meaning": "fasilitas / perlengkapan"
+          }
+        ],
+        "sentence": "会議の資料を準備しました。",
+        "sentenceFurigana": "会(かい)議(ぎ)の資(し)料(りょう)を準(じゅん)備(び)しました。",
+        "sentenceId": "Saya telah menyiapkan materi rapat."
+      },
+      {
+        "kanji": "用",
+        "on": "ヨウ",
+        "kun": "もち-いる",
+        "strokes": 5,
+        "radical": "用 (menggunakan)",
+        "meaning": "Guna / Urusan / Menggunakan",
+        "strokeRule": "Bingkai luar 冂 dengan garis vertikal tengah lurus, dipotong dua garis horizontal di dalam.",
+        "words": [
+          {
+            "word": "用意",
+            "reading": "ようい",
+            "meaning": "persiapan / sedia"
+          },
+          {
+            "word": "用事",
+            "reading": "ようじ",
+            "meaning": "urusan / keperluan"
+          },
+          {
+            "word": "利用",
+            "reading": "りよう",
+            "meaning": "pemanfaatan"
+          }
+        ],
+        "sentence": "飲み物を用意しておきます。",
+        "sentenceFurigana": "飲(の)み物(もの)を用(よう)意(い)しておきます。",
+        "sentenceId": "Saya akan menyiapkan minuman terlebih dahulu."
+      },
+      {
+        "kanji": "意",
+        "on": "イ",
+        "kun": "-",
+        "strokes": 13,
+        "radical": "心 (hati)",
+        "meaning": "Niat / Pikiran / Kesadaran",
+        "strokeRule": "Suara 音 di atas (9 goresan), hati 心 di bawah (4 goresan).",
+        "words": [
+          {
+            "word": "用意",
+            "reading": "ようい",
+            "meaning": "persiapan"
+          },
+          {
+            "word": "注意",
+            "reading": "ちゅうい",
+            "meaning": "perhatian / hati-hati"
+          },
+          {
+            "word": "意味",
+            "reading": "いみ",
+            "meaning": "arti"
+          }
+        ],
+        "sentence": "足元に注意してください。",
+        "sentenceFurigana": "足(あし)元(もと)に注(ちゅう)意(い)してください。",
+        "sentenceId": "Harap berhati-hati pada pijakan kaki Anda."
+      },
+      {
+        "kanji": "持",
+        "on": "ジ",
+        "kun": "も-つ",
+        "strokes": 9,
+        "radical": "扌 (tangan)",
+        "meaning": "Membawa / Memegang",
+        "strokeRule": "Tangan 扌 di kiri (3 goresan), kuil 寺 di kanan (6 goresan).",
+        "words": [
+          {
+            "word": "持つ",
+            "reading": "もつ",
+            "meaning": "membawa / memegang / punya"
+          },
+          {
+            "word": "持っていく",
+            "reading": "もっていく",
+            "meaning": "membawa pergi"
+          },
+          {
+            "word": "気持ち",
+            "reading": "きもち",
+            "meaning": "perasaan"
+          }
+        ],
+        "sentence": "お皿とコップを持って行きます。",
+        "sentenceFurigana": "お皿(さら)とコップを持(も)って行(い)きます。",
+        "sentenceId": "Saya akan membawa piring dan gelas."
+      },
+      {
+        "kanji": "運",
+        "on": "ウン",
+        "kun": "はこ-ぶ",
+        "strokes": 12,
+        "radical": "辶 (berjalan)",
+        "meaning": "Mengangkut / Nasib / Keberuntungan",
+        "strokeRule": "Tentara 軍 di kanan atas (9 goresan), ditopang jalan 辶 di kiri bawah (3 goresan).",
+        "words": [
+          {
+            "word": "運ぶ",
+            "reading": "はこぶ",
+            "meaning": "mengangkut / membawa pindah"
+          },
+          {
+            "word": "運動",
+            "reading": "うんどう",
+            "meaning": "olahraga"
+          },
+          {
+            "word": "運転",
+            "reading": "うんてん",
+            "meaning": "mengemudi"
+          }
+        ],
+        "sentence": "荷物を車まで運びます。",
+        "sentenceFurigana": "荷(に)物(もの)を車(くるま)まで運(はこ)びます。",
+        "sentenceId": "Saya mengangkut barang sampai ke mobil."
+      }
+    ],
+    "readingExercise": [
+      {
+        "q": "① 食事の [準備] ができました。",
+        "a": "じゅんび"
+      },
+      {
+        "q": "② お金とパスポートを [用意] します。",
+        "a": "ようい"
+      },
+      {
+        "q": "③ 今日は少し [用事] があります。",
+        "a": "ようじ"
+      },
+      {
+        "q": "④ 傘を [持って] 来ましたか。",
+        "a": "もって"
+      },
+      {
+        "q": "⑤ 重い机を [運びます] 。",
+        "a": "はこびます"
+      },
+      {
+        "q": "⑥ 車を [運転] できますか。",
+        "a": "うんてん"
+      },
+      {
+        "q": "⑦ 車に [注意] してください。",
+        "a": "ちゅうい"
+      },
+      {
+        "q": "⑧ 気分が良くていい [気持ち] です。",
+        "a": "きもち"
+      },
+      {
+        "q": "⑨ 旅行の [準備] を始めます。",
+        "a": "じゅんび"
+      },
+      {
+        "q": "⑩ 道具を [用意] してください。",
+        "a": "ようい"
+      }
+    ],
+    "writingExercise": [
+      {
+        "q": "① パーティーの ( _________ ) [じゅんび] です。",
+        "a": "準備"
+      },
+      {
+        "q": "② おさらを ( _________ ) [ようい] します。",
+        "a": "用意"
+      },
+      {
+        "q": "③ ごごから ( _________ ) [ようじ] が あります。",
+        "a": "用事"
+      },
+      {
+        "q": "④ かばんを ( _________ ) [もって] いきます。",
+        "a": "持って"
+      },
+      {
+        "q": "⑤ にもつを ( _________ ) [はこびます] 。",
+        "a": "運びます"
+      },
+      {
+        "q": "⑥ トラックを ( _________ ) [うんてん] します。",
+        "a": "運転"
+      },
+      {
+        "q": "⑦ ( _________ ) [ちゅうい] して みてください。",
+        "a": "注意"
+      },
+      {
+        "q": "⑧ いい ( _________ ) [きもち] に なりました。",
+        "a": "気持ち"
+      },
+      {
+        "q": "⑨ しごとの ( _________ ) [じゅんび] です。",
+        "a": "準備"
+      },
+      {
+        "q": "⑩ のみものを ( _________ ) [ようい] しました。",
+        "a": "用意"
+      }
+    ]
+  },
+  {
+    "bab": 12,
+    "titleJp": "第12課 お弁当、おいしそうですね",
+    "titleId": "Bab 12: Bento-nya Kelihatan Enak ya",
+    "topic": "食文化 (Budaya Makan)",
+    "kanjiList": [
+      {
+        "kanji": "弁",
+        "on": "ベン",
+        "kun": "-",
+        "strokes": 5,
+        "radical": "廾 (dua tangan)",
+        "meaning": "Bento / Bicara / Membedakan",
+        "strokeRule": "厶 di atas (2 goresan), ditopang dua tangan 廾 di bawah (3 goresan).",
+        "words": [
+          {
+            "word": "弁当",
+            "reading": "べんとう",
+            "meaning": "bekal makan siang (bento)"
+          },
+          {
+            "word": "関西弁",
+            "reading": "かんさいべん",
+            "meaning": "dialek Kansai"
+          }
+        ],
+        "sentence": "今日はお弁当を作ってきました。",
+        "sentenceFurigana": "今(きょう)日(は)お弁(べん)当(とう)を作(つく)ってきました。",
+        "sentenceId": "Hari ini saya membawa bekal bento buatan sendiri."
+      },
+      {
+        "kanji": "当",
+        "on": "トウ",
+        "kun": "あ-たる / あ-てる",
+        "strokes": 6,
+        "radical": "小 (kecil)",
+        "meaning": "Tepat / Terkena / Bento",
+        "strokeRule": "Tiga titik atas 小 (3 goresan), mahkota horizontal belok bawah ヨ modifikasi (3 goresan).",
+        "words": [
+          {
+            "word": "弁当",
+            "reading": "べんとう",
+            "meaning": "bekal bento"
+          },
+          {
+            "word": "本当",
+            "reading": "ほんとう",
+            "meaning": "sungguh / sebenarnya"
+          },
+          {
+            "word": "当日",
+            "reading": "とうじつ",
+            "meaning": "hari H / hari pelaksanaan"
+          }
+        ],
+        "sentence": "本当においしいですね！",
+        "sentenceFurigana": "本(ほん)当(とう)においしいですね！",
+        "sentenceId": "Sungguh enak sekali ya!"
+      },
+      {
+        "kanji": "味",
+        "on": "ミ",
+        "kun": "あじ / あじ-わう",
+        "strokes": 8,
+        "radical": "口 (mulut)",
+        "meaning": "Rasa / Mencicipi",
+        "strokeRule": "Mulut 口 di kiri (3 goresan), belum 未 di kanan (5 goresan).",
+        "words": [
+          {
+            "word": "味",
+            "reading": "あじ",
+            "meaning": "rasa"
+          },
+          {
+            "word": "意味",
+            "reading": "いみ",
+            "meaning": "arti"
+          },
+          {
+            "word": "調味料",
+            "reading": "ちょうみりょう",
+            "meaning": "bumbu penyedap"
+          }
+        ],
+        "sentence": "少し甘い味がします。",
+        "sentenceFurigana": "少(すこ)し甘(あま)い味(あじ)がします。",
+        "sentenceId": "Terasa rasa sedikit manis."
+      },
+      {
+        "kanji": "匂",
+        "on": "-",
+        "kun": "にお-う / にお-い",
+        "strokes": 4,
+        "radical": "勹 (bungkus)",
+        "meaning": "Aroma / Bau Harum",
+        "strokeRule": "Bungkus 勹 di luar (2 goresan),ヒ di dalam (2 goresan).",
+        "words": [
+          {
+            "word": "匂い",
+            "reading": "におい",
+            "meaning": "aroma / bau"
+          }
+        ],
+        "sentence": "いい匂いがしてきました。",
+        "sentenceFurigana": "いい匂(にお)いがしてきました。",
+        "sentenceId": "Tercium aroma yang sangat sedap."
+      },
+      {
+        "kanji": "具",
+        "on": "グ",
+        "kun": "そな-える",
+        "strokes": 8,
+        "radical": "八 (delapan)",
+        "meaning": "Alat / Isian Makanan",
+        "strokeRule": "目 di atas (5 goresan), satu horizontal dasar dan dua kaki 八 di bawah (3 goresan).",
+        "words": [
+          {
+            "word": "具",
+            "reading": "ぐ",
+            "meaning": "isian makanan / lauk"
+          },
+          {
+            "word": "道具",
+            "reading": "どうぐ",
+            "meaning": "alat / perkakas"
+          },
+          {
+            "word": "家具",
+            "reading": "かぐ",
+            "meaning": "perabot rumah"
+          }
+        ],
+        "sentence": "みそ汁の具は何ですか？",
+        "sentenceFurigana": "みそ汁(しる)の具(ぐ)は何(なん)ですか？",
+        "sentenceId": "Apa isian sup miso ini?"
+      },
+      {
+        "kanji": "材",
+        "on": "ザイ",
+        "kun": "-",
+        "strokes": 7,
+        "radical": "木 (pohon)",
+        "meaning": "Bahan / Material",
+        "strokeRule": "Pohon 木 di kiri (4 goresan), bakat 才 di kanan (3 goresan).",
+        "words": [
+          {
+            "word": "材料",
+            "reading": "ざいりょう",
+            "meaning": "bahan masakan / material"
+          },
+          {
+            "word": "木材",
+            "reading": "もくざい",
+            "meaning": "kayu bahan bangunan"
+          }
+        ],
+        "sentence": "カレーの材料を買いに行きます。",
+        "sentenceFurigana": "カレーの材(ざい)料(りょう)を買(か)いに行(い)きます。",
+        "sentenceId": "Saya pergi membeli bahan untuk kari."
+      }
+    ],
+    "readingExercise": [
+      {
+        "q": "① 毎日 [お弁当] を持ってきます。",
+        "a": "おべんとう"
+      },
+      {
+        "q": "② それは [本当] ですか。",
+        "a": "ほんとう"
+      },
+      {
+        "q": "③ このスープはいい [味] です。",
+        "a": "あじ"
+      },
+      {
+        "q": "④ パンのいい [匂い] がします。",
+        "a": "におい"
+      },
+      {
+        "q": "⑤ スープの [具] は豆腐です。",
+        "a": "ぐ"
+      },
+      {
+        "q": "⑥ 新鮮な [材料] を使います。",
+        "a": "ざいりょう"
+      },
+      {
+        "q": "⑦ 掃除の [道具] を片付けます。",
+        "a": "どうぐ"
+      },
+      {
+        "q": "⑧ [家具] を買いました。",
+        "a": "かぐ"
+      },
+      {
+        "q": "⑨ [関西弁] を話します。",
+        "a": "かんさいべん"
+      },
+      {
+        "q": "⑩ [調味料] を入れます。",
+        "a": "ちょうみりょう"
+      }
+    ],
+    "writingExercise": [
+      {
+        "q": "① ははの ( _________ ) [おべんとう] です。",
+        "a": "お弁当"
+      },
+      {
+        "q": "② ( _________ ) [ほんとう] の はなしです。",
+        "a": "本当"
+      },
+      {
+        "q": "③ からい ( _________ ) [あじ] が します。",
+        "a": "味"
+      },
+      {
+        "q": "④ コーヒーの ( _________ ) [におい] です。",
+        "a": "匂い"
+      },
+      {
+        "q": "⑤ なべの ( _________ ) [ぐ] を えらびます。",
+        "a": "具"
+      },
+      {
+        "q": "⑥ りょうりの ( _________ ) [ざいりょう] です。",
+        "a": "材料"
+      },
+      {
+        "q": "⑦ つかいやすい ( _________ ) [どうぐ] です。",
+        "a": "道具"
+      },
+      {
+        "q": "⑧ あたらしい ( _________ ) [かぐ] です。",
+        "a": "家具"
+      },
+      {
+        "q": "⑨ ( _________ ) [ほんとう] に ありがとう。",
+        "a": "本当"
+      },
+      {
+        "q": "⑩ にほんの ( _________ ) [べんとう] ぶんかです。",
+        "a": "弁当"
+      }
+    ]
+  },
+  {
+    "bab": 13,
+    "titleJp": "第13課 あと10分ぐらいで終わりそうです",
+    "titleId": "Bab 13: Sepertinya Selesai Sekitar 10 Menit Lagi",
+    "topic": "仕事の進行 (Progres Pekerjaan)",
+    "kanjiList": [
+      {
+        "kanji": "始",
+        "on": "シ",
+        "kun": "はじ-まる / はじ-める",
+        "strokes": 8,
+        "radical": "女 (wanita)",
+        "meaning": "Mulai",
+        "strokeRule": "Wanita 女 di kiri (3 goresan), 台 (panggung: 厶 dan 口) di kanan (5 goresan).",
+        "words": [
+          {
+            "word": "始まる",
+            "reading": "はじまる",
+            "meaning": "dimulai"
+          },
+          {
+            "word": "始める",
+            "reading": "はじめる",
+            "meaning": "memulai"
+          },
+          {
+            "word": "開始",
+            "reading": "かいし",
+            "meaning": "permulaan"
+          }
+        ],
+        "sentence": "朝8時半に仕事が始まります。",
+        "sentenceFurigana": "朝(あさ)8時(じ)半(はん)に仕事(しごと)が始(はじ)まります。",
+        "sentenceId": "Pekerjaan dimulai jam 8.30 pagi."
+      },
+      {
+        "kanji": "終",
+        "on": "シュウ",
+        "kun": "お-わる / お-える",
+        "strokes": 11,
+        "radical": "糸 (benang)",
+        "meaning": "Selesai / Akhir",
+        "strokeRule": "Benang 糸 di kiri (6 goresan), musim dingin 冬 di kanan (5 goresan).",
+        "words": [
+          {
+            "word": "終わる",
+            "reading": "おわる",
+            "meaning": "selesai"
+          },
+          {
+            "word": "終わり",
+            "reading": "おわり",
+            "meaning": "akhir"
+          },
+          {
+            "word": "終電",
+            "reading": "しゅうでん",
+            "meaning": "kereta terakhir"
+          }
+        ],
+        "sentence": "もうすぐ作業が終わりそうです。",
+        "sentenceFurigana": "もうすぐ作(さく)業(ぎょう)が終(お)わりそうです。",
+        "sentenceId": "Sebentar lagi sepertinya pekerjaan akan selesai."
+      },
+      {
+        "kanji": "続",
+        "on": "ゾク",
+        "kun": "つづ-く / つづ-ける",
+        "strokes": 13,
+        "radical": "糸 (benang)",
+        "meaning": "Berlanjut / Meneruskan",
+        "strokeRule": "Benang 糸 di kiri (6 goresan), 売 modifikasi di kanan (7 goresan).",
+        "words": [
+          {
+            "word": "続く",
+            "reading": "つづく",
+            "meaning": "berlanjut"
+          },
+          {
+            "word": "続ける",
+            "reading": "つづける",
+            "meaning": "melanjutkan"
+          },
+          {
+            "word": "手続き",
+            "reading": "てつづき",
+            "meaning": "prosedur pengurusan"
+          }
+        ],
+        "sentence": "この仕事をずっと続けたいです。",
+        "sentenceFurigana": "この仕事(しごと)をずっと続(つづ)けたいです。",
+        "sentenceId": "Saya ingin terus melanjutkan pekerjaan ini."
+      },
+      {
+        "kanji": "残",
+        "on": "ザン",
+        "kun": "のこ-る / のこ-す",
+        "strokes": 10,
+        "radical": "歹 (tulang busuk)",
+        "meaning": "Sisa / Tertinggal",
+        "strokeRule": "Tulang 歹 di kiri (4 goresan), dua senjata 戋 di kanan (6 goresan).",
+        "words": [
+          {
+            "word": "残る",
+            "reading": "のこる",
+            "meaning": "tersisa"
+          },
+          {
+            "word": "残業",
+            "reading": "ざんぎょう",
+            "meaning": "lembur"
+          },
+          {
+            "word": "残念",
+            "reading": "ざんねん",
+            "meaning": "sayang sekali / kecewa"
+          }
+        ],
+        "sentence": "今日は1時間残業します。",
+        "sentenceFurigana": "今(きょう)日(は)1時(じ)間(かん)残(ざん)業(ぎょう)します。",
+        "sentenceId": "Hari ini saya akan lembur selama 1 jam."
+      },
+      {
+        "kanji": "業",
+        "on": "ギョウ / ゴウ",
+        "kun": "わざ",
+        "strokes": 13,
+        "radical": "木 (pohon)",
+        "meaning": "Kegiatan / Pekerjaan / Industri",
+        "strokeRule": "Tiga titik atas, horizontal panjang, dua garis vertikal berhadapan, horizontal dasar, kayu 木 di bawah.",
+        "words": [
+          {
+            "word": "残業",
+            "reading": "ざんぎょう",
+            "meaning": "lembur"
+          },
+          {
+            "word": "作業",
+            "reading": "さぎょう",
+            "meaning": "operasi kerja / tugas teknis"
+          },
+          {
+            "word": "授業",
+            "reading": "じゅぎょう",
+            "meaning": "pelajaran / perkuliahan"
+          }
+        ],
+        "sentence": "午後の作業を始めましょう。",
+        "sentenceFurigana": "午(ご)後(ご)の作(さ)業(ぎょう)を始(はじ)めましょう。",
+        "sentenceId": "Mari mulai pekerjaan sesi siang."
+      }
+    ],
+    "readingExercise": [
+      {
+        "q": "① 会議が [始まります] 。",
+        "a": "はじまります"
+      },
+      {
+        "q": "② 仕事が [終わりました] 。",
+        "a": "おわりました"
+      },
+      {
+        "q": "③ 勉強を [続けます] 。",
+        "a": "つづけます"
+      },
+      {
+        "q": "④ 今日は [残業] があります。",
+        "a": "ざんぎょう"
+      },
+      {
+        "q": "⑤ 工場の [作業] を確認します。",
+        "a": "さぎょう"
+      },
+      {
+        "q": "⑥ 雨が一日中 [続いて] います。",
+        "a": "つづいて"
+      },
+      {
+        "q": "⑦ ご飯が少し [残りました] 。",
+        "a": "のこりました"
+      },
+      {
+        "q": "⑧ それはとても [残念] ですね。",
+        "a": "ざんねん"
+      },
+      {
+        "q": "⑨ [終電] に間に合いました。",
+        "a": "しゅうでん"
+      },
+      {
+        "q": "⑩ 銀行で [手続き] をします。",
+        "a": "てつづき"
+      }
+    ],
+    "writingExercise": [
+      {
+        "q": "① レッスンが ( _________ ) [はじまります] 。",
+        "a": "始まります"
+      },
+      {
+        "q": "② テストが ( _________ ) [おわりました] 。",
+        "a": "終わりました"
+      },
+      {
+        "q": "③ うんどうを ( _________ ) [つづけます] 。",
+        "a": "続けます"
+      },
+      {
+        "q": "④ まいにち ( _________ ) [ざんぎょう] します。",
+        "a": "残業"
+      },
+      {
+        "q": "⑤ あんぜんな ( _________ ) [さぎょう] です。",
+        "a": "作業"
+      },
+      {
+        "q": "⑥ なつが ( _________ ) [おわります] 。",
+        "a": "終わります"
+      },
+      {
+        "q": "⑦ おかねが ( _________ ) [のこっていません] 。",
+        "a": "残っていません"
+      },
+      {
+        "q": "⑧ ( _________ ) [ざんねん] な けっかです。",
+        "a": "残念"
+      },
+      {
+        "q": "⑨ ( _________ ) [しゅうでん] の じかんです。",
+        "a": "終電"
+      },
+      {
+        "q": "⑩ びざの ( _________ ) [てつづき] です。",
+        "a": "手続き"
+      }
+    ]
+  },
+  {
+    "bab": 14,
+    "titleJp": "第14課 休みを取ってもいいでしょうか？",
+    "titleId": "Bab 14: Bolehkah Saya Mengambil Cuti Libur?",
+    "topic": "仕事と休暇 (Pekerjaan & Hari Libur)",
+    "kanjiList": [
+      {
+        "kanji": "休",
+        "on": "キュウ",
+        "kun": "やす-む / やす-み",
+        "strokes": 6,
+        "radical": "亻 (orang)",
+        "meaning": "Libur / Istirahat",
+        "strokeRule": "Orang 亻 di kiri (2 goresan), pohon 木 di kanan (4 goresan).",
+        "words": [
+          {
+            "word": "休み",
+            "reading": "やすみ",
+            "meaning": "libur / istirahat"
+          },
+          {
+            "word": "休暇",
+            "reading": "きゅうか",
+            "meaning": "cuti libur resmi"
+          },
+          {
+            "word": "有給休暇",
+            "reading": "ゆうきゅうきゅうか",
+            "meaning": "cuti berbayar tahunan"
+          }
+        ],
+        "sentence": "有給休暇を取りたいです。",
+        "sentenceFurigana": "有(ゆう)給(きゅう)休(きゅう)暇(か)を取(と)りたいです。",
+        "sentenceId": "Saya ingin mengambil cuti berbayar."
+      },
+      {
+        "kanji": "暇",
+        "on": "カ",
+        "kun": "ひま",
+        "strokes": 13,
+        "radical": "日 (matahari)",
+        "meaning": "Waktu Luang / Cuti",
+        "strokeRule": "Matahari 日 di kiri (4 goresan),叚 di kanan (9 goresan).",
+        "words": [
+          {
+            "word": "休暇",
+            "reading": "きゅうか",
+            "meaning": "cuti / hari libur"
+          },
+          {
+            "word": "暇",
+            "reading": "ひま",
+            "meaning": "waktu luang / senggang"
+          }
+        ],
+        "sentence": "週末は暇ですか？",
+        "sentenceFurigana": "週(しゅう)末(まつ)は暇(ひま)ですか？",
+        "sentenceId": "Apakah Anda punya waktu luang akhir pekan ini?"
+      },
+      {
+        "kanji": "届",
+        "on": "カイ",
+        "kun": "とど-く / とど-ける",
+        "strokes": 8,
+        "radical": "尸 (jasad/jenazah)",
+        "meaning": "Menyampaikan / Surat Laporan",
+        "strokeRule": "Atap tubuh 尸 di kiri atas (3 goresan), huruf 由 (asal) di dalam (5 goresan).",
+        "words": [
+          {
+            "word": "届ける",
+            "reading": "とどける",
+            "meaning": "mengantar / menyampaikan"
+          },
+          {
+            "word": "届く",
+            "reading": "とどく",
+            "meaning": "sampai / tiba"
+          },
+          {
+            "word": "届け",
+            "reading": "とどけ",
+            "meaning": "surat pemberitahuan"
+          }
+        ],
+        "sentence": "休暇届を提出しました。",
+        "sentenceFurigana": "休(きゅう)暇(か)届(とどけ)を提(てい)出(しゅつ)しました。",
+        "sentenceId": "Saya telah mengumpulkan surat permohonan cuti."
+      },
+      {
+        "kanji": "許",
+        "on": "キョ",
+        "kun": "ゆる-す",
+        "strokes": 11,
+        "radical": "言 (kata)",
+        "meaning": "Mengizinkan / Membolehkan",
+        "strokeRule": "Kata 言 di kiri (7 goresan),午 (siang) di kanan (4 goresan).",
+        "words": [
+          {
+            "word": "許可",
+            "reading": "きょか",
+            "meaning": "izin / persetujuan"
+          },
+          {
+            "word": "許す",
+            "reading": "ゆるす",
+            "meaning": "mengizinkan / memaafkan"
+          }
+        ],
+        "sentence": "上司の許可をもらいました。",
+        "sentenceFurigana": "上(じょう)司(し)の許(きょ)可(か)をもらいました。",
+        "sentenceId": "Saya telah mendapatkan izin dari atasan."
+      },
+      {
+        "kanji": "願",
+        "on": "ガン",
+        "kun": "ねが-う",
+        "strokes": 19,
+        "radical": "頁 (kepala/halaman)",
+        "meaning": "Memohon / Permintaan",
+        "strokeRule": "Asal 原 di kiri (10 goresan), kepala 頁 di kanan (9 goresan).",
+        "words": [
+          {
+            "word": "お願いします",
+            "reading": "おねがいします",
+            "meaning": "tolong / mohon bantuannya"
+          },
+          {
+            "word": "願い",
+            "reading": "ねがい",
+            "meaning": "permohonan / harapan"
+          }
+        ],
+        "sentence": "よろしくお願いいたします。",
+        "sentenceFurigana": "よろしくお願(ねが)いいたします。",
+        "sentenceId": "Mohon bantuannya dengan hormat."
+      }
+    ],
+    "readingExercise": [
+      {
+        "q": "① 来週 [休暇] を取ります。",
+        "a": "きゅうか"
+      },
+      {
+        "q": "② 明日は [暇] ですか。",
+        "a": "ひま"
+      },
+      {
+        "q": "③ 会社に [届け] を出します。",
+        "a": "とどけ"
+      },
+      {
+        "q": "④ 部長の [許可] を得ました。",
+        "a": "きょか"
+      },
+      {
+        "q": "⑤ よろしくお [願い] します。",
+        "a": "ねがい"
+      },
+      {
+        "q": "⑥ 荷物が [届きました] 。",
+        "a": "とどきました"
+      },
+      {
+        "q": "⑦ [有給休暇] を申請します。",
+        "a": "ゆうきゅうきゅうか"
+      },
+      {
+        "q": "⑧ 失敗を [許します] 。",
+        "a": "ゆるします"
+      },
+      {
+        "q": "⑨ 心からの [願い] です。",
+        "a": "ねがい"
+      },
+      {
+        "q": "⑩ 書類を [届けます] 。",
+        "a": "とどけます"
+      }
+    ],
+    "writingExercise": [
+      {
+        "q": "① なつの ( _________ ) [きゅうか] です。",
+        "a": "休暇"
+      },
+      {
+        "q": "② いまは ( _________ ) [ひま] です。",
+        "a": "暇"
+      },
+      {
+        "q": "③ やすみの ( _________ ) [とどけ] を だします。",
+        "a": "届け"
+      },
+      {
+        "q": "④ しゃちょうの ( _________ ) [きょか] です。",
+        "a": "許可"
+      },
+      {
+        "q": "⑤ これを お ( _________ ) [ねがい] します。",
+        "a": "願い"
+      },
+      {
+        "q": "⑥ てがみが ( _________ ) [とどきました] 。",
+        "a": "届きました"
+      },
+      {
+        "q": "⑦ ( _________ ) [きゅうか] を とりたいです。",
+        "a": "休暇"
+      },
+      {
+        "q": "⑧ ( _________ ) [きょか] を もらいました。",
+        "a": "許可"
+      },
+      {
+        "q": "⑨ ほんとうに お ( _________ ) [ねがい] します。",
+        "a": "願い"
+      },
+      {
+        "q": "⑩ にもつを ( _________ ) [とどけます] 。",
+        "a": "届けます"
+      }
+    ]
+  },
+  {
+    "bab": 15,
+    "titleJp": "第15課 熱があってのどが痛いんです",
+    "titleId": "Bab 15: Saya Demam dan Tenggorokan Sakit",
+    "topic": "体調と病院 (Kesehatan & Klinik)",
+    "kanjiList": [
+      {
+        "kanji": "熱",
+        "on": "ネツ",
+        "kun": "あつ-い",
+        "strokes": 15,
+        "radical": "灬 (api)",
+        "meaning": "Demam / Panas",
+        "strokeRule": "Menanam 執 di atas (11 goresan), ditopang 4 titik api 灬 di bawah (4 goresan).",
+        "words": [
+          {
+            "word": "熱",
+            "reading": "ねつ",
+            "meaning": "demam / suhu panas"
+          },
+          {
+            "word": "高熱",
+            "reading": "こうねつ",
+            "meaning": "demam tinggi"
+          },
+          {
+            "word": "熱い",
+            "reading": "あつい",
+            "meaning": "panas (benda/minuman)"
+          }
+        ],
+        "sentence": "38度の熱があります。",
+        "sentenceFurigana": "38度(ど)の熱(ねつ)があります。",
+        "sentenceId": "Saya demam 38 derajat."
+      },
+      {
+        "kanji": "痛",
+        "on": "ツウ",
+        "kun": "いた-い / いた-む",
+        "strokes": 12,
+        "radical": "疒 (sakit)",
+        "meaning": "Sakit / Nyeri",
+        "strokeRule": "Penyakit 疒 di kiri atas (5 goresan),甬 di dalam (7 goresan).",
+        "words": [
+          {
+            "word": "痛い",
+            "reading": "いたい",
+            "meaning": "sakit / nyeri"
+          },
+          {
+            "word": "頭痛",
+            "reading": "ずつう",
+            "meaning": "sakit kepala"
+          },
+          {
+            "word": "腹痛",
+            "reading": "ふくつう",
+            "meaning": "sakit perut"
+          }
+        ],
+        "sentence": "頭と喉が痛いです。",
+        "sentenceFurigana": "頭(あたま)と喉(のど)が痛(いた)いです。",
+        "sentenceId": "Kepala dan tenggorokan saya sakit."
+      },
+      {
+        "kanji": "薬",
+        "on": "ヤク",
+        "kun": "くすり",
+        "strokes": 16,
+        "radical": "艹 (rumput)",
+        "meaning": "Obat",
+        "strokeRule": "Rumput 艹 di atas (3 goresan), musik/nyaman 楽 di bawah (13 goresan). (Tumbuhan yang menyembuhkan badan).",
+        "words": [
+          {
+            "word": "薬",
+            "reading": "くすり",
+            "meaning": "obat"
+          },
+          {
+            "word": "風邪薬",
+            "reading": "かぜぐすり",
+            "meaning": "obat flu"
+          },
+          {
+            "word": "薬局",
+            "reading": "やっきょく",
+            "meaning": "apotek"
+          }
+        ],
+        "sentence": "食後に薬を飲んでください。",
+        "sentenceFurigana": "食(しょく)後(ご)に薬(くすり)を飲(の)んでください。",
+        "sentenceId": "Minumlah obat sesudah makan."
+      },
+      {
+        "kanji": "医",
+        "on": "イ",
+        "kun": "-",
+        "strokes": 7,
+        "radical": "匚 (kotak penyimpan)",
+        "meaning": "Medis / Dokter",
+        "strokeRule": "Kotak 匚 luar (2 goresan), panah 矢 di dalam (5 goresan).",
+        "words": [
+          {
+            "word": "医者",
+            "reading": "いしゃ",
+            "meaning": "dokter"
+          },
+          {
+            "word": "医院",
+            "reading": "いいん",
+            "meaning": "klinik dokter"
+          },
+          {
+            "word": "医学",
+            "reading": "いがく",
+            "meaning": "ilmu kedokteran"
+          }
+        ],
+        "sentence": "医者に診てもらいました。",
+        "sentenceFurigana": "医(い)者(しゃ)に診(み)てもらいました。",
+        "sentenceId": "Saya telah diperiksa oleh dokter."
+      },
+      {
+        "kanji": "者",
+        "on": "シャ",
+        "kun": "もの",
+        "strokes": 8,
+        "radical": "耂 (tua)",
+        "meaning": "Orang / Pelaku / Ahli",
+        "strokeRule": "Tua 耂 modifikasi di atas (4 goresan), matahari 日 di bawah (4 goresan).",
+        "words": [
+          {
+            "word": "医者",
+            "reading": "いしゃ",
+            "meaning": "dokter"
+          },
+          {
+            "word": "患者",
+            "reading": "かんじゃ",
+            "meaning": "pasien"
+          },
+          {
+            "word": "若者",
+            "reading": "わかもの",
+            "meaning": "kaum muda"
+          }
+        ],
+        "sentence": "病院で医者の診察を受けます。",
+        "sentenceFurigana": "病(びょう)院(いん)で医(い)者(しゃ)の診(しん)察(さつ)を受(う)けます。",
+        "sentenceId": "Saya menerima pemeriksaan dokter di rumah sakit."
+      },
+      {
+        "kanji": "院",
+        "on": "イン",
+        "kun": "-",
+        "strokes": 10,
+        "radical": "阝 (bukit kiri)",
+        "meaning": "Institusi / Rumah Sakit",
+        "strokeRule": "Bukit 阝 di kiri (3 goresan), sempurna 完 di kanan (7 goresan).",
+        "words": [
+          {
+            "word": "病院",
+            "reading": "びょういん",
+            "meaning": "rumah sakit"
+          },
+          {
+            "word": "入院",
+            "reading": "にゅういん",
+            "meaning": "rawat inap"
+          },
+          {
+            "word": "退院",
+            "reading": "たいいん",
+            "meaning": "keluar rumah sakit / sembuh"
+          }
+        ],
+        "sentence": "近くの病院へ行きます。",
+        "sentenceFurigana": "近(ちか)くの病(びょう)院(いん)へ行(い)きます。",
+        "sentenceId": "Saya pergi ke rumah sakit terdekat."
+      }
+    ],
+    "readingExercise": [
+      {
+        "q": "① 高い [熱] が出ました。",
+        "a": "ねつ"
+      },
+      {
+        "q": "② お腹がとても [痛い] です。",
+        "a": "いたい"
+      },
+      {
+        "q": "③ [薬局] で風邪薬を買います。",
+        "a": "やっきょく"
+      },
+      {
+        "q": "④ [医者] に相談します。",
+        "a": "いしゃ"
+      },
+      {
+        "q": "⑤ 大きな [病院] へ行きました。",
+        "a": "びょういん"
+      },
+      {
+        "q": "⑥ [頭痛] がひどいです。",
+        "a": "ずつう"
+      },
+      {
+        "q": "⑦ 来週 [退院] します。",
+        "a": "たいいん"
+      },
+      {
+        "q": "⑧ [薬] を飲んで寝ます。",
+        "a": "くすり"
+      },
+      {
+        "q": "⑨ 多くの [患者] さんがいます。",
+        "a": "かんじゃ"
+      },
+      {
+        "q": "⑩ 検査のため [入院] します。",
+        "a": "にゅういん"
+      }
+    ],
+    "writingExercise": [
+      {
+        "q": "① たかい ( _________ ) [ねつ] です。",
+        "a": "熱"
+      },
+      {
+        "q": "② あたまが ( _________ ) [いたい] です。",
+        "a": "痛い"
+      },
+      {
+        "q": "③ びょういんの ( _________ ) [くすり] です。",
+        "a": "薬"
+      },
+      {
+        "q": "④ やさしい ( _________ ) [いしゃ] です。",
+        "a": "医者"
+      },
+      {
+        "q": "⑤ まちの ( _________ ) [びょういん] です。",
+        "a": "病院"
+      },
+      {
+        "q": "⑥ ひどい ( _________ ) [ずつう] です。",
+        "a": "頭痛"
+      },
+      {
+        "q": "⑦ ( _________ ) [たいいん] おめでとうございます。",
+        "a": "退院"
+      },
+      {
+        "q": "⑧ ( _________ ) [やっきょく] へ いきます。",
+        "a": "薬局"
+      },
+      {
+        "q": "⑨ ( _________ ) [にゅういん] しました。",
+        "a": "入院"
+      },
+      {
+        "q": "⑩ ( _________ ) [かんじゃ] を みます。",
+        "a": "患者"
+      }
+    ]
+  },
+  {
+    "bab": 16,
+    "titleJp": "第16課 食べすぎないようにしています",
+    "titleId": "Bab 16: Berusaha Menjaga Agar Tidak Makan Berlebihan",
+    "topic": "体調と健康 (Kesehatan & Pola Hidup)",
+    "kanjiList": [
+      {
+        "kanji": "健",
+        "on": "ケン",
+        "kun": "すこ-やか",
+        "strokes": 11,
+        "radical": "亻 (orang)",
+        "meaning": "Sehat / Bugar",
+        "strokeRule": "Orang 亻 di kiri (2 goresan), 建 (membangun: 廴 dan 聿) di kanan (9 goresan).",
+        "words": [
+          {
+            "word": "健康",
+            "reading": "けんこう",
+            "meaning": "kesehatan"
+          },
+          {
+            "word": "健やか",
+            "reading": "すこやか",
+            "meaning": "sehat bugar"
+          }
+        ],
+        "sentence": "健康のために毎朝走っています。",
+        "sentenceFurigana": "健(けん)康(こう)のために毎(まい)朝(あさ)走(はし)っています。",
+        "sentenceId": "Demi kesehatan, saya berlari setiap pagi."
+      },
+      {
+        "kanji": "康",
+        "on": "コウ",
+        "kun": "-",
+        "strokes": 11,
+        "radical": "广 (rumah tebing)",
+        "meaning": "Tentram / Tenang / Sehat",
+        "strokeRule": "Atap 广 (3 goresan), di dalamnya隶 variasi dengan empat titik menyebar (8 goresan).",
+        "words": [
+          {
+            "word": "健康",
+            "reading": "けんこう",
+            "meaning": "kesehatan"
+          },
+          {
+            "word": "健康保険",
+            "reading": "けんこうほけん",
+            "meaning": "asuransi kesehatan"
+          }
+        ],
+        "sentence": "健康診断を受けました。",
+        "sentenceFurigana": "健(けん)康(こう)診(しん)断(だん)を受(う)けました。",
+        "sentenceId": "Saya telah menjalani pemeriksaan kesehatan (medical check-up)."
+      },
+      {
+        "kanji": "体",
+        "on": "タイ",
+        "kun": "からだ",
+        "strokes": 7,
+        "radical": "亻 (orang)",
+        "meaning": "Badan / Tubuh",
+        "strokeRule": "Orang 亻 di kiri (2 goresan), akar/dasar 本 di kanan (5 goresan).",
+        "words": [
+          {
+            "word": "体調",
+            "reading": "たいちょう",
+            "meaning": "kondisi badan / kesehatan fisik"
+          },
+          {
+            "word": "体",
+            "reading": "からだ",
+            "meaning": "badan"
+          },
+          {
+            "word": "体力",
+            "reading": "たいりょく",
+            "meaning": "stamina fisik"
+          }
+        ],
+        "sentence": "今日は体調がとてもいいです。",
+        "sentenceFurigana": "今(きょう)日(は)体(たい)調(ちょう)がとてもいいです。",
+        "sentenceId": "Hari ini kondisi badan saya sangat baik."
+      },
+      {
+        "kanji": "調",
+        "on": "チョウ",
+        "kun": "しら-べる / ととの-う",
+        "strokes": 15,
+        "radical": "言 (kata)",
+        "meaning": "Menyelidiki / Menata / Nada",
+        "strokeRule": "Kata 言 di kiri (7 goresan), keliling 周 di kanan (8 goresan).",
+        "words": [
+          {
+            "word": "体調",
+            "reading": "たいちょう",
+            "meaning": "kondisi badan"
+          },
+          {
+            "word": "調べる",
+            "reading": "しらべる",
+            "meaning": "memeriksa / mencari tahu"
+          },
+          {
+            "word": "調子",
+            "reading": "ちょうし",
+            "meaning": "kondisi / ritme"
+          }
+        ],
+        "sentence": "ネットで意味を調べます。",
+        "sentenceFurigana": "ネットで意(い)味(み)を調(しら)べます。",
+        "sentenceId": "Saya mencari tahu artinya di internet."
+      },
+      {
+        "kanji": "気",
+        "on": "キ",
+        "kun": "いき",
+        "strokes": 6,
+        "radical": "气 (uap)",
+        "meaning": "Perhatian / Semangat / Hawa",
+        "strokeRule": "Garis miring kiri atas, dua horizontal, garis siku melengkung kait, menyilang di dalam.",
+        "words": [
+          {
+            "word": "気をつける",
+            "reading": "きをつける",
+            "meaning": "berhati-hati / menjaga diri"
+          },
+          {
+            "word": "元気",
+            "reading": "げんき",
+            "meaning": "sehat / bugar"
+          }
+        ],
+        "sentence": "風邪を引かないように気をつけます。",
+        "sentenceFurigana": "風(か)邪(ぜ)を引(ひ)かないように気(き)をつけます。",
+        "sentenceId": "Saya berhati-hati agar tidak masuk angin."
+      },
+      {
+        "kanji": "付",
+        "on": "フ",
+        "kun": "つ-ける / つ-く",
+        "strokes": 5,
+        "radical": "亻 (orang)",
+        "meaning": "Menempel / Memberi / Menitipkan",
+        "strokeRule": "Orang 亻 di kiri (2 goresan), ukuran 寸 di kanan (3 goresan).",
+        "words": [
+          {
+            "word": "気をつける",
+            "reading": "きをつける",
+            "meaning": "berhati-hati"
+          },
+          {
+            "word": "受付",
+            "reading": "うけつけ",
+            "meaning": "resepsionis / bagian pendaftaran"
+          }
+        ],
+        "sentence": "受付で手続きをしてください。",
+        "sentenceFurigana": "受(うけ)付(つけ)で手(て)続(つづ)きをしてください。",
+        "sentenceId": "Silakan lakukan pendaftaran di bagian resepsionis."
+      }
+    ],
+    "readingExercise": [
+      {
+        "q": "① [健康] な生活を送ります。",
+        "a": "けんこう"
+      },
+      {
+        "q": "② [体調] が崩れました。",
+        "a": "たいちょう"
+      },
+      {
+        "q": "③ 単語を辞書で [調べます] 。",
+        "a": "しらべます"
+      },
+      {
+        "q": "④ 車に [気をつけて] ください。",
+        "a": "きをつけて"
+      },
+      {
+        "q": "⑤ 病院の [受付] はあそこです。",
+        "a": "うけつけ"
+      },
+      {
+        "q": "⑥ [体力] をつけます。",
+        "a": "たいりょく"
+      },
+      {
+        "q": "⑦ [健康保険] 証を出します。",
+        "a": "けんこうほけん"
+      },
+      {
+        "q": "⑧ 機械の [調子] が悪いです。",
+        "a": "ちょうし"
+      },
+      {
+        "q": "⑨ [体] を大切にしてください。",
+        "a": "からだ"
+      },
+      {
+        "q": "⑩ いつも [元気] ですね。",
+        "a": "げんき"
+      }
+    ],
+    "writingExercise": [
+      {
+        "q": "① ( _________ ) [けんこう] が いちばんです。",
+        "a": "健康"
+      },
+      {
+        "q": "② ( _________ ) [たいちょう] は どうですか。",
+        "a": "体調"
+      },
+      {
+        "q": "③ じかんを ( _________ ) [しらべます] 。",
+        "a": "調べます"
+      },
+      {
+        "q": "④ ( _________ ) [きをつけて] かえってください。",
+        "a": "気をつけて"
+      },
+      {
+        "q": "⑤ ( _________ ) [うけつけ] に いきます。",
+        "a": "受付"
+      },
+      {
+        "q": "⑥ ( _________ ) [たいりょく] が あります。",
+        "a": "体力"
+      },
+      {
+        "q": "⑦ じぶんの ( _________ ) [からだ] です。",
+        "a": "体"
+      },
+      {
+        "q": "⑧ えんじんの ( _________ ) [ちょうし] です。",
+        "a": "調子"
+      },
+      {
+        "q": "⑨ まいにち ( _________ ) [げんき] に はたらきます。",
+        "a": "元気"
+      },
+      {
+        "q": "⑩ ( _________ ) [けんこう] な からだです。",
+        "a": "健康"
+      }
+    ]
+  },
+  {
+    "bab": 17,
+    "titleJp": "第17課 兄がくれたお守りです",
+    "titleId": "Bab 17: Ini Jimat Pemberian Kakak Laki-laki Saya",
+    "topic": "人間関係 (Hubungan Antar Rekan)",
+    "kanjiList": [
+      {
+        "kanji": "守",
+        "on": "シュ / ス",
+        "kun": "まも-る / もり",
+        "strokes": 6,
+        "radical": "宀 (atap)",
+        "meaning": "Melindungi / Menjaga / Jimat",
+        "strokeRule": "Atap 宀 di atas (3 goresan), ukuran 寸 di bawah (3 goresan). (Menjaga keselamatan seisi rumah).",
+        "words": [
+          {
+            "word": "お守り",
+            "reading": "おまもり",
+            "meaning": "jimat pelindung"
+          },
+          {
+            "word": "守る",
+            "reading": "まもる",
+            "meaning": "melindungi / menepati"
+          },
+          {
+            "word": "留守",
+            "reading": "るす",
+            "meaning": "tidak di rumah / bepergian"
+          }
+        ],
+        "sentence": "神社でお守りを買いました。",
+        "sentenceFurigana": "神(じん)社(じゃ)でお守(まも)りを買(か)いました。",
+        "sentenceId": "Saya membeli jimat pelindung di kuil Shinto."
+      },
+      {
+        "kanji": "贈",
+        "on": "ゾウ / ソウ",
+        "kun": "おく-る",
+        "strokes": 18,
+        "radical": "貝 (harta/uang)",
+        "meaning": "Menghadiahkan / Kado",
+        "strokeRule": "Harta 貝 di kiri (7 goresan),曽 (sebelumnya) di kanan (11 goresan).",
+        "words": [
+          {
+            "word": "贈り物",
+            "reading": "おくりもの",
+            "meaning": "hadiah / kado"
+          },
+          {
+            "word": "贈る",
+            "reading": "おくる",
+            "meaning": "menghadiahkan"
+          }
+        ],
+        "sentence": "先輩に贈り物をあげました。",
+        "sentenceFurigana": "先(せん)輩(ぱい)に贈(おく)り物(もの)をあげました。",
+        "sentenceId": "Saya memberikan kado hadiah kepada senior."
+      },
+      {
+        "kanji": "祝",
+        "on": "シュク / シュウ",
+        "kun": "いわ-う",
+        "strokes": 9,
+        "radical": "礻 (dewa/pemujaan)",
+        "meaning": "Merayakan / Menyelamati",
+        "strokeRule": "Pemujaan 礻 di kiri (4 goresan), kakak 兄 di kanan (5 goresan).",
+        "words": [
+          {
+            "word": "祝う",
+            "reading": "いわう",
+            "meaning": "merayakan"
+          },
+          {
+            "word": "お祝い",
+            "reading": "おいわい",
+            "meaning": "perayaan / ucapan selamat"
+          },
+          {
+            "word": "祝日",
+            "reading": "しゅくじつ",
+            "meaning": "hari libur nasional"
+          }
+        ],
+        "sentence": "友達の結婚をお祝いします。",
+        "sentenceFurigana": "友(とも)達(だち)の結(けっ)婚(こん)をお祝(いわ)いします。",
+        "sentenceId": "Saya merayakan dan memberi selamat pernikahan teman."
+      },
+      {
+        "kanji": "礼",
+        "on": "レイ / ライ",
+        "kun": "-",
+        "strokes": 5,
+        "radical": "礻 (dewa/pemujaan)",
+        "meaning": "Etiket / Terima Kasih / Hormat",
+        "strokeRule": "Pemujaan 礻 di kiri (4 goresan), garpu melengkung 乚 di kanan (1 goresan).",
+        "words": [
+          {
+            "word": "お礼",
+            "reading": "おれい",
+            "meaning": "ucapan terima kasih / tanda terima kasih"
+          },
+          {
+            "word": "失礼",
+            "reading": "しつれい",
+            "meaning": "permisi / tidak sopan"
+          },
+          {
+            "word": "礼儀",
+            "reading": "れいぎ",
+            "meaning": "kesopanan / etiket"
+          }
+        ],
+        "sentence": "手伝ってくれた人にお礼を言います。",
+        "sentenceFurigana": "手(て)伝(つだ)ってくれた人(ひと)にお礼(れい)を言(い)います。",
+        "sentenceId": "Saya mengucapkan terima kasih kepada orang yang telah membantu."
+      },
+      {
+        "kanji": "祖",
+        "on": "ソ",
+        "kun": "-",
+        "strokes": 9,
+        "radical": "礻 (dewa/pemujaan)",
+        "meaning": "Leluhur / Kakek-Nenek",
+        "strokeRule": "Pemujaan 礻 di kiri (4 goresan), dan 且 di kanan (5 goresan).",
+        "words": [
+          {
+            "word": "祖父",
+            "reading": "そふ",
+            "meaning": "kakek saya"
+          },
+          {
+            "word": "祖母",
+            "reading": "そぼ",
+            "meaning": "nenek saya"
+          },
+          {
+            "word": "先祖",
+            "reading": "せんぞ",
+            "meaning": "leluhur"
+          }
+        ],
+        "sentence": "祖母が作ってくれた手袋です。",
+        "sentenceFurigana": "祖(そ)母(ぼ)が作(つく)ってくれた手(て)袋(ぶくろ)です。",
+        "sentenceId": "Ini adalah sarung tangan yang dibuatkan oleh nenek saya."
+      }
+    ],
+    "readingExercise": [
+      {
+        "q": "① 神社の [お守り] です。",
+        "a": "おまもり"
+      },
+      {
+        "q": "② 誕生日の [贈り物] を選びます。",
+        "a": "おくりもの"
+      },
+      {
+        "q": "③ 合格を [お祝い] します。",
+        "a": "おいわい"
+      },
+      {
+        "q": "④ 先生に [お礼] の手紙を書きます。",
+        "a": "おれい"
+      },
+      {
+        "q": "⑤ 私の [祖父] は90歳です。",
+        "a": "そふ"
+      },
+      {
+        "q": "⑥ [祖母] の家へ遊びに行きます。",
+        "a": "そぼ"
+      },
+      {
+        "q": "⑦ 約束を [守って] ください。",
+        "a": "まもって"
+      },
+      {
+        "q": "⑧ 先に [失礼] します。",
+        "a": "しつれい"
+      },
+      {
+        "q": "⑨ 明日は [祝日] です。",
+        "a": "しゅくじつ"
+      },
+      {
+        "q": "⑩ 日本の [礼儀] を学びます。",
+        "a": "れいぎ"
+      }
+    ],
+    "writingExercise": [
+      {
+        "q": "① こうつうあんぜんの ( _________ ) [おまもり] です。",
+        "a": "お守り"
+      },
+      {
+        "q": "② こころのこもった ( _________ ) [おくりもの] です。",
+        "a": "贈り物"
+      },
+      {
+        "q": "③ けっこんの ( _________ ) [おいわい] です。",
+        "a": "お祝い"
+      },
+      {
+        "q": "④ かんしゃの ( _________ ) [おれい] です。",
+        "a": "お礼"
+      },
+      {
+        "q": "⑤ わたしの ( _________ ) [そふ] です。",
+        "a": "祖父"
+      },
+      {
+        "q": "⑥ やさしい ( _________ ) [そぼ] です。",
+        "a": "祖母"
+      },
+      {
+        "q": "⑦ ルールを ( _________ ) [まもります] 。",
+        "a": "守ります"
+      },
+      {
+        "q": "⑧ ( _________ ) [しつれい] します。",
+        "a": "失礼"
+      },
+      {
+        "q": "⑨ らいしゅうの ( _________ ) [しゅくじつ] です。",
+        "a": "祝日"
+      },
+      {
+        "q": "⑩ ( _________ ) [れいぎ] ただしい ひとです。",
+        "a": "礼儀"
+      }
+    ]
+  },
+  {
+    "bab": 18,
+    "titleJp": "第18課 何かプレゼントをあげませんか？",
+    "titleId": "Bab 18: Bagaimana Kalau Kita Berikan Hadiah Kado?",
+    "topic": "人間関係 (Hubungan Antar Rekan)",
+    "kanjiList": [
+      {
+        "kanji": "送",
+        "on": "ソウ",
+        "kun": "おく-る",
+        "strokes": 9,
+        "radical": "辶 (berjalan)",
+        "meaning": "Mengirim / Mengantar / Melepas",
+        "strokeRule": "関 modifikasi di kanan atas (6 goresan), ditopang jalan 辶 di kiri bawah (3 goresan).",
+        "words": [
+          {
+            "word": "送る",
+            "reading": "おくる",
+            "meaning": "mengirim / mengantar"
+          },
+          {
+            "word": "送別会",
+            "reading": "そうべつかい",
+            "meaning": "pesta perpisahan"
+          },
+          {
+            "word": "見送る",
+            "reading": "みおくる",
+            "meaning": "mengantar keberangkatan"
+          }
+        ],
+        "sentence": "帰国するアナさんの送別会を開きます。",
+        "sentenceFurigana": "帰(き)国(こく)するアナさんの送(そう)別(べつ)会(かい)を開(ひら)きます。",
+        "sentenceId": "Kami mengadakan pesta perpisahan untuk Ana yang akan pulang ke negaranya."
+      },
+      {
+        "kanji": "別",
+        "on": "ベツ",
+        "kun": "わか-れる",
+        "strokes": 7,
+        "radical": "刂 (pedang)",
+        "meaning": "Berpisah / Berbeda / Khusus",
+        "strokeRule": "Mulut 口 dan 勹 di kiri (5 goresan), pisau 刂 di kanan (2 goresan).",
+        "words": [
+          {
+            "word": "別れる",
+            "reading": "わかれる",
+            "meaning": "berpisah"
+          },
+          {
+            "word": "送別会",
+            "reading": "そうべつかい",
+            "meaning": "pesta perpisahan"
+          },
+          {
+            "word": "特別",
+            "reading": "とくべつ",
+            "meaning": "khusus / spesial"
+          }
+        ],
+        "sentence": "空港で友達と別れました。",
+        "sentenceFurigana": "空(くう)港(こう)で友(とも)達(だち)と別(わか)れました。",
+        "sentenceId": "Saya berpisah dengan teman di bandara."
+      },
+      {
+        "kanji": "喜",
+        "on": "キ",
+        "kun": "よろこ-ぶ",
+        "strokes": 12,
+        "radical": "口 (mulut)",
+        "meaning": "Gembira / Senang",
+        "strokeRule": "Sepuluh 十, mulut 口, horizontal melintang, lalu mulut 口 kedua di bawah.",
+        "words": [
+          {
+            "word": "喜ぶ",
+            "reading": "よろこぶ",
+            "meaning": "senang / bergembira"
+          },
+          {
+            "word": "大喜び",
+            "reading": "おおよろこび",
+            "meaning": "sangat gembira"
+          }
+        ],
+        "sentence": "プレゼントを渡したら喜んでくれました。",
+        "sentenceFurigana": "プレゼントを渡(わた)したら喜(よろこ)んでくれました。",
+        "sentenceId": "Saat diserahkan hadiahnya, dia menerimanya dengan sangat gembira."
+      },
+      {
+        "kanji": "選",
+        "on": "セン",
+        "kun": "えら-ぶ",
+        "strokes": 15,
+        "radical": "辶 (berjalan)",
+        "meaning": "Memilih / Seleksi",
+        "strokeRule": "Dua 巳 di atas bersama 共 (12 goresan), ditopang jalan 辶 di kiri bawah (3 goresan).",
+        "words": [
+          {
+            "word": "選ぶ",
+            "reading": "えらぶ",
+            "meaning": "memilih"
+          },
+          {
+            "word": "選手",
+            "reading": "せんしゅ",
+            "meaning": "atlet / pemain terpilih"
+          }
+        ],
+        "sentence": "みんなで好きなケーキを選びます。",
+        "sentenceFurigana": "みんなで好(す)きなケーキを選(えら)びます。",
+        "sentenceId": "Semua orang bersama-sama memilih kue yang disukai."
+      },
+      {
+        "kanji": "渡",
+        "on": "ト",
+        "kun": "わた-る / わた-す",
+        "strokes": 12,
+        "radical": "氵 (air)",
+        "meaning": "Menyeberang / Menyerahkan",
+        "strokeRule": "Air 氵 di kiri (3 goresan), derajat 度 di kanan (9 goresan).",
+        "words": [
+          {
+            "word": "渡す",
+            "reading": "わたす",
+            "meaning": "menyerahkan"
+          },
+          {
+            "word": "渡る",
+            "reading": "わたる",
+            "meaning": "menyeberang"
+          }
+        ],
+        "sentence": "花束を手渡します。",
+        "sentenceFurigana": "花(はな)束(たば)を手(て)渡(わた)します。",
+        "sentenceId": "Menyerahkan buket bunga secara langsung dengan tangan."
+      }
+    ],
+    "readingExercise": [
+      {
+        "q": "① 金曜日に [送別会] をします。",
+        "a": "そうべつかい"
+      },
+      {
+        "q": "② 荷物を国へ [送ります] 。",
+        "a": "おくります"
+      },
+      {
+        "q": "③ 友達と笑顔で [別れました] 。",
+        "a": "わかれました"
+      },
+      {
+        "q": "④ とても [喜んで] いました。",
+        "a": "よろこんで"
+      },
+      {
+        "q": "⑤ カタログからプレゼントを [選びます] 。",
+        "a": "えらびます"
+      },
+      {
+        "q": "⑥ 先輩にメッセージカードを [渡します] 。",
+        "a": "わたします"
+      },
+      {
+        "q": "⑦ 信号を [渡って] ください。",
+        "a": "わたって"
+      },
+      {
+        "q": "⑧ 今日は [特別] な日です。",
+        "a": "とくべつ"
+      },
+      {
+        "q": "⑨ サッカーの日本代表 [選手] です。",
+        "a": "せんしゅ"
+      },
+      {
+        "q": "⑩ 駅まで友達を [見送ります] 。",
+        "a": "みおくります"
+      }
+    ],
+    "writingExercise": [
+      {
+        "q": "① たなかさんの ( _________ ) [そうべつかい] です。",
+        "a": "送別会"
+      },
+      {
+        "q": "② てがみを ( _________ ) [おくります] 。",
+        "a": "送ります"
+      },
+      {
+        "q": "③ ここで ( _________ ) [わかれます] 。",
+        "a": "別れます"
+      },
+      {
+        "q": "④ こどもが ( _________ ) [よろこびます] 。",
+        "a": "喜ぶ"
+      },
+      {
+        "q": "⑤ いいものを ( _________ ) [えらびます] 。",
+        "a": "選びます"
+      },
+      {
+        "q": "⑥ プレゼントを ( _________ ) [わたします] 。",
+        "a": "渡します"
+      },
+      {
+        "q": "⑦ はしを ( _________ ) [わたります] 。",
+        "a": "渡ります"
+      },
+      {
+        "q": "⑧ ( _________ ) [とくべつ] な りょうりです。",
+        "a": "特別"
+      },
+      {
+        "q": "⑨ やきゅうの ( _________ ) [せんしゅ] です。",
+        "a": "選手"
+      },
+      {
+        "q": "⑩ くうこうで ( _________ ) [みおくります] 。",
+        "a": "見送ります"
+      }
+    ]
+  }
+]

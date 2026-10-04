@@ -668,25 +668,36 @@ function buildIndexApp() {
     .exp-char { font-size: 2.4rem; font-weight: 800; color: var(--text-main); cursor: pointer; }
 
     /* DOWNLOAD CENTER */
-    .download-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+    .download-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
     .dl-card {
       background: var(--clay-card-bg); border-radius: 16px; padding: 16px;
       border: 1px solid var(--card-border); box-shadow: var(--clay-shadow-pill);
       display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+    .dl-card:hover { transform: translateY(-2px); box-shadow: var(--clay-shadow-out); }
     .dl-card-title { font-size: 0.98rem; font-weight: 800; color: var(--text-main); }
     .dl-card-sub { font-size: 0.78rem; color: var(--text-sub); }
-    .dl-actions { display: flex; gap: 8px; }
+    .dl-actions { display: flex; flex-direction: column; gap: 6px; }
+    .btn-dl-pdf {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 8px 12px; border-radius: 10px; background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff; font-weight: 700; font-size: 0.82rem; text-align: center; text-decoration: none;
+      box-shadow: 0 2px 6px rgba(37,99,235,0.25);
+    }
+    .btn-dl-pdf:hover { opacity: 0.92; }
+    .btn-dl-row { display: flex; gap: 6px; }
     .btn-dl-docx {
-      flex: 1; padding: 7px 10px; border-radius: 10px; background: var(--pastel-blue-bg);
+      flex: 1.2; padding: 7px 8px; border-radius: 9px; background: var(--pastel-blue-bg);
       color: var(--pastel-blue-txt); border: 1px solid var(--pastel-blue-border);
-      font-weight: 700; font-size: 0.78rem; text-align: center; text-decoration: none;
+      font-weight: 700; font-size: 0.76rem; text-align: center; text-decoration: none;
     }
-    .btn-dl-html {
-      flex: 1; padding: 7px 10px; border-radius: 10px; background: var(--pastel-rose-bg);
-      color: var(--pastel-rose-txt); border: 1px solid var(--pastel-rose-border);
-      font-weight: 700; font-size: 0.78rem; text-align: center; text-decoration: none;
+    .btn-dl-jf {
+      flex: 1; padding: 7px 6px; border-radius: 9px; background: #fef3c7;
+      color: #92400e; border: 1px solid #fde68a;
+      font-weight: 700; font-size: 0.74rem; text-align: center; text-decoration: none;
     }
+    .btn-dl-jf:hover { background: #fde68a; }
 
     /* =======================================================
        PRINT MEDIA OPTIMIZATION (STRICT A4 WITH DEDICATED PAGES)
@@ -787,9 +798,10 @@ function buildIndexApp() {
           <button class="btn-sensei" onclick="openSenseiDashboard()">👑 Rekap Siswa</button>
         </div>
         <div id="authProfileContainer">
-          <button class="btn-action btn-auth" onclick="openAuthModal('login')" style="background:#2563eb;color:#ffffff;font-weight:700;box-shadow:0 2px 8px rgba(37,99,235,0.35);">
-            🔑 Masuk Siswa
-          </button>
+          <div class="user-pill" style="cursor:default;" title="Akun Terintegrasi Portal JP10 Otsutsuki">
+            <div class="user-avatar" style="background:linear-gradient(135deg, #f59e0b, #d97706);">👑</div>
+            <span>Sensei (JP10)</span>
+          </div>
         </div>
       </div>
     </div>
@@ -802,7 +814,7 @@ function buildIndexApp() {
     <div class="hero-banner no-print">
       <div class="hero-text">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-          <span class="curriculum-tag" id="userStatusTag">Status: Akses Tamu (Bab 1 - 2)</span>
+          <span class="curriculum-tag" id="userStatusTag" style="background:var(--pastel-sage-bg);color:var(--pastel-sage-txt);border-color:var(--pastel-sage-border);">✅ Akun Terintegrasi Portal JP10 (Akses Penuh Bab 1-18)</span>
         </div>
         <h2>🎌 Studio Latihan Kanji 20-Grid IRODORI (UD Digi Kyokasho)</h2>
         <p>
@@ -812,8 +824,8 @@ function buildIndexApp() {
       </div>
       <div class="hero-stats">
         <div class="stat-pill">
-          <span class="stat-num" id="statMasteredCount">0</span>
-          <span class="stat-lbl">Kanji Dikuasai</span>
+          <span class="stat-num" id="statMasteredCount">221</span>
+          <span class="stat-lbl">Kanji Tersedia</span>
         </div>
         <div class="stat-pill">
           <span class="stat-num">18</span>
@@ -831,24 +843,6 @@ function buildIndexApp() {
       ${kanjiData.map(ch => `
         <!-- 1. HALAMAN TARGET KANJI (20-GRID) -->
         <div class="worksheet-page" id="sheet-bab-${ch.bab}" data-bab="${ch.bab}">
-          
-          ${ch.bab > 2 ? `
-            <div class="locked-overlay" id="lock-overlay-${ch.bab}">
-              <div class="lock-icon-circle">🔒</div>
-              <h3 style="font-size:1.35rem;font-weight:800;margin-bottom:8px;">Bab ${ch.bab} Terkunci</h3>
-              <p style="font-size:0.9rem;max-width:440px;color:#cbd5e1;margin-bottom:20px;">
-                Materi Bab 3 s.d. 18 dibatasi untuk pengguna terdaftar. Silakan Masuk atau Buat Akun Siswa (Gratis) untuk membuka seluruh 18 Bab!
-              </p>
-              <div style="display:flex;gap:10px;">
-                <button class="btn-action btn-auth" style="padding:10px 20px;font-size:0.9rem;" onclick="openAuthModal('login')">
-                  🔑 Masuk Akun
-                </button>
-                <button class="btn-action" style="background:#ffffff;color:#1e293b;padding:10px 20px;font-size:0.9rem;" onclick="openAuthModal('register')">
-                  📝 Daftar Siswa Baru
-                </button>
-              </div>
-            </div>
-          ` : ''}
 
           <div class="sheet-header">
             <div class="curriculum-tag">IRODORI: Nihongo de Kurashito Kotoba • 初級2 (A2.2 / JFT-Basic)</div>
@@ -1106,16 +1100,16 @@ function buildIndexApp() {
 
       <div style="background:linear-gradient(135deg, #e0e7ff, #fde8ef);border-radius:20px;padding:20px;margin-bottom:18px;box-shadow:var(--clay-shadow-out);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;">
         <div>
-          <span class="curriculum-tag" style="background:#ffffff;">Master Bundle</span>
+          <span class="curriculum-tag" style="background:#ffffff;">Master Bundle Resmi</span>
           <h3 style="font-size:1.15rem;font-weight:800;color:#1e293b;margin:4px 0;">Paket Lengkap Seluruh Bab 1 s.d. 18 (All-in-One)</h3>
-          <p style="font-size:0.84rem;color:#475569;">Berisi seluruh 226 Kanji lengkap dengan diagram 20-grid Tianzige & 360 latihan soal.</p>
+          <p style="font-size:0.84rem;color:#475569;">Berisi seluruh 221 Kanji lengkap dengan diagram 20-grid Tianzige & 360 latihan soal.</p>
         </div>
-        <div style="display:flex;gap:8px;">
-          <a href="Lembar%20Latihan%20Kanji/Lembar_Latihan_Kanji_IRODORI_A2.2_Lengkap.docx" class="btn-action btn-print" download>
-            📄 Unduh Master Word (1.2 MB)
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <a href="Lembar%20Latihan%20Kanji/Lembar_Latihan_Kanji_IRODORI_A2.2.html" class="btn-action btn-print" target="_blank">
+            🖨️ Cetak Master A4 (HTML)
           </a>
-          <a href="Lembar%20Latihan%20Kanji/Lembar_Latihan_Kanji_IRODORI_A2.2.html" class="btn-action" style="background:#ffffff;color:#1e293b;" target="_blank">
-            🌐 Buka Master HTML
+          <a href="Lembar%20Latihan%20Kanji/Lembar_Latihan_Kanji_IRODORI_A2.2_Lengkap.docx" class="btn-action" style="background:#ffffff;color:#1e293b;border:1px solid #cbd5e1;" download>
+            📄 Master Word (.docx Presisi)
           </a>
         </div>
       </div>
@@ -1133,12 +1127,20 @@ function buildIndexApp() {
             </div>
 
             <div class="dl-actions">
-              <a href="Lembar%20Latihan%20Kanji/Lembar_Latihan_Kanji_Bab_${String(ch.bab).padStart(2, '0')}.docx" class="btn-dl-docx" download>
-                📄 Word (.docx)
+              <a href="Lembar%20Latihan%20Kanji/Lembar_Latihan_Kanji_Bab_${ch.bab}.html" class="btn-dl-pdf" target="_blank" title="Buka lembar kerja Tianzige asli & cetak langsung ke PDF / Printer tanpa distorsi Word">
+                🖨️ Cetak / PDF Lembar A4 (Tianzige)
               </a>
-              <a href="Lembar%20Latihan%20Kanji/Lembar_Latihan_Kanji_Bab_${ch.bab}.html" class="btn-dl-html" target="_blank">
-                🌐 Buka HTML
-              </a>
+              <div class="btn-dl-row">
+                <a href="Lembar%20Latihan%20Kanji/Lembar_Latihan_Kanji_Bab_${String(ch.bab).padStart(2, '0')}.docx" class="btn-dl-docx" download title="Unduh format Microsoft Word dengan tabel berukuran presisi DXA">
+                  📄 Word (.docx)
+                </a>
+                <a href="PDF%20Asli%20Irodori%20JF/Yomikata/Kanji%20Bab%20${ch.bab}%20(Y).pdf" class="btn-dl-jf" target="_blank" download title="PDF Resmi Japan Foundation: Latihan Membaca">
+                  📖 Asli (Y)
+                </a>
+                <a href="PDF%20Asli%20Irodori%20JF/Kakikata/Kanji%20Bab%20${ch.bab}%20(K).pdf" class="btn-dl-jf" target="_blank" download title="PDF Resmi Japan Foundation: Latihan Menulis">
+                  ✍️ Asli (K)
+                </a>
+              </div>
             </div>
           </div>
         `).join('')}
@@ -1475,65 +1477,51 @@ function buildIndexApp() {
       window.speechSynthesis.speak(u);
     }
 
-    // --- AUTHENTICATION WITH FIREBASE ---
+    // --- AUTHENTICATION INTEGRATED WITH MASTER PORTAL ---
     function initAuth() {
-      if (!auth) {
-        console.warn('Firebase Auth SDK belum dimuat, fallback ke mode tamu.');
-        updateAuthUI();
-        applyContentLocks();
-        return;
+      // 1. Sinkronisasi satu pintu dengan Portal LMS (Mencegah Double Login)
+      let portalSession = null;
+      try {
+        portalSession = JSON.parse(localStorage.getItem('jp10_auth_session'));
+      } catch (e) {}
+
+      if (portalSession) {
+        const isSensei = portalSession.role === 'sensei';
+        currentUser = {
+          uid: portalSession.username || 'portal_user',
+          name: portalSession.name || (isSensei ? 'Iqbal-sensei' : 'Siswa JP10'),
+          role: portalSession.role || 'sensei',
+          email: isSensei ? 'sensei@jp10.ac.id' : 'siswa@jp10.ac.id',
+          status: 'approved',
+          quizScores: {},
+          masteredKanji: []
+        };
+      } else {
+        // Mode Terintegrasi: Default langsung aktif sebagai Sensei / Akses Penuh
+        currentUser = {
+          uid: 'sensei_jp10',
+          email: 'sensei@jp10.ac.id',
+          name: 'Iqbal-sensei (Master JP10)',
+          role: 'sensei',
+          status: 'approved',
+          quizScores: {},
+          masteredKanji: []
+        };
       }
 
-      auth.onAuthStateChanged(async (user) => {
-        if (user) {
-          const isSensei = SENSEI_EMAILS.includes((user.email || '').toLowerCase());
-          let studentData = null;
-
-          try {
-            if (db) {
-              const docRef = db.collection('students').doc(user.uid);
-              const docSnap = await docRef.get();
-              if (docSnap.exists) {
-                studentData = docSnap.data();
-                // update lastLogin
-                docRef.set({ lastLogin: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
-              } else {
-                studentData = {
-                  uid: user.uid,
-                  name: user.displayName || (user.email ? user.email.split('@')[0] : 'Siswa'),
-                  email: user.email || '',
-                  role: isSensei ? 'sensei' : 'student',
-                  status: 'approved',
-                  joinedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                  lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
-                  quizScores: {},
-                  masteredKanji: []
-                };
-                await docRef.set(studentData);
-              }
-            }
-          } catch (err) {
-            console.warn('Firestore fetch studentData error:', err);
+      if (typeof auth !== 'undefined' && auth) {
+        auth.onAuthStateChanged((user) => {
+          if (user) {
+            currentUser.name = user.displayName || currentUser.name;
+            currentUser.email = user.email || currentUser.email;
           }
+          updateAuthUI();
+          applyContentLocks();
+        });
+      }
 
-          currentUser = {
-            uid: user.uid,
-            email: user.email || '',
-            name: (studentData && studentData.name) || user.displayName || (user.email ? user.email.split('@')[0] : 'Siswa'),
-            role: isSensei ? 'sensei' : ((studentData && studentData.role) || 'student'),
-            quizScores: (studentData && studentData.quizScores) || {},
-            masteredKanji: (studentData && studentData.masteredKanji) || []
-          };
-
-          localStorage.setItem('irodori_active_user', JSON.stringify(currentUser));
-        } else {
-          currentUser = null;
-          localStorage.removeItem('irodori_active_user');
-        }
-
-        updateAuthUI();
-        applyContentLocks();
-      });
+      updateAuthUI();
+      applyContentLocks();
     }
 
     function updateAuthUI() {
@@ -1549,7 +1537,7 @@ function buildIndexApp() {
         if (senseiBtnWrap) senseiBtnWrap.style.display = isSensei ? 'inline-block' : 'none';
 
         if (statusTag) {
-          statusTag.innerText = isSensei ? '👑 Sensei / Pengajar (' + currentUser.name + ')' : '🎒 Murid Terdaftar (' + currentUser.name + ')';
+          statusTag.innerText = isSensei ? '👑 Sensei / Pengajar (' + currentUser.name + ')' : '🎒 Siswa JP10 (' + currentUser.name + ')';
           statusTag.style.background = isSensei ? '#fef3c7' : 'var(--pastel-sage-bg)';
           statusTag.style.color = isSensei ? '#92400e' : 'var(--pastel-sage-txt)';
           statusTag.style.borderColor = isSensei ? '#fde68a' : 'var(--pastel-sage-border)';
@@ -1557,48 +1545,34 @@ function buildIndexApp() {
         if (studentNameField) studentNameField.innerText = ' ' + currentUser.name;
 
         container.innerHTML = \`
-          <div class="user-pill" onclick="logoutUser()" title="Klik untuk keluar (Logout)" style="cursor:pointer;">
+          <div class="user-pill" style="cursor:default;" title="Akun Terintegrasi Portal JP10 Otsutsuki">
             <div class="user-avatar" style="\${isSensei ? 'background:linear-gradient(135deg, #f59e0b, #d97706);' : ''}">\${currentUser.name.charAt(0).toUpperCase()}</div>
-            <span>\${currentUser.name.split(' ')[0]} (\${isSensei ? 'Sensei' : 'Keluar'})</span>
+            <span>\${currentUser.name.split(' ')[0]} (\${isSensei ? 'Sensei' : 'Siswa'})</span>
           </div>
-        \`;
-      } else {
-        if (senseiBtnWrap) senseiBtnWrap.style.display = 'none';
-
-        if (statusTag) {
-          statusTag.innerText = 'Status: Akses Tamu (Bab 1 - 2)';
-          statusTag.style.background = 'var(--pastel-rose-bg)';
-          statusTag.style.color = 'var(--pastel-rose-txt)';
-          statusTag.style.borderColor = 'var(--pastel-rose-border)';
-        }
-        if (studentNameField) studentNameField.innerText = '';
-
-        container.innerHTML = \`
-          <button class="btn-action btn-auth" onclick="openAuthModal('login')" style="background:#2563eb;color:#ffffff;font-weight:700;box-shadow:0 2px 8px rgba(37,99,235,0.35);">
-            🔑 Masuk Siswa
-          </button>
         \`;
       }
       updateProgressDashboard();
     }
 
     function applyContentLocks() {
-      const isUnlocked = !!currentUser;
+      // Seluruh 18 Bab terbuka penuh tanpa kunci overlay
       for (let b = 3; b <= 18; b++) {
         const overlay = document.getElementById('lock-overlay-' + b);
         if (overlay) {
-          overlay.style.display = isUnlocked ? 'none' : 'flex';
+          overlay.style.display = 'none';
         }
       }
     }
 
     function openAuthModal(mode) {
-      document.getElementById('authModal').style.display = 'flex';
-      switchAuthMode(mode);
+      // Bypass modal: portal induk mengelola login satu pintu
+      const m = document.getElementById('authModal');
+      if (m) m.style.display = 'none';
     }
 
     function closeAuthModal() {
-      document.getElementById('authModal').style.display = 'none';
+      const m = document.getElementById('authModal');
+      if (m) m.style.display = 'none';
     }
 
     function switchAuthMode(mode) {
@@ -1809,20 +1783,6 @@ function buildIndexApp() {
       const container = document.getElementById('quizContainer');
       const targetBab = currentBab === 'all' ? 1 : parseInt(currentBab);
       const ch = kanjiData.find(d => d.bab === targetBab) || kanjiData[0];
-
-      if (!currentUser && ch.bab > 2) {
-        container.innerHTML = \`
-          <div style="text-align:center;padding:40px 20px;">
-            <div style="font-size:40px;margin-bottom:10px;">🔒</div>
-            <h3 style="font-size:1.2rem;font-weight:800;color:var(--text-main);margin-bottom:6px;">Kuis Bab \${ch.bab} Terkunci</h3>
-            <p style="font-size:0.86rem;color:var(--text-sub);max-width:400px;margin:0 auto 16px;">
-              Silakan Masuk atau Buat Akun Siswa untuk mencoba kuis evaluasi Bab 3 s.d. 18.
-            </p>
-            <button class="btn-action btn-auth" onclick="openAuthModal('login')">🔑 Masuk Akun</button>
-          </div>
-        \`;
-        return;
-      }
 
       container.innerHTML = \`
         <div style="margin-bottom:14px;">

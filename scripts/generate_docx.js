@@ -54,14 +54,15 @@ function buildBabChildrenV4(ch) {
   // Student Info Table
   children.push(
     new Table({
-      width: { size: 100, type: WidthType.PERCENTAGE },
+      width: { size: 10000, type: WidthType.DXA },
+      columnWidths: [3000, 2500, 2500, 2000],
       rows: [
         new TableRow({
           children: [
-            new TableCell({ width: { size: 30, type: WidthType.PERCENTAGE }, borders: cellBorders, children: [new Paragraph({ children: [new TextRun({ text: "Nama: ", bold: true, font: EN_FONT, size: 15 })] })] }),
-            new TableCell({ width: { size: 25, type: WidthType.PERCENTAGE }, borders: cellBorders, children: [new Paragraph({ children: [new TextRun({ text: "Tanggal: ", bold: true, font: EN_FONT, size: 15 })] })] }),
-            new TableCell({ width: { size: 25, type: WidthType.PERCENTAGE }, borders: cellBorders, children: [new Paragraph({ children: [new TextRun({ text: "Kelas: ", bold: true, font: EN_FONT, size: 15 })] })] }),
-            new TableCell({ width: { size: 20, type: WidthType.PERCENTAGE }, borders: cellBorders, children: [new Paragraph({ children: [new TextRun({ text: "Nilai:      / 100", bold: true, font: EN_FONT, size: 15 })] })] })
+            new TableCell({ width: { size: 3000, type: WidthType.DXA }, borders: cellBorders, children: [new Paragraph({ children: [new TextRun({ text: "Nama: ", bold: true, font: EN_FONT, size: 15 })] })] }),
+            new TableCell({ width: { size: 2500, type: WidthType.DXA }, borders: cellBorders, children: [new Paragraph({ children: [new TextRun({ text: "Tanggal: ", bold: true, font: EN_FONT, size: 15 })] })] }),
+            new TableCell({ width: { size: 2500, type: WidthType.DXA }, borders: cellBorders, children: [new Paragraph({ children: [new TextRun({ text: "Kelas: ", bold: true, font: EN_FONT, size: 15 })] })] }),
+            new TableCell({ width: { size: 2000, type: WidthType.DXA }, borders: cellBorders, children: [new Paragraph({ children: [new TextRun({ text: "Nilai:      / 100", bold: true, font: EN_FONT, size: 15 })] })] })
           ]
         })
       ]
@@ -75,11 +76,11 @@ function buildBabChildrenV4(ch) {
     const pngPath = path.join(pngDir, `${codePoint}.png`);
     const hasPng = fs.existsSync(pngPath);
 
-    // Kanji Header Table
+    // Kanji Header Table (Standalone Table)
     const headerRow = new TableRow({
       children: [
         new TableCell({
-          width: { size: 15, type: WidthType.PERCENTAGE },
+          width: { size: 1500, type: WidthType.DXA },
           shading: { fill: "F1F5F9", type: ShadingType.CLEAR },
           borders: cellBorders,
           children: [
@@ -91,7 +92,7 @@ function buildBabChildrenV4(ch) {
           ]
         }),
         new TableCell({
-          width: { size: 85, type: WidthType.PERCENTAGE },
+          width: { size: 8500, type: WidthType.DXA },
           borders: cellBorders,
           children: [
             new Paragraph({
@@ -119,19 +120,25 @@ function buildBabChildrenV4(ch) {
       ]
     });
 
+    const infoTable = new Table({
+      width: { size: 10000, type: WidthType.DXA },
+      columnWidths: [1500, 8500],
+      rows: [headerRow]
+    });
+
     // Row 1: Labels 1-10
     const labelRow1 = new TableRow({
       children: [
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, shading: { fill: "FEE2E2", type: ShadingType.CLEAR }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "① Urutan", font: EN_FONT, size: 11, bold: true, color: "DC2626" })] })] }),
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, shading: { fill: "DBEAFE", type: ShadingType.CLEAR }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "② Contoh", font: EN_FONT, size: 11, bold: true, color: "2563EB" })] })] }),
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, shading: { fill: "F1F5F9", type: ShadingType.CLEAR }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "③ Jiplak", font: EN_FONT, size: 11, color: "64748B" })] })] }),
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, shading: { fill: "F1F5F9", type: ShadingType.CLEAR }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "④ Jiplak", font: EN_FONT, size: 11, color: "64748B" })] })] }),
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑤", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑥", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑦", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑧", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑨", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑩", font: EN_FONT, size: 11, color: "94A3B8" })] })] })
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, shading: { fill: "FEE2E2", type: ShadingType.CLEAR }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "① Urutan", font: EN_FONT, size: 11, bold: true, color: "DC2626" })] })] }),
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, shading: { fill: "DBEAFE", type: ShadingType.CLEAR }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "② Contoh", font: EN_FONT, size: 11, bold: true, color: "2563EB" })] })] }),
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, shading: { fill: "F1F5F9", type: ShadingType.CLEAR }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "③ Jiplak", font: EN_FONT, size: 11, color: "64748B" })] })] }),
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, shading: { fill: "F1F5F9", type: ShadingType.CLEAR }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "④ Jiplak", font: EN_FONT, size: 11, color: "64748B" })] })] }),
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑤", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑥", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑦", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑧", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑨", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑩", font: EN_FONT, size: 11, color: "94A3B8" })] })] })
       ]
     });
 
@@ -140,14 +147,14 @@ function buildBabChildrenV4(ch) {
     if (hasPng) {
       cells1.push(
         new TableCell({
-          width: { size: 10, type: WidthType.PERCENTAGE }, shading: { fill: "FFF9F9", type: ShadingType.CLEAR }, borders: { top: redBorder, bottom: redBorder, left: redBorder, right: redBorder },
+          width: { size: 1000, type: WidthType.DXA }, shading: { fill: "FFF9F9", type: ShadingType.CLEAR }, borders: { top: redBorder, bottom: redBorder, left: redBorder, right: redBorder },
           children: [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 20, after: 20 }, children: [new ImageRun({ data: fs.readFileSync(pngPath), transformation: { width: 34, height: 34 } })] })]
         })
       );
     } else {
       cells1.push(
         new TableCell({
-          width: { size: 10, type: WidthType.PERCENTAGE }, shading: { fill: "FFF9F9", type: ShadingType.CLEAR }, borders: { top: redBorder, bottom: redBorder, left: redBorder, right: redBorder },
+          width: { size: 1000, type: WidthType.DXA }, shading: { fill: "FFF9F9", type: ShadingType.CLEAR }, borders: { top: redBorder, bottom: redBorder, left: redBorder, right: redBorder },
           children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: k.kanji, font: JP_FONT, bold: true, size: 26, color: "DC2626" })] })]
         })
       );
@@ -156,7 +163,7 @@ function buildBabChildrenV4(ch) {
     // Model Cell
     cells1.push(
       new TableCell({
-        width: { size: 10, type: WidthType.PERCENTAGE }, shading: { fill: "F8FAFC", type: ShadingType.CLEAR }, borders: { top: blueBorder, bottom: blueBorder, left: blueBorder, right: blueBorder },
+        width: { size: 1000, type: WidthType.DXA }, shading: { fill: "F8FAFC", type: ShadingType.CLEAR }, borders: { top: blueBorder, bottom: blueBorder, left: blueBorder, right: blueBorder },
         children: [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 30, after: 30 }, children: [new TextRun({ text: k.kanji, font: JP_FONT, bold: true, size: 26, color: "0F172A" })] })]
       })
     );
@@ -164,11 +171,11 @@ function buildBabChildrenV4(ch) {
     // Trace Cells 1 & 2
     cells1.push(
       new TableCell({
-        width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders,
+        width: { size: 1000, type: WidthType.DXA }, borders: cellBorders,
         children: [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 30, after: 30 }, children: [new TextRun({ text: k.kanji, font: JP_FONT, size: 26, color: "CBD5E1" })] })]
       }),
       new TableCell({
-        width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders,
+        width: { size: 1000, type: WidthType.DXA }, borders: cellBorders,
         children: [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 30, after: 30 }, children: [new TextRun({ text: k.kanji, font: JP_FONT, size: 26, color: "CBD5E1" })] })]
       })
     );
@@ -177,7 +184,7 @@ function buildBabChildrenV4(ch) {
     for (let c = 5; c <= 10; c++) {
       cells1.push(
         new TableCell({
-          width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders,
+          width: { size: 1000, type: WidthType.DXA }, borders: cellBorders,
           children: [new Paragraph({ spacing: { before: 30, after: 30 }, children: [new TextRun({ text: " " })] })]
         })
       );
@@ -187,16 +194,16 @@ function buildBabChildrenV4(ch) {
     // Row 2: Labels 11-20
     const labelRow2 = new TableRow({
       children: [
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, shading: { fill: "F1F5F9", type: ShadingType.CLEAR }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑪ Jiplak", font: EN_FONT, size: 11, color: "64748B" })] })] }),
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, shading: { fill: "F1F5F9", type: ShadingType.CLEAR }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑫ Jiplak", font: EN_FONT, size: 11, color: "64748B" })] })] }),
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑬", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑭", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑮", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑯", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑰", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑱", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑲", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
-        new TableCell({ width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑳", font: EN_FONT, size: 11, color: "94A3B8" })] })] })
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, shading: { fill: "F1F5F9", type: ShadingType.CLEAR }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑪ Jiplak", font: EN_FONT, size: 11, color: "64748B" })] })] }),
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, shading: { fill: "F1F5F9", type: ShadingType.CLEAR }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑫ Jiplak", font: EN_FONT, size: 11, color: "64748B" })] })] }),
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑬", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑭", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑮", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑯", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑰", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑱", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑲", font: EN_FONT, size: 11, color: "94A3B8" })] })] }),
+        new TableCell({ width: { size: 1000, type: WidthType.DXA }, borders: cellBorders, children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "⑳", font: EN_FONT, size: 11, color: "94A3B8" })] })] })
       ]
     });
 
@@ -204,11 +211,11 @@ function buildBabChildrenV4(ch) {
     const cells2 = [];
     cells2.push(
       new TableCell({
-        width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders,
+        width: { size: 1000, type: WidthType.DXA }, borders: cellBorders,
         children: [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 30, after: 30 }, children: [new TextRun({ text: k.kanji, font: JP_FONT, size: 26, color: "CBD5E1" })] })]
       }),
       new TableCell({
-        width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders,
+        width: { size: 1000, type: WidthType.DXA }, borders: cellBorders,
         children: [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 30, after: 30 }, children: [new TextRun({ text: k.kanji, font: JP_FONT, size: 26, color: "CBD5E1" })] })]
       })
     );
@@ -216,19 +223,24 @@ function buildBabChildrenV4(ch) {
     for (let c = 13; c <= 20; c++) {
       cells2.push(
         new TableCell({
-          width: { size: 10, type: WidthType.PERCENTAGE }, borders: cellBorders,
+          width: { size: 1000, type: WidthType.DXA }, borders: cellBorders,
           children: [new Paragraph({ spacing: { before: 30, after: 30 }, children: [new TextRun({ text: " " })] })]
         })
       );
     }
     const contentRow2 = new TableRow({ children: cells2 });
 
-    // Writing Practice Table (20 Grid Boxes)
+    // Writing Practice Table (20 Grid Boxes - Rigid 10x1000 DXA)
+    const practiceTable = new Table({
+      width: { size: 10000, type: WidthType.DXA },
+      columnWidths: [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
+      rows: [labelRow1, contentRow1, labelRow2, contentRow2]
+    });
+
     children.push(
-      new Table({
-        width: { size: 100, type: WidthType.PERCENTAGE },
-        rows: [headerRow, labelRow1, contentRow1, labelRow2, contentRow2]
-      }),
+      infoTable,
+      new Paragraph({ spacing: { after: 15 } }),
+      practiceTable,
       new Paragraph({
         spacing: { before: 20, after: 50 },
         children: [

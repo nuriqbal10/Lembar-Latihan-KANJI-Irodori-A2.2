@@ -133,6 +133,11 @@ function stripFurigana(str) {
     .trim();
 }
 
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 function renderWorksheetLevelHtml(level, dataList, meta) {
   return dataList.map(ch => `
     <!-- LEVEL ${level} - BAB ${ch.bab} TARGET KANJI (20-GRID) -->
@@ -169,7 +174,7 @@ function renderWorksheetLevelHtml(level, dataList, meta) {
                 <div class="stroke-rule">Urutan goresan: ${k.strokeRule}</div>
               </div>
               <div class="no-print">
-                <button class="btn-animate-stroke" onclick="playStrokeAnimation('${k.kanji}', '${k.meaning}', ${k.strokes})">
+                <button class="btn-animate-stroke" onclick="playStrokeAnimation('${k.kanji}', '${escapeHtml(k.meaning)}', ${k.strokes})">
                   ▶️ Putar Animasi
                 </button>
               </div>
@@ -201,7 +206,7 @@ function renderWorksheetLevelHtml(level, dataList, meta) {
             <!-- 20-GRID WRITING SECTION -->
             <div class="writing-grid-section-20">
               <div class="grid-boxes-10-row">
-                <div class="tianzige-box guidance-box" onclick="playStrokeAnimation('${k.kanji}', '${k.meaning}', ${k.strokes})" title="Klik untuk putar animasi">
+                <div class="tianzige-box guidance-box" onclick="playStrokeAnimation('${k.kanji}', '${escapeHtml(k.meaning)}', ${k.strokes})" title="Klik untuk putar animasi">
                   <span class="box-tag">① Urutan</span>
                   ${getGuidanceSvg(k.kanji)}
                 </div>
@@ -297,25 +302,15 @@ function renderWorksheetLevelHtml(level, dataList, meta) {
 }
 
 function buildIndexApp() {
-  console.log("Compiling Unified Multi-Level IRODORI Kanji Studio (A1, A2.1, A2.2)...");
-
-  // Read existing CSS and scripts from original build_app.backup.js or generate cleanly
-  const backupSrc = fs.readFileSync(path.join(rootDir, 'scripts', 'build_app.backup.js'), 'utf-8');
-
-  // Extract CSS block
-  const cssMatch = backupSrc.match(/<style>([\s\S]*?)<\/style>/);
-  const cssContent = cssMatch ? cssMatch[1] : '';
-
-  // Extract JS Auth & Firebase block
-  const jsAuthMatch = backupSrc.match(/(\/\* =======================================================[\s\S]*?FIREBASE SDK COMPAT[\s\S]*?<\/script>)/);
+  console.log("Compiling Unified Multi-Level IRODORI Kanji Studio with Claymorphism Nav, Working Stroke Animation & Interactive Flashcards...");
 
   const html = `<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IRODORI Kanji Studio (Level A1 • A2.1 • A2.2) | Lembar Latihan 20-Grid & Kuis Interaktif</title>
-  <meta name="description" content="Studio Lengkap Latihan Huruf Kanji IRODORI (A1 Pemula, A2.1 Dasar 1, A2.2 Dasar 2) dengan font UD Digi Kyokasho, 20 Kotak Grid per Kanji, Ukuran Model & Jiplak Presisi, Kuis Mandiri, dan Cetak A4">
+  <title>IRODORI Kanji Studio (Level A1 • A2.1 • A2.2) | Lembar Latihan 20-Grid, Flashcard 3D & Kuis Interaktif</title>
+  <meta name="description" content="Studio Lengkap Latihan Huruf Kanji IRODORI (A1 Pemula, A2.1 Dasar 1, A2.2 Dasar 2) dengan font UD Digi Kyokasho, Flashcard 3D Claymorphism, 20 Kotak Grid per Kanji, Animasi Goresan & Cetak A4 Presisi">
 
   <!-- Firebase SDK Compat -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -325,10 +320,600 @@ function buildIndexApp() {
   <!-- Google Fonts: Inter & Noto Sans JP -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=BIZ+UDPGothic:wght@400;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 
   <style>
-${cssContent}
+    /* =======================================================
+       CLAYMORPHISM PASTEL CALM SYSTEM & ROOT VARIABLES
+       ======================================================= */
+    :root {
+      --bg-gradient: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 50%, #fce7f3 100%);
+      --text-main: #1e293b;
+      --text-sub: #475569;
+      --text-light: #94a3b8;
+
+      --clay-card-bg: #ffffff;
+      --clay-surface: #f8fafc;
+      --clay-shadow-out: 0 10px 25px -5px rgba(124, 58, 237, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+      --clay-shadow-pill: 0 4px 12px rgba(124, 58, 237, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      --clay-shadow-in: inset 2px 2px 5px rgba(0,0,0,0.06), inset -2px -2px 5px rgba(255,255,255,0.8);
+      --card-border: #e2e8f0;
+
+      --pastel-blue-bg: #e0f2fe;
+      --pastel-blue-border: #bae6fd;
+      --pastel-blue-txt: #0369a1;
+
+      --pastel-rose-bg: #ffe4e6;
+      --pastel-rose-border: #fecdd3;
+      --pastel-rose-txt: #be123c;
+
+      --pastel-sage-bg: #dcfce7;
+      --pastel-sage-border: #bbf7d0;
+      --pastel-sage-txt: #15803d;
+
+      --pastel-lavender-bg: #ede9fe;
+      --pastel-lavender-border: #ddd6fe;
+      --accent-lavender: #7c3aed;
+
+      --grid-border: #94a3b8;
+      --grid-cross: #cbd5e1;
+
+      --font-kyokasho: "UD デジタル 教科書体 NP-R", "UD Digi Kyokasho NP-R", "UD デジタル 教科書体 NK-R", "BIZ UDPGothic", "Noto Sans JP", sans-serif;
+    }
+
+    [data-theme="dark"] {
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #1e293b 100%);
+      --text-main: #f8fafc;
+      --text-sub: #cbd5e1;
+      --text-light: #64748b;
+
+      --clay-card-bg: #1e293b;
+      --clay-surface: #0f172a;
+      --clay-shadow-out: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      --clay-shadow-pill: 0 4px 12px rgba(0, 0, 0, 0.3);
+      --clay-shadow-in: inset 2px 2px 5px rgba(0,0,0,0.5), inset -2px -2px 5px rgba(255,255,255,0.05);
+      --card-border: #334155;
+
+      --pastel-blue-bg: #0c4a6e;
+      --pastel-blue-border: #0284c7;
+      --pastel-blue-txt: #bae6fd;
+
+      --pastel-rose-bg: #881337;
+      --pastel-rose-border: #be123c;
+      --pastel-rose-txt: #fecdd3;
+
+      --pastel-sage-bg: #14532d;
+      --pastel-sage-border: #16a34a;
+      --pastel-sage-txt: #bbf7d0;
+
+      --pastel-lavender-bg: #4c1d95;
+      --pastel-lavender-border: #6d28d9;
+      --accent-lavender: #c4b5fd;
+
+      --grid-border: #475569;
+      --grid-cross: #334155;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', var(--font-kyokasho);
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.5;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* HEADER BAR */
+    .app-header {
+      background: var(--clay-card-bg);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      backdrop-filter: blur(12px);
+    }
+
+    .header-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .logo-area { display: flex; align-items: center; gap: 10px; }
+    .logo-icon {
+      font-size: 26px;
+      width: 44px; height: 44px; border-radius: 14px;
+      background: linear-gradient(135deg, #fce7f3, #ede9fe);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--clay-shadow-pill);
+    }
+    .logo-text h1 {
+      font-size: 1.15rem; font-weight: 800; color: var(--text-main); line-height: 1.2;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .logo-text p { font-size: 0.72rem; color: var(--text-sub); font-weight: 500; }
+    .tag-version {
+      font-size: 0.68rem; font-weight: 800; padding: 2px 8px; border-radius: 8px;
+      background: var(--pastel-lavender-bg); color: var(--accent-lavender);
+      border: 1px solid var(--pastel-lavender-border);
+    }
+
+    /* CLAYMORPHISM TABS NAVBAR */
+    .nav-tabs {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--clay-surface);
+      padding: 5px 6px;
+      border-radius: 9999px;
+      border: 1px solid var(--card-border);
+      box-shadow: var(--clay-shadow-in);
+    }
+
+    .nav-tab {
+      border: none;
+      background: transparent;
+      padding: 7px 14px;
+      border-radius: 9999px;
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
+      outline: none;
+      white-space: nowrap;
+    }
+
+    .nav-tab:hover {
+      color: var(--text-main);
+      transform: translateY(-1px);
+    }
+
+    .nav-tab.active {
+      background: var(--clay-card-bg);
+      color: #2563eb;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.16), 0 2px 4px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(37, 99, 235, 0.18);
+      font-weight: 800;
+      transform: translateY(-1px);
+    }
+
+    /* ACTION BUTTONS & CONTROLS */
+    .action-buttons { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+    .clay-select-wrapper {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--clay-surface);
+      padding: 5px 12px;
+      border-radius: 9999px;
+      border: 1.5px solid var(--card-border);
+      box-shadow: var(--clay-shadow-pill);
+    }
+    .clay-select-wrapper label {
+      font-size: 0.74rem; font-weight: 800; color: var(--accent-lavender);
+    }
+    .clay-select-wrapper select {
+      border: none; background: transparent; font-family: inherit; font-size: 0.82rem; font-weight: 800;
+      color: var(--text-main); cursor: pointer; outline: none;
+    }
+
+    .btn-action {
+      padding: 7px 14px; border-radius: 9999px; border: none;
+      font-family: inherit; font-size: 0.82rem; font-weight: 700;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .btn-action:hover { transform: translateY(-1px); }
+    .btn-print { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25); }
+    .theme-toggle {
+      width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--card-border);
+      background: var(--clay-card-bg); color: var(--text-main); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 16px;
+      box-shadow: var(--clay-shadow-pill); transition: transform 0.2s ease;
+    }
+    .theme-toggle:hover { transform: scale(1.06); }
+
+    .user-pill {
+      display: flex; align-items: center; gap: 6px; padding: 4px 10px 4px 6px;
+      border-radius: 9999px; background: var(--pastel-blue-bg); border: 1px solid var(--pastel-blue-border);
+      color: var(--pastel-blue-txt); font-size: 0.78rem; font-weight: 700;
+    }
+    .user-avatar {
+      width: 24px; height: 24px; border-radius: 50%; color: white;
+      display: flex; align-items: center; justify-content: center; font-size: 11px;
+    }
+
+    /* MAIN APP BODY */
+    .app-main { max-width: 1240px; margin: 18px auto; padding: 0 16px; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.25s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* HERO BANNER */
+    .hero-banner {
+      background: var(--clay-card-bg); border-radius: 24px; padding: 18px 24px;
+      margin-bottom: 20px; box-shadow: var(--clay-shadow-out); border: 1px solid var(--card-border);
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px;
+    }
+    .hero-text h2 { font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin-bottom: 3px; }
+    .hero-text p { font-size: 0.84rem; color: var(--text-sub); max-width: 680px; }
+    .hero-stats { display: flex; gap: 8px; flex-wrap: wrap; }
+    .stat-pill {
+      background: var(--pastel-blue-bg); border: 1px solid var(--pastel-blue-border);
+      color: var(--pastel-blue-txt); padding: 6px 14px; border-radius: 14px; text-align: center;
+    }
+    .stat-num { font-size: 1.15rem; font-weight: 800; display: block; line-height: 1.2; }
+    .stat-lbl { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; }
+
+    .curriculum-tag {
+      font-size: 0.72rem; font-weight: 800; padding: 3px 10px; border-radius: 8px;
+      background: var(--pastel-lavender-bg); color: var(--accent-lavender);
+      border: 1px solid var(--pastel-lavender-border); display: inline-block;
+    }
+
+    /* WORKSHEET PAGE & 20-GRID */
+    .worksheet-page {
+      background: var(--clay-card-bg); border-radius: 24px; padding: 24px;
+      margin-bottom: 28px; box-shadow: var(--clay-shadow-out); border: 1px solid var(--card-border);
+      position: relative;
+    }
+    .sheet-header {
+      border-bottom: 2px solid var(--card-border); padding-bottom: 12px; margin-bottom: 18px;
+    }
+    .sheet-title { font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin-top: 4px; }
+    .sheet-subtitle { font-size: 0.86rem; color: var(--text-sub); font-weight: 600; margin-top: 2px; }
+
+    .student-info-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px; margin-top: 14px; padding: 8px 12px; border-radius: 12px;
+      background: var(--clay-surface); border: 1px solid var(--card-border);
+    }
+    .info-field { display: flex; align-items: baseline; gap: 6px; font-size: 0.8rem; }
+    .info-field .label { font-weight: 700; color: var(--text-sub); }
+    .info-field .line { flex: 1; border-bottom: 1.5px dotted var(--grid-cross); height: 14px; }
+    .score-box {
+      font-weight: 800; color: var(--pastel-rose-txt); background: var(--pastel-rose-bg);
+      padding: 2px 8px; border-radius: 6px; border: 1px solid var(--pastel-rose-border);
+    }
+
+    /* KANJI UNIT */
+    .kanji-list-container { display: flex; flex-direction: column; gap: 20px; }
+    .kanji-unit {
+      background: var(--clay-card-bg); border: 1.5px solid var(--card-border);
+      border-radius: 20px; padding: 18px; box-shadow: var(--clay-shadow-pill);
+      position: relative;
+    }
+    .kanji-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 12px; margin-bottom: 12px; flex-wrap: wrap;
+    }
+    .kanji-hero {
+      display: flex; align-items: center; gap: 8px; font-family: var(--font-kyokasho);
+      font-size: 2.8rem; font-weight: 900; line-height: 1; color: var(--text-main);
+    }
+    .btn-voice-mini {
+      background: var(--clay-surface); border: 1px solid var(--card-border); border-radius: 50%;
+      width: 32px; height: 32px; cursor: pointer; font-size: 14px; display: inline-flex;
+      align-items: center; justify-content: center; box-shadow: var(--clay-shadow-pill);
+    }
+    .btn-voice-mini:hover { transform: scale(1.08); }
+    .kanji-meta { flex: 1; min-width: 240px; }
+    .kanji-readings { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 4px; }
+    .reading-tag {
+      font-size: 0.74rem; font-weight: 700; padding: 2px 8px; border-radius: 6px;
+    }
+    .tag-on { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .tag-kun { background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe; }
+    .tag-stroke { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+    .tag-radical { background: #fce7f3; color: #9d174d; border: 1px solid #fbcfe8; }
+    .kanji-meaning { font-size: 0.94rem; font-weight: 800; color: var(--text-main); margin-top: 2px; }
+    .stroke-rule { font-size: 0.78rem; color: var(--text-sub); margin-top: 2px; }
+
+    .btn-animate-stroke {
+      background: linear-gradient(135deg, #f43f5e, #e11d48); color: white; border: none;
+      padding: 7px 14px; border-radius: 12px; font-weight: 700; font-size: 0.8rem;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
+      box-shadow: 0 3px 10px rgba(225, 29, 72, 0.25); transition: transform 0.2s ease;
+    }
+    .btn-animate-stroke:hover { transform: translateY(-1px); }
+
+    .vocab-pill {
+      background: var(--clay-surface); border: 1px solid var(--card-border); border-radius: 8px;
+      padding: 3px 8px; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-voice-inline {
+      border: none; background: transparent; cursor: pointer; font-size: 13px; opacity: 0.75;
+    }
+    .btn-voice-inline:hover { opacity: 1; }
+
+    /* 20-GRID TIANZIGE */
+    .writing-grid-section-20 {
+      margin-top: 14px; display: flex; flex-direction: column; gap: 6px;
+    }
+    .grid-boxes-10-row {
+      display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px;
+    }
+    .tianzige-box {
+      aspect-ratio: 1; border: 1.5px solid var(--grid-border); border-radius: 10px;
+      background: var(--clay-surface); position: relative; display: flex;
+      align-items: center; justify-content: center; overflow: hidden;
+      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.03);
+    }
+    .tianzige-box::before {
+      content: ''; position: absolute; top: 0; bottom: 0; left: 50%;
+      border-left: 1px dashed var(--grid-cross);
+    }
+    .tianzige-box::after {
+      content: ''; position: absolute; left: 0; right: 0; top: 50%;
+      border-top: 1px dashed var(--grid-cross);
+    }
+    .box-tag {
+      position: absolute; top: 2px; left: 3px; font-size: 0.6rem; font-weight: 800;
+      color: var(--text-light); z-index: 5; line-height: 1; pointer-events: none;
+    }
+    .guidance-box .box-tag { color: #e11d48; }
+    .model-box .box-tag { color: #2563eb; }
+    .guidance-box { border-color: #f43f5e; border-width: 2px; cursor: pointer; }
+    .model-box { border-color: #2563eb; border-width: 2px; }
+
+    .kanji-svg { width: 90% !important; height: 90% !important; z-index: 2; }
+    .char-fallback { font-size: 2rem; font-family: var(--font-kyokasho); font-weight: 700; z-index: 2; }
+    .trace-char { color: #94a3b8; opacity: 0.65; }
+
+    .ruled-writing-row {
+      margin-top: 10px; padding-top: 8px; border-top: 1px dotted var(--card-border);
+      display: flex; flex-direction: column; gap: 5px; font-size: 0.78rem;
+    }
+    .ruled-item { display: flex; align-items: baseline; gap: 8px; }
+    .ruled-lbl { font-weight: 700; color: var(--text-sub); white-space: nowrap; font-size: 0.74rem; }
+    .ruled-line { flex: 1; border-bottom: 1.5px dotted var(--grid-cross); height: 14px; }
+
+    /* SEPARATE EXERCISE PAGES */
+    .exercise-page-card {
+      background: var(--clay-card-bg); border-radius: 24px; padding: 24px 28px;
+      margin-bottom: 28px; border: 1px solid var(--card-border);
+      box-shadow: var(--clay-shadow-out); position: relative;
+    }
+    .page-exercise-b { page-break-before: always; break-before: page; }
+    .exercise-page-title { font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px; }
+    .exercise-grid-list { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+    .exercise-list-item {
+      background: var(--clay-surface); border-radius: 12px; padding: 10px 14px;
+      border: 1px solid var(--card-border); font-size: 0.92rem; display: flex;
+      flex-direction: column; gap: 4px;
+    }
+    .exercise-q-text { font-size: 0.95rem; font-weight: 600; color: var(--text-main); }
+    .answer-key {
+      display: inline-block; font-size: 0.78rem; font-weight: 700;
+      color: var(--pastel-rose-txt); background: var(--pastel-rose-bg);
+      border: 1px solid var(--pastel-rose-border); padding: 2px 8px; border-radius: 6px;
+      align-self: flex-start;
+    }
+
+    /* =======================================================
+       🎴 FLASHCARD 3D CLAYMORPHISM STYLING
+       ======================================================= */
+    .flashcard-stage {
+      max-width: 620px;
+      margin: 10px auto 30px;
+      perspective: 1200px;
+    }
+
+    .flashcard-3d {
+      width: 100%;
+      min-height: 440px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .flashcard-3d.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .flashcard-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 28px;
+      padding: 30px 28px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1.5px solid var(--card-border);
+      box-shadow: 0 16px 36px rgba(124, 58, 237, 0.08), 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .flashcard-front {
+      background: var(--clay-card-bg);
+      text-align: center;
+    }
+
+    .flashcard-back {
+      background: var(--clay-card-bg);
+      transform: rotateY(180deg);
+    }
+
+    .fc-hero-char {
+      font-size: 6.5rem;
+      font-family: var(--font-kyokasho);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--text-main);
+      text-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin: 20px 0;
+    }
+
+    .fc-controls-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .fc-btn {
+      padding: 9px 18px;
+      border-radius: 9999px;
+      border: 1.5px solid var(--card-border);
+      background: var(--clay-surface);
+      color: var(--text-main);
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--clay-shadow-pill);
+      transition: all 0.2s ease;
+      outline: none;
+    }
+    .fc-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--clay-shadow-out);
+    }
+    .fc-btn.primary {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      color: white;
+      border: none;
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+    }
+
+    /* =======================================================
+       STROKE ANIMATION MODAL & SVG CANVAS
+       ======================================================= */
+    .modal-backdrop {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(8px);
+      z-index: 2000; display: none; align-items: center; justify-content: center; padding: 16px;
+    }
+    .modal-backdrop.active { display: flex !important; }
+
+    .modal-card {
+      background: var(--clay-card-bg); border: 1.5px solid var(--card-border); border-radius: 28px;
+      max-width: 500px; width: 100%; padding: 26px; box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+      position: relative; animation: modalPop 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .modal-close {
+      position: absolute; top: 16px; right: 18px; border: none; background: transparent;
+      font-size: 22px; color: var(--text-sub); cursor: pointer; border-radius: 50%;
+      width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+    }
+    .modal-close:hover { background: var(--clay-surface); color: var(--text-main); }
+
+    #animCanvasWrap {
+      width: 220px; height: 220px; margin: 14px auto 16px;
+      background: #ffffff; border-radius: 22px; border: 2px solid var(--card-border);
+      position: relative; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    #animCanvasSvg { width: 100%; height: 100%; }
+
+    .stroke-path {
+      fill: none; stroke-width: 4.6; stroke-linecap: round; stroke-linejoin: round;
+      transition: stroke 0.3s ease, opacity 0.3s ease;
+    }
+    .stroke-ghost { stroke: #cbd5e1; stroke-width: 3.8; opacity: 0.35; }
+    .stroke-drawing {
+      stroke: #e11d48 !important; stroke-width: 5.6 !important;
+    }
+
+    .anim-controls-bar {
+      display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; flex-wrap: wrap;
+    }
+    .anim-ctrl-btn {
+      padding: 8px 16px; border-radius: 9999px; border: 1px solid var(--card-border);
+      background: var(--clay-surface); color: var(--text-main); font-weight: 700; font-size: 0.82rem;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 5px; box-shadow: var(--clay-shadow-pill);
+      transition: all 0.2s ease;
+    }
+    .anim-ctrl-btn:hover { transform: translateY(-1px); }
+    .anim-ctrl-btn.primary {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border: none;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    /* KANJI EXPLORER & KAMUS */
+    .search-box { margin-bottom: 20px; }
+    .search-input {
+      width: 100%; padding: 12px 18px; border-radius: 9999px; border: 1.5px solid var(--card-border);
+      background: var(--clay-card-bg); color: var(--text-main); font-family: inherit; font-size: 0.92rem;
+      outline: none; box-shadow: var(--clay-shadow-pill);
+    }
+    .explorer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+    .explorer-card {
+      background: var(--clay-card-bg); border-radius: 18px; padding: 16px;
+      border: 1px solid var(--card-border); box-shadow: var(--clay-shadow-pill);
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .explorer-top { display: flex; align-items: center; justify-content: space-between; }
+    .exp-char { font-size: 2.5rem; font-weight: 800; color: var(--text-main); cursor: pointer; font-family: var(--font-kyokasho); }
+
+    /* DOWNLOAD CENTER */
+    .download-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+    .dl-card {
+      background: var(--clay-card-bg); border-radius: 18px; padding: 18px;
+      border: 1px solid var(--card-border); box-shadow: var(--clay-shadow-pill);
+      display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
+    }
+    .dl-card-title { font-size: 0.98rem; font-weight: 800; color: var(--text-main); }
+    .dl-card-sub { font-size: 0.78rem; color: var(--text-sub); }
+    .btn-dl-pdf {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 9px 14px; border-radius: 12px; background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff; font-weight: 700; font-size: 0.82rem; text-align: center; text-decoration: none;
+      box-shadow: 0 3px 8px rgba(37,99,235,0.25); border: none; cursor: pointer; width: 100%;
+    }
+
+    /* PRINT MEDIA */
+    @page { size: A4 portrait; margin: 8mm 10mm; }
+    @media print {
+      body { background: #ffffff !important; color: #000000 !important; font-family: var(--font-kyokasho) !important; }
+      .app-header, .hero-banner, .no-print, .btn-animate-stroke { display: none !important; }
+      .app-main { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
+      #tab-worksheets { display: block !important; }
+      #tab-flashcards, #tab-quiz, #tab-progress, #tab-explorer, #tab-downloads { display: none !important; }
+      .worksheet-page, .exercise-page-card { box-shadow: none !important; border: none !important; padding: 0 !important; margin-bottom: 12mm !important; page-break-after: always !important; }
+      .page-exercise-b { page-break-before: always !important; break-before: page !important; }
+      .kanji-unit { box-shadow: none !important; border: 1.5px solid #94a3b8 !important; padding: 10px 12px !important; margin-bottom: 12px !important; page-break-inside: avoid !important; }
+      .tianzige-box { box-shadow: none !important; border: 1.2px solid #64748b !important; }
+      .guidance-box { border: 1.8px solid #dc2626 !important; }
+      .model-box { border: 1.8px solid #2563eb !important; }
+      .ruled-writing-row { display: flex !important; border-top: 1px dashed #94a3b8 !important; }
+      .ruled-line { border-bottom: 1.5px dotted #64748b !important; }
+      .exercise-list-item { background: #ffffff !important; border: 1px solid #94a3b8 !important; page-break-inside: avoid !important; }
+      .answer-key { display: none !important; }
+    }
   </style>
 </head>
 <body data-theme="light">
@@ -344,10 +929,13 @@ ${cssContent}
         </div>
       </div>
 
-      <!-- Navigation Tabs -->
+      <!-- Navigation Tabs (Claymorphism Pill Container) -->
       <nav class="nav-tabs" id="navTabs">
         <button class="nav-tab active" data-tab="tab-worksheets" onclick="switchTab('tab-worksheets')">
           <span>📝 Lembar Latihan</span>
+        </button>
+        <button class="nav-tab" data-tab="tab-flashcards" onclick="switchTab('tab-flashcards')">
+          <span>🎴 Flashcard 3D</span>
         </button>
         <button class="nav-tab" data-tab="tab-quiz" onclick="switchTab('tab-quiz')">
           <span>🎯 Kuis Mandiri</span>
@@ -363,25 +951,28 @@ ${cssContent}
         </button>
       </nav>
 
-      <!-- Action Buttons -->
+      <!-- Action Controls -->
       <div class="action-buttons">
-        <!-- LEVEL SELECTOR -->
-        <div style="display:flex;align-items:center;gap:6px;background:var(--pastel-lavender-bg);padding:4px 8px;border-radius:12px;border:1.5px solid var(--accent-lavender);">
-          <span style="font-size:0.75rem;font-weight:800;color:var(--accent-lavender);">LEVEL:</span>
-          <select id="levelSelector" onchange="handleLevelChange(this.value)" style="border:none;background:transparent;font-weight:800;font-size:0.85rem;color:var(--text-main);cursor:pointer;outline:none;">
-            <option value="A1">🌸 Level A1 (入門 - Pemula)</option>
-            <option value="A2.1">🌊 Level A2.1 (初級1 - Dasar 1)</option>
-            <option value="A2.2" selected>⚡ Level A2.2 (初級2 - Dasar 2)</option>
+        <!-- LEVEL SELECTOR PILL -->
+        <div class="clay-select-wrapper">
+          <label for="levelSelector">LEVEL</label>
+          <select id="levelSelector" onchange="handleLevelChange(this.value)">
+            <option value="A1">🌸 A1 (入門 - Pemula)</option>
+            <option value="A2.1">🌊 A2.1 (初級1 - Dasar 1)</option>
+            <option value="A2.2" selected>⚡ A2.2 (初級2 - Dasar 2)</option>
           </select>
         </div>
 
-        <!-- BAB SELECTOR -->
-        <select id="babSelector" class="select-bab" onchange="handleBabChange(this.value)">
-          <option value="all">Semua Bab (Bab 1 - 18)</option>
-          ${kanjiDataA22.map(d => `<option value="${d.bab}">Bab ${d.bab}: ${d.titleJp.split(' ')[1] || d.titleId}</option>`).join('')}
-        </select>
+        <!-- BAB SELECTOR PILL -->
+        <div class="clay-select-wrapper">
+          <label for="babSelector">BAB</label>
+          <select id="babSelector" onchange="handleBabChange(this.value)">
+            <option value="all">Semua (Bab 1 - 18)</option>
+            ${kanjiDataA22.map(d => `<option value="${d.bab}">Bab ${d.bab}: ${d.titleJp.split(' ')[1] || d.titleId}</option>`).join('')}
+          </select>
+        </div>
 
-        <button class="btn-action btn-print" onclick="window.print()" title="Cetak halaman A4 presisi">
+        <button class="btn-action btn-print" onclick="window.print()" title="Cetak lembar kerja A4 presisi">
           <span>🖨️ Cetak A4</span>
         </button>
 
@@ -403,14 +994,14 @@ ${cssContent}
     <!-- Hero Banner -->
     <div class="hero-banner no-print">
       <div class="hero-text">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;">
           <span class="curriculum-tag" id="userStatusTag" style="background:var(--pastel-sage-bg);color:var(--pastel-sage-txt);border-color:var(--pastel-sage-border);">✅ Akun Terintegrasi Portal JP10 (Akses Penuh Bab 1-18)</span>
           <span class="curriculum-tag" id="activeLevelBadge" style="background:var(--pastel-lavender-bg);color:var(--accent-lavender);border-color:var(--accent-lavender);font-weight:800;">⚡ Level A2.2 (初級2)</span>
         </div>
         <h2 id="heroTitleText">🎌 Studio Latihan Kanji 20-Grid IRODORI (UD Digi Kyokasho)</h2>
         <p id="heroSubtitleText">
           Model & Jiplak presisi vektor identik 100%, 20 Kotak Tianzige (2 Baris), animasi goresan interaktif, 
-          serta <strong>Halaman Latihan A & B yang terpisah rapi saat dicetak</strong>.
+          Flashcard 3D membalik, serta <strong>Halaman Latihan A & B yang terpisah rapi saat dicetak</strong>.
         </p>
       </div>
       <div class="hero-stats">
@@ -436,49 +1027,129 @@ ${cssContent}
       ${renderWorksheetLevelHtml("A2.2", kanjiDataA22, LEVEL_META["A2.2"])}
     </section>
 
-    <!-- TAB 2: KUIS MANDIRI INTERAKTIF -->
+    <!-- TAB 2: FLASHCARD 3D INTERAKTIF -->
+    <section id="tab-flashcards" class="tab-content">
+      <div style="text-align:center;margin-bottom:14px;" class="no-print">
+        <h3 style="font-size:1.25rem;font-weight:800;color:var(--text-main);">🎴 Flashcard Menghafal Kanji (3D Flip)</h3>
+        <p style="font-size:0.84rem;color:var(--text-sub);">Klik kartu atau tekan Spasi pada keyboard untuk membalik kartu dan melihat detailnya.</p>
+      </div>
+
+      <div class="flashcard-stage no-print">
+        <div class="flashcard-3d" id="flashcardBox" onclick="flipFlashcard()">
+          <!-- FRONT FACE -->
+          <div class="flashcard-face flashcard-front">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span class="curriculum-tag" id="fcLevelBadge">Level A1 • Bab 1</span>
+              <span style="font-size:0.8rem;font-weight:800;color:var(--text-light);" id="fcCounter">1 / 10</span>
+              <button class="btn-voice-mini" onclick="event.stopPropagation(); speakCurrentFlashcard();" title="Dengarkan Pengucapan">🔊</button>
+            </div>
+
+            <div class="fc-hero-char" id="fcChar">一</div>
+
+            <div>
+              <div style="display:flex;justify-content:center;gap:6px;margin-bottom:12px;">
+                <span class="reading-tag tag-stroke" id="fcStrokesTag">1 Goresan</span>
+                <span class="reading-tag tag-radical" id="fcRadicalTag">Radikal: 一</span>
+              </div>
+              <div style="font-size:0.8rem;color:var(--text-light);display:flex;align-items:center;justify-content:center;gap:6px;">
+                <span>🔄 Klik kartu untuk membalik</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- BACK FACE -->
+          <div class="flashcard-face flashcard-back">
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <span class="curriculum-tag" id="fcBackLevelBadge">Level A1 • Bab 1</span>
+                <button class="btn-voice-mini" onclick="event.stopPropagation(); speakCurrentFlashcard();" title="Dengarkan">🔊</button>
+              </div>
+
+              <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:10px;">
+                <span style="font-size:2.4rem;font-weight:900;font-family:var(--font-kyokasho);color:var(--text-main);" id="fcBackChar">一</span>
+                <span style="font-size:1.35rem;font-weight:800;color:var(--pastel-blue-txt);" id="fcBackMeaning">Satu</span>
+              </div>
+
+              <div style="display:flex;flex-direction:column;gap:6px;background:var(--clay-surface);padding:12px 14px;border-radius:14px;border:1px solid var(--card-border);margin-bottom:12px;text-align:left;">
+                <div style="font-size:0.85rem;"><strong style="color:#92400e;">音 (Onyomi):</strong> <span id="fcBackOn">-</span></div>
+                <div style="font-size:0.85rem;"><strong style="color:#3730a3;">訓 (Kunyomi):</strong> <span id="fcBackKun">-</span></div>
+                <div style="font-size:0.78rem;color:var(--text-sub);margin-top:2px;"><strong>Urutan:</strong> <span id="fcBackStrokeRule">-</span></div>
+              </div>
+
+              <div style="text-align:left;margin-bottom:10px;">
+                <div style="font-size:0.78rem;font-weight:700;color:var(--text-sub);margin-bottom:4px;">Kosakata Terkait:</div>
+                <div id="fcBackVocabPills" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div style="background:var(--clay-surface);padding:8px 12px;border-radius:12px;border:1px solid var(--card-border);margin-bottom:14px;text-align:left;">
+                <div style="font-weight:700;font-size:0.88rem;color:var(--text-main);" id="fcBackSentence">...</div>
+                <div style="font-size:0.75rem;font-style:italic;color:var(--text-sub);" id="fcBackSentenceId">"..."</div>
+              </div>
+
+              <div style="display:flex;gap:8px;justify-content:center;">
+                <button class="btn-animate-stroke" onclick="event.stopPropagation(); playCurrentFlashcardAnimation();">
+                  ▶️ Putar Animasi Goresan
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FLASHCARD CONTROLS -->
+        <div class="fc-controls-bar">
+          <button class="fc-btn" onclick="prevFlashcard()" title="Kartu Sebelumnya (Tombol Panah Kiri)">⬅️ Sebelumnya</button>
+          <button class="fc-btn primary" onclick="flipFlashcard()" title="Balik Kartu (Spasi)">🔄 Balik Kartu</button>
+          <button class="fc-btn" onclick="shuffleFlashcards()" title="Acak urutan kartu">🔀 Acak</button>
+          <button class="fc-btn" onclick="nextFlashcard()" title="Kartu Berikutnya (Tombol Panah Kanan)">Berikutnya ➡️</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: KUIS MANDIRI INTERAKTIF -->
     <section id="tab-quiz" class="tab-content">
       <div class="quiz-container" id="quizContainer">
         <!-- Rendered dynamically via renderQuizView() -->
       </div>
     </section>
 
-    <!-- TAB 3: PROGRES BELAJAR SISWA -->
+    <!-- TAB 4: PROGRES BELAJAR SISWA -->
     <section id="tab-progress" class="tab-content">
       <div class="progress-dashboard">
-        <div class="dash-summary-row">
-          <div class="dash-card">
-            <span class="dash-num" id="dashTotalMastered">0 / 432</span>
-            <span class="dash-lbl">Kanji Dikuasai</span>
+        <div class="dash-summary-row" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:14px;margin-bottom:20px;">
+          <div class="stat-pill" style="padding:14px;border-radius:18px;">
+            <span class="stat-num" id="dashTotalMastered">0 / 432</span>
+            <span class="stat-lbl">Kanji Dikuasai</span>
           </div>
-          <div class="dash-card">
-            <span class="dash-num" id="dashCompletedBab">0 / 18</span>
-            <span class="dash-lbl">Bab Tuntas (Kuis >= 70%)</span>
+          <div class="stat-pill" style="padding:14px;border-radius:18px;">
+            <span class="stat-num" id="dashCompletedBab">0 / 18</span>
+            <span class="stat-lbl">Bab Tuntas (Kuis >= 70%)</span>
           </div>
-          <div class="dash-card">
-            <span class="dash-num" id="dashAvgScore">0%</span>
-            <span class="dash-lbl">Rata-rata Skor Kuis</span>
+          <div class="stat-pill" style="padding:14px;border-radius:18px;">
+            <span class="stat-num" id="dashAvgScore">0%</span>
+            <span class="stat-lbl">Rata-rata Skor Kuis</span>
           </div>
         </div>
 
         <h3 style="font-size:1.15rem;font-weight:800;color:var(--text-main);margin-bottom:12px;">Daftar Bab & Nilai Kuis</h3>
-        <div class="progress-chapter-list" id="progressChapterList"></div>
+        <div class="progress-chapter-list" id="progressChapterList" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));gap:12px;"></div>
       </div>
     </section>
 
-    <!-- TAB 4: KAMUS & KANJI EXPLORER -->
+    <!-- TAB 5: KAMUS & KANJI EXPLORER -->
     <section id="tab-explorer" class="tab-content">
       <div class="explorer-container">
         <div class="search-box">
-          <input type="text" class="search-input" id="explorerSearchInput" placeholder="Cari Kanji, arti kata Indonesia, Onyomi, atau Kunyomi..." oninput="handleKanjiSearch(this.value)">
+          <input type="text" class="search-input" id="explorerSearchInput" placeholder="Cari Kanji, arti kata Indonesia, Onyomi, Kunyomi, atau nomor Bab..." oninput="handleKanjiSearch(this.value)">
         </div>
         <div class="explorer-grid" id="explorerGrid"></div>
       </div>
     </section>
 
-    <!-- TAB 5: UNDUH BERKAS (MASTER DOWNLOADS) -->
+    <!-- TAB 6: UNDUH BERKAS (MASTER DOWNLOADS) -->
     <section id="tab-downloads" class="tab-content">
-      <div style="background:linear-gradient(135deg, #e0e7ff, #fde8ef);border-radius:20px;padding:20px;margin-bottom:18px;box-shadow:var(--clay-shadow-out);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;">
+      <div style="background:linear-gradient(135deg, #e0e7ff, #fde8ef);border-radius:24px;padding:22px;margin-bottom:20px;box-shadow:var(--clay-shadow-out);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;">
         <div>
           <span class="curriculum-tag" style="background:#ffffff;">Master Bundle Resmi</span>
           <h3 style="font-size:1.15rem;font-weight:800;color:#1e293b;margin:4px 0;">Paket Lengkap Seluruh Bab (Level A1 • A2.1 • A2.2)</h3>
@@ -498,77 +1169,44 @@ ${cssContent}
 
   </main>
 
-  <!-- AUTH MODAL (FIREBASE) -->
-  <div class="modal-backdrop" id="authModal">
-    <div class="modal-card" style="max-width:440px;">
-      <button class="modal-close" onclick="closeAuthModal()">✕</button>
-      <div style="display:flex;gap:8px;margin-bottom:18px;border-bottom:1px solid var(--card-border);padding-bottom:8px;">
-        <button id="authTabLogin" class="tab-btn active" onclick="switchAuthMode('login')">🔑 Masuk Akun</button>
-        <button id="authTabRegister" class="tab-btn" onclick="switchAuthMode('register')">📝 Daftar Siswa Baru</button>
-      </div>
-
-      <!-- GOOGLE SIGN IN BUTTON -->
-      <button class="btn-google" onclick="handleGoogleSignIn()">
-        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.55 10.79l7.98-6.2z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-        Masuk Cepat dengan Google
-      </button>
-
-      <div class="auth-divider"><span>atau dengan Email</span></div>
-
-      <div id="loginFormSection">
-        <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Alamat Email</label>
-        <input type="email" id="loginEmail" class="input-field" placeholder="nama@email.com">
-        <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Password</label>
-        <input type="password" id="loginPassword" class="input-field" placeholder="Ketik password..." onkeydown="if(event.key==='Enter') handleLoginSubmit()">
-        <div style="display:flex;justify-content:flex-end;margin-top:-6px;margin-bottom:12px;">
-          <a href="javascript:void(0)" onclick="handleForgotPassword()" style="font-size:0.75rem;color:#2563eb;text-decoration:none;">Lupa password?</a>
-        </div>
-        <button class="btn-action btn-print" style="width:100%;justify-content:center;padding:10px;" onclick="handleLoginSubmit()">Masuk Sekarang</button>
-      </div>
-
-      <div id="registerFormSection" style="display:none;">
-        <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Nama Lengkap Siswa</label>
-        <input type="text" id="regName" class="input-field" placeholder="Nama Anda...">
-        <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Alamat Email</label>
-        <input type="email" id="regEmail" class="input-field" placeholder="nama@email.com">
-        <label style="font-size:0.8rem;font-weight:700;color:var(--text-sub);">Password (minimal 6 karakter)</label>
-        <input type="password" id="regPassword" class="input-field" placeholder="Ketik password baru..." onkeydown="if(event.key==='Enter') handleRegisterSubmit()">
-        <button class="btn-action btn-print" style="width:100%;justify-content:center;padding:10px;" onclick="handleRegisterSubmit()">Daftar Akun Baru</button>
-      </div>
-
-      <div id="authErrorMessage" style="display:none;color:#e11d48;font-size:0.82rem;font-weight:700;margin-top:12px;text-align:center;"></div>
-    </div>
-  </div>
-
-  <!-- INTERACTIVE STROKE ANIMATION MODAL -->
+  <!-- PURE SVG STROKE ANIMATION MODAL -->
   <div class="modal-backdrop" id="strokeModal">
-    <div class="modal-card" style="max-width:480px;text-align:center;">
+    <div class="modal-card" style="text-align:center;">
       <button class="modal-close" onclick="closeStrokeModal()">✕</button>
 
-      <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px;">
-        <span id="strokeModalChar" style="font-size:2.8rem;font-weight:900;color:var(--text-main);font-family:var(--font-kyokasho);">漢</span>
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:6px;">
+        <span id="animKanjiTitle" style="font-size:3.2rem;font-weight:900;color:var(--text-main);font-family:var(--font-kyokasho);line-height:1;">漢</span>
         <div style="text-align:left;">
-          <div id="strokeModalMeaning" style="font-size:1.1rem;font-weight:800;color:var(--text-main);">Arti Kanji</div>
-          <div id="strokeModalStrokes" style="font-size:0.84rem;color:var(--text-sub);">0 Goresan</div>
+          <div id="animKanjiMeaning" style="font-size:1.15rem;font-weight:800;color:var(--text-main);">Arti Huruf</div>
+          <div style="display:flex;gap:6px;margin-top:2px;">
+            <span id="animStrokeCountTag" class="reading-tag tag-stroke">0 Goresan</span>
+            <button class="btn-voice-mini" onclick="speakCurrentAnimKanji()" title="Dengarkan Suara Kanji">🔊</button>
+          </div>
         </div>
       </div>
 
-      <div class="anim-canvas-wrapper" style="margin:16px auto;">
-        <svg id="strokeAnimSvg" viewBox="0 0 109 109">
-          <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#e2e8f0" stroke-dasharray="2,2" stroke-width="1" />
-          <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#e2e8f0" stroke-dasharray="2,2" stroke-width="1" />
-          <g id="strokeBackgroundGroup"></g>
-          <g id="strokeAnimatedGroup"></g>
+      <!-- Tianzige Canvas -->
+      <div id="animCanvasWrap">
+        <svg id="animCanvasSvg" viewBox="0 0 109 109">
+          <!-- Cross lines -->
+          <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#e2e8f0" stroke-dasharray="2.5,2.5" stroke-width="1" />
+          <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#e2e8f0" stroke-dasharray="2.5,2.5" stroke-width="1" />
+          <!-- Ghost outlines -->
+          <g id="animGhostGroup"></g>
+          <!-- Animated drawing strokes -->
+          <g id="animStrokesGroup"></g>
         </svg>
       </div>
 
-      <div class="anim-controls">
-        <button class="anim-btn" onclick="restartStrokeAnimation()" title="Ulangi dari awal">⏮️ Ulangi</button>
-        <button class="anim-btn primary" id="btnToggleAnim" onclick="togglePlayPause()" title="Putar atau Jeda">⏸️ Jeda</button>
-        <button class="anim-btn" onclick="stepForwardStroke()" title="Goresan berikutnya">⏭️ Langkah</button>
+      <div class="anim-controls-bar">
+        <button class="anim-ctrl-btn" onclick="stepBackwardStroke()" title="Langkah sebelumnya">⏮️ Mundur</button>
+        <button class="anim-ctrl-btn primary" id="animPlayBtn" onclick="toggleStrokePlay()">⏸️ Jeda</button>
+        <button class="anim-ctrl-btn" onclick="stepForwardStroke()" title="Langkah berikutnya">⏭️ Maju</button>
+        <button class="anim-ctrl-btn" onclick="restartStrokeAnimation()" title="Ulangi dari awal">🔄 Ulangi</button>
       </div>
-      <div style="margin-top:10px;font-size:0.75rem;color:var(--text-sub);">
-        Goresan ke- <span id="currentStrokeNum" style="font-weight:800;color:var(--accent-lavender);">1</span> dari <span id="totalStrokesNum" style="font-weight:800;">1</span>
+
+      <div style="margin-top:10px;font-size:0.78rem;color:var(--text-sub);">
+        Goresan ke- <span id="currentStrokeNum" style="font-weight:800;color:#e11d48;">1</span> dari <span id="totalStrokesNum" style="font-weight:800;">1</span>
       </div>
     </div>
   </div>
@@ -585,7 +1223,7 @@ ${cssContent}
     let kanjiData = KANJI_DATA_BY_LEVEL[currentLevel];
     let currentBab = '1';
 
-    // Current logged in user profile (Bypass with Sensei / Student)
+    // Current user context
     let currentUser = {
       uid: 'portal_user',
       displayName: 'Siswa JP10',
@@ -616,35 +1254,26 @@ ${cssContent}
         badge.style.borderColor = LEVEL_META[currentLevel].color;
       }
 
-      // Re-populate Bab Selector for this Level
+      // Re-populate Bab Selector
       const babSelect = document.getElementById('babSelector');
       if (babSelect) {
-        babSelect.innerHTML = \`<option value="all">Semua Bab (Bab 1 - 18)</option>\` +
+        babSelect.innerHTML = \`<option value="all">Semua (Bab 1 - 18)</option>\` +
           kanjiData.map(d => \`<option value="\${d.bab}">Bab \${d.bab}: \${(d.titleJp.split(' ')[1] || d.titleId).replace(/</g, '&lt;')}</option>\`).join('');
         babSelect.value = '1';
       }
       currentBab = '1';
 
-      // Update Visibility of Worksheets
+      // Update Views
       updateWorksheetVisibility();
+      initFlashcards();
 
-      // Update Stats
       const statMasteredEl = document.getElementById('statMasteredCount');
       if (statMasteredEl) statMasteredEl.innerText = LEVEL_META[currentLevel].totalKanji;
 
-      // Update Quiz & Explorer Views
-      if (document.getElementById('tab-quiz').classList.contains('active')) {
-        renderQuizView();
-      }
-      if (document.getElementById('tab-progress').classList.contains('active')) {
-        renderProgressView();
-      }
-      if (document.getElementById('tab-explorer').classList.contains('active')) {
-        renderExplorerView();
-      }
-      if (document.getElementById('tab-downloads').classList.contains('active')) {
-        renderDownloadsView();
-      }
+      if (document.getElementById('tab-quiz').classList.contains('active')) renderQuizView();
+      if (document.getElementById('tab-progress').classList.contains('active')) renderProgressView();
+      if (document.getElementById('tab-explorer').classList.contains('active')) renderExplorerView();
+      if (document.getElementById('tab-downloads').classList.contains('active')) renderDownloadsView();
     }
 
     function updateWorksheetVisibility() {
@@ -667,9 +1296,8 @@ ${cssContent}
     function handleBabChange(val) {
       currentBab = val;
       updateWorksheetVisibility();
-      if (document.getElementById('tab-quiz').classList.contains('active')) {
-        renderQuizView();
-      }
+      initFlashcards();
+      if (document.getElementById('tab-quiz').classList.contains('active')) renderQuizView();
     }
 
     // --- TAB SWITCHING ---
@@ -682,6 +1310,7 @@ ${cssContent}
       const targetSec = document.getElementById(tabId);
       if (targetSec) targetSec.classList.add('active');
 
+      if (tabId === 'tab-flashcards') initFlashcards();
       if (tabId === 'tab-quiz') renderQuizView();
       if (tabId === 'tab-progress') renderProgressView();
       if (tabId === 'tab-explorer') renderExplorerView();
@@ -691,10 +1320,7 @@ ${cssContent}
 
     // --- TEXT-TO-SPEECH (TTS) ---
     function speakJapanese(text) {
-      if (!('speechSynthesis' in window)) {
-        alert('Fitur suara tidak didukung oleh browser ini.');
-        return;
-      }
+      if (!('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(text);
       u.lang = 'ja-JP';
@@ -714,7 +1340,330 @@ ${cssContent}
       localStorage.setItem('kanji_studio_theme', nxt);
     }
 
-    // --- QUIZ VIEW ---
+    // =======================================================
+    // 🎴 FLASHCARD 3D ENGINE
+    // =======================================================
+    let fcList = [];
+    let fcIndex = 0;
+    let isFlipped = false;
+
+    function initFlashcards() {
+      fcList = [];
+      const targetBab = currentBab === 'all' ? null : parseInt(currentBab, 10);
+
+      kanjiData.forEach(ch => {
+        if (!targetBab || ch.bab === targetBab) {
+          ch.kanjiList.forEach(k => {
+            fcList.push({
+              ...k,
+              bab: ch.bab,
+              babTitle: ch.titleId,
+              level: currentLevel
+            });
+          });
+        }
+      });
+
+      if (fcList.length === 0 && kanjiData[0]) {
+        kanjiData[0].kanjiList.forEach(k => {
+          fcList.push({ ...k, bab: 1, babTitle: kanjiData[0].titleId, level: currentLevel });
+        });
+      }
+
+      fcIndex = 0;
+      isFlipped = false;
+      renderCurrentFlashcard();
+    }
+
+    function renderCurrentFlashcard() {
+      const box = document.getElementById('flashcardBox');
+      if (!box || fcList.length === 0) return;
+
+      if (isFlipped) {
+        box.classList.remove('flipped');
+        isFlipped = false;
+      }
+
+      const item = fcList[fcIndex];
+      // Front
+      document.getElementById('fcLevelBadge').innerText = \`Level \${item.level} • Bab \${item.bab}\`;
+      document.getElementById('fcCounter').innerText = \`\${fcIndex + 1} / \${fcList.length}\`;
+      document.getElementById('fcChar').innerText = item.kanji;
+      document.getElementById('fcStrokesTag').innerText = \`\${item.strokes} Goresan\`;
+      document.getElementById('fcRadicalTag').innerText = \`Radikal: \${item.radical}\`;
+
+      // Back
+      document.getElementById('fcBackLevelBadge').innerText = \`Level \${item.level} • Bab \${item.bab}\`;
+      document.getElementById('fcBackChar').innerText = item.kanji;
+      document.getElementById('fcBackMeaning').innerText = item.meaning;
+      document.getElementById('fcBackOn').innerText = item.on;
+      document.getElementById('fcBackKun').innerText = item.kun;
+      document.getElementById('fcBackStrokeRule').innerText = item.strokeRule;
+
+      // Vocab pills
+      const pillsBox = document.getElementById('fcBackVocabPills');
+      pillsBox.innerHTML = item.words.map(w => \`
+        <span class="vocab-pill">
+          <ruby><strong>\${w.word}</strong><rt>\${w.reading}</rt></ruby>: \${w.meaning}
+          <button class="btn-voice-inline" onclick="event.stopPropagation(); speakJapanese('\${w.word}')" title="Dengar">🔊</button>
+        </span>
+      \`).join('');
+
+      // Sentence
+      document.getElementById('fcBackSentence').innerHTML = formatSentenceRuby(item.sentenceFurigana);
+      document.getElementById('fcBackSentenceId').innerText = \`"\${item.sentenceId}"\`;
+    }
+
+    function flipFlashcard() {
+      const box = document.getElementById('flashcardBox');
+      if (!box) return;
+      isFlipped = !isFlipped;
+      if (isFlipped) {
+        box.classList.add('flipped');
+      } else {
+        box.classList.remove('flipped');
+      }
+    }
+
+    function nextFlashcard() {
+      if (fcList.length === 0) return;
+      fcIndex = (fcIndex + 1) % fcList.length;
+      renderCurrentFlashcard();
+    }
+
+    function prevFlashcard() {
+      if (fcList.length === 0) return;
+      fcIndex = (fcIndex - 1 + fcList.length) % fcList.length;
+      renderCurrentFlashcard();
+    }
+
+    function shuffleFlashcards() {
+      for (let i = fcList.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [fcList[i], fcList[j]] = [fcList[j], fcList[i]];
+      }
+      fcIndex = 0;
+      renderCurrentFlashcard();
+    }
+
+    function speakCurrentFlashcard() {
+      if (fcList[fcIndex]) {
+        speakJapanese(fcList[fcIndex].kanji);
+      }
+    }
+
+    function playCurrentFlashcardAnimation() {
+      if (fcList[fcIndex]) {
+        const item = fcList[fcIndex];
+        playStrokeAnimation(item.kanji, item.meaning, item.strokes);
+      }
+    }
+
+    // Keyboard listener for Flashcards
+    window.addEventListener('keydown', (e) => {
+      const flashcardTab = document.getElementById('tab-flashcards');
+      if (flashcardTab && flashcardTab.classList.contains('active')) {
+        if (e.code === 'Space') {
+          e.preventDefault();
+          flipFlashcard();
+        } else if (e.code === 'ArrowRight') {
+          e.preventDefault();
+          nextFlashcard();
+        } else if (e.code === 'ArrowLeft') {
+          e.preventDefault();
+          prevFlashcard();
+        }
+      }
+    });
+
+    // =======================================================
+    // 🎌 STROKE ORDER ANIMATOR ENGINE
+    // =======================================================
+    let activeStrokeList = [];
+    let activeAnimKanji = '';
+    let currentStrokeStepIndex = 0;
+    let strokeTimer = null;
+    let isStrokePlaying = false;
+
+    function playStrokeAnimation(kanji, meaning, strokesCount) {
+      activeAnimKanji = kanji;
+      activeStrokeList = kanjiStrokesMap[kanji] || [];
+      currentStrokeStepIndex = 0;
+      isStrokePlaying = false;
+      if (strokeTimer) clearTimeout(strokeTimer);
+
+      if (!meaning || !strokesCount) {
+        let foundK = null;
+        Object.values(KANJI_DATA_BY_LEVEL).some(lvl => 
+          lvl.some(ch => {
+            const match = ch.kanjiList.find(k => k.kanji === kanji);
+            if (match) { foundK = match; return true; }
+            return false;
+          })
+        );
+        if (foundK) {
+          if (!meaning) meaning = foundK.meaning;
+          if (!strokesCount) strokesCount = foundK.strokes;
+        }
+      }
+
+      document.getElementById('animKanjiTitle').innerText = kanji;
+      document.getElementById('animKanjiMeaning').innerText = meaning || 'Kanji';
+      document.getElementById('animStrokeCountTag').innerText = (strokesCount || activeStrokeList.length || 0) + ' Goresan';
+      document.getElementById('totalStrokesNum').innerText = activeStrokeList.length || strokesCount || 1;
+      document.getElementById('animPlayBtn').innerText = '⏸️ Jeda';
+
+      // Open Modal
+      const modal = document.getElementById('strokeModal');
+      modal.classList.add('active');
+      modal.style.display = 'flex';
+
+      setupStrokeSvgCanvas();
+      speakJapanese(kanji);
+
+      // Auto start playback
+      isStrokePlaying = true;
+      runStrokeLoop();
+    }
+
+    function closeStrokeModal() {
+      if (strokeTimer) clearTimeout(strokeTimer);
+      isStrokePlaying = false;
+      const modal = document.getElementById('strokeModal');
+      modal.classList.remove('active');
+      modal.style.display = 'none';
+    }
+
+    function speakCurrentAnimKanji() {
+      if (activeAnimKanji) speakJapanese(activeAnimKanji);
+    }
+
+    function setupStrokeSvgCanvas() {
+      const ghostGroup = document.getElementById('animGhostGroup');
+      const strokesGroup = document.getElementById('animStrokesGroup');
+      ghostGroup.innerHTML = '';
+      strokesGroup.innerHTML = '';
+
+      if (!activeStrokeList || activeStrokeList.length === 0) {
+        strokesGroup.innerHTML = '<text x="54.5" y="65" font-size="42" text-anchor="middle" fill="#334155">' + activeAnimKanji + '</text>';
+        return;
+      }
+
+      // Render all ghost outlines
+      activeStrokeList.forEach((dStr) => {
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', dStr);
+        path.setAttribute('class', 'stroke-path stroke-ghost');
+        ghostGroup.appendChild(path);
+      });
+    }
+
+    function renderStrokeStep(step) {
+      const strokesGroup = document.getElementById('animStrokesGroup');
+      strokesGroup.innerHTML = '';
+
+      const total = activeStrokeList.length;
+      if (total === 0) return;
+
+      document.getElementById('currentStrokeNum').innerText = Math.min(step + 1, total);
+
+      for (let i = 0; i <= step && i < total; i++) {
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', activeStrokeList[i]);
+
+        if (i === step) {
+          path.setAttribute('class', 'stroke-path stroke-drawing');
+          strokesGroup.appendChild(path);
+
+          try {
+            const len = path.getTotalLength() || 100;
+            path.style.strokeDasharray = len;
+            path.style.strokeDashoffset = len;
+            path.style.transition = 'stroke-dashoffset 0.45s ease-out';
+            setTimeout(() => {
+              path.style.strokeDashoffset = '0';
+            }, 20);
+          } catch (e) {
+            // fallback if getTotalLength not supported in rare headless contexts
+          }
+        } else {
+          path.setAttribute('class', 'stroke-path');
+          path.setAttribute('stroke', '#0f172a');
+          path.setAttribute('stroke-width', '4.4');
+          strokesGroup.appendChild(path);
+        }
+      }
+    }
+
+    function toggleStrokePlay() {
+      if (isStrokePlaying) {
+        isStrokePlaying = false;
+        if (strokeTimer) clearTimeout(strokeTimer);
+        document.getElementById('animPlayBtn').innerText = '▶️ Putar';
+      } else {
+        isStrokePlaying = true;
+        document.getElementById('animPlayBtn').innerText = '⏸️ Jeda';
+        runStrokeLoop();
+      }
+    }
+
+    function runStrokeLoop() {
+      if (!isStrokePlaying || !activeStrokeList || activeStrokeList.length === 0) return;
+
+      renderStrokeStep(currentStrokeStepIndex);
+      currentStrokeStepIndex++;
+
+      if (currentStrokeStepIndex >= activeStrokeList.length) {
+        // Pause to appreciate completed kanji, then restart smoothly
+        strokeTimer = setTimeout(() => {
+          if (!isStrokePlaying) return;
+          currentStrokeStepIndex = 0;
+          runStrokeLoop();
+        }, 1400);
+      } else {
+        strokeTimer = setTimeout(() => {
+          runStrokeLoop();
+        }, 650);
+      }
+    }
+
+    function restartStrokeAnimation() {
+      if (strokeTimer) clearTimeout(strokeTimer);
+      currentStrokeStepIndex = 0;
+      isStrokePlaying = true;
+      document.getElementById('animPlayBtn').innerText = '⏸️ Jeda';
+      runStrokeLoop();
+    }
+
+    function stepForwardStroke() {
+      if (strokeTimer) clearTimeout(strokeTimer);
+      isStrokePlaying = false;
+      document.getElementById('animPlayBtn').innerText = '▶️ Putar';
+
+      if (currentStrokeStepIndex < activeStrokeList.length - 1) {
+        currentStrokeStepIndex++;
+      } else {
+        currentStrokeStepIndex = 0;
+      }
+      renderStrokeStep(currentStrokeStepIndex);
+    }
+
+    function stepBackwardStroke() {
+      if (strokeTimer) clearTimeout(strokeTimer);
+      isStrokePlaying = false;
+      document.getElementById('animPlayBtn').innerText = '▶️ Putar';
+
+      if (currentStrokeStepIndex > 0) {
+        currentStrokeStepIndex--;
+      } else {
+        currentStrokeStepIndex = Math.max(0, activeStrokeList.length - 1);
+      }
+      renderStrokeStep(currentStrokeStepIndex);
+    }
+
+    // =======================================================
+    // 🎯 QUIZ VIEW
+    // =======================================================
     function renderQuizView() {
       const container = document.getElementById('quizContainer');
       const targetBab = currentBab === 'all' ? 1 : parseInt(currentBab);
@@ -778,19 +1727,21 @@ ${cssContent}
       }
     }
 
-    // --- PROGRESS VIEW ---
+    // =======================================================
+    // 📊 PROGRESS VIEW
+    // =======================================================
     function renderProgressView() {
       const list = document.getElementById('progressChapterList');
       list.innerHTML = kanjiData.map(ch => {
         return \`
-          <div style="background:var(--clay-surface);border:1px solid var(--card-border);border-radius:14px;padding:12px 14px;">
+          <div style="background:var(--clay-surface);border:1px solid var(--card-border);border-radius:16px;padding:14px 16px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
               <span style="font-size:0.75rem;font-weight:800;color:var(--pastel-blue-txt);">Bab \${ch.bab}</span>
               <span style="font-size:0.72rem;font-weight:700;color:var(--text-sub);">
                 \${ch.kanjiList.length} Kanji • 20 Soal
               </span>
             </div>
-            <div style="font-size:0.86rem;font-weight:700;color:var(--text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+            <div style="font-size:0.88rem;font-weight:800;color:var(--text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
               \${ch.titleJp}
             </div>
             <div style="font-size:0.76rem;color:var(--text-sub);">\${ch.titleId}</div>
@@ -799,7 +1750,9 @@ ${cssContent}
       }).join('');
     }
 
-    // --- EXPLORER & KAMUS VIEW ---
+    // =======================================================
+    // 🔍 EXPLORER & KAMUS VIEW
+    // =======================================================
     function renderExplorerView(searchQuery = '') {
       const grid = document.getElementById('explorerGrid');
       const q = searchQuery.toLowerCase().trim();
@@ -826,16 +1779,16 @@ ${cssContent}
           <div class="explorer-top">
             <div>
               <span class="curriculum-tag" style="font-size:0.65rem;">Bab \${k.bab}</span>
-              <div class="exp-char" title="Klik untuk salin" onclick="navigator.clipboard.writeText('\${k.kanji}'); alert('Kanji \${k.kanji} disalin ke clipboard!');">\${k.kanji}</div>
+              <div class="exp-char" title="Klik untuk dengar suara" onclick="speakJapanese('\${k.kanji}')">\${k.kanji}</div>
             </div>
             <div>
-              <button class="btn-animate-stroke" onclick="playStrokeAnimation('\${k.kanji}', '\${k.meaning}', \${k.strokes})">
+              <button class="btn-animate-stroke" onclick="playStrokeAnimation('\${k.kanji}')">
                 ▶️ Animasi
               </button>
             </div>
           </div>
           <div>
-            <div style="font-size:0.92rem;font-weight:700;color:var(--text-main);">\${k.meaning}</div>
+            <div style="font-size:0.92rem;font-weight:800;color:var(--text-main);">\${k.meaning}</div>
             <div style="font-size:0.78rem;color:var(--text-sub);margin-top:2px;">
               音: <strong>\${k.on}</strong> | 訓: <strong>\${k.kun}</strong>
             </div>
@@ -843,7 +1796,7 @@ ${cssContent}
               \${k.strokes} Goresan • Radikal: \${k.radical}
             </div>
           </div>
-          <div style="font-size:0.78rem;background:var(--clay-surface);padding:5px 8px;border-radius:8px;color:var(--text-main);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:space-between;">
+          <div style="font-size:0.78rem;background:var(--clay-surface);padding:6px 10px;border-radius:10px;color:var(--text-main);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:space-between;">
             <div>
               📚 <ruby><strong>\${k.words[0] ? k.words[0].word : k.kanji}</strong><rt>\${k.words[0] ? k.words[0].reading : ''}</rt></ruby>: \${k.words[0] ? k.words[0].meaning : ''}
             </div>
@@ -857,7 +1810,9 @@ ${cssContent}
       renderExplorerView(val);
     }
 
-    // --- DOWNLOADS VIEW ---
+    // =======================================================
+    // 📥 DOWNLOADS VIEW
+    // =======================================================
     function renderDownloadsView() {
       const container = document.getElementById('downloadsGridContainer');
       container.innerHTML = kanjiData.map(ch => \`
@@ -877,114 +1832,6 @@ ${cssContent}
           </div>
         </div>
       \`).join('');
-    }
-
-    // --- STROKE ANIMATOR ---
-    let animTimer = null;
-    let animRunning = false;
-    let animCurrentIndex = 0;
-    let animPaths = [];
-
-    function playStrokeAnimation(kanji, meaning, strokes) {
-      const paths = kanjiStrokesMap[kanji];
-      if (!paths || paths.length === 0) {
-        alert('Data animasi goresan untuk Kanji "' + kanji + '" sedang dimuat.');
-        return;
-      }
-      animPaths = paths;
-      document.getElementById('strokeModalChar').innerText = kanji;
-      document.getElementById('strokeModalMeaning').innerText = meaning;
-      document.getElementById('strokeModalStrokes').innerText = strokes + ' Goresan';
-      document.getElementById('totalStrokesNum').innerText = paths.length;
-
-      document.getElementById('strokeModal').classList.add('active');
-
-      const bgGroup = document.getElementById('strokeBackgroundGroup');
-      bgGroup.innerHTML = paths.map(d => \`<path d="\${d}" fill="none" stroke="#e2e8f0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>\`).join('');
-
-      restartStrokeAnimation();
-    }
-
-    function restartStrokeAnimation() {
-      if (animTimer) clearInterval(animTimer);
-      animCurrentIndex = 0;
-      animRunning = true;
-      document.getElementById('btnToggleAnim').innerText = '⏸️ Jeda';
-      document.getElementById('strokeAnimatedGroup').innerHTML = '';
-      stepNextStroke();
-    }
-
-    function stepNextStroke() {
-      if (animCurrentIndex >= animPaths.length) {
-        animRunning = false;
-        document.getElementById('btnToggleAnim').innerText = '▶️ Putar';
-        return;
-      }
-
-      animCurrentIndex++;
-      document.getElementById('currentStrokeNum').innerText = animCurrentIndex;
-
-      const animatedGroup = document.getElementById('strokeAnimatedGroup');
-      const d = animPaths[animCurrentIndex - 1];
-      const pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      pathEl.setAttribute('d', d);
-      pathEl.setAttribute('fill', 'none');
-      pathEl.setAttribute('stroke', '#0f172a');
-      pathEl.setAttribute('stroke-width', '4.2');
-      pathEl.setAttribute('stroke-linecap', 'round');
-      pathEl.setAttribute('stroke-linejoin', 'round');
-
-      animatedGroup.appendChild(pathEl);
-
-      const len = pathEl.getTotalLength();
-      pathEl.style.strokeDasharray = len;
-      pathEl.style.strokeDashoffset = len;
-      pathEl.style.transition = 'stroke-dashoffset 0.45s ease-out';
-
-      setTimeout(() => {
-        pathEl.style.strokeDashoffset = '0';
-      }, 20);
-
-      if (animRunning) {
-        animTimer = setTimeout(() => {
-          stepNextStroke();
-        }, 550);
-      }
-    }
-
-    function togglePlayPause() {
-      if (animRunning) {
-        animRunning = false;
-        if (animTimer) clearTimeout(animTimer);
-        document.getElementById('btnToggleAnim').innerText = '▶️ Lanjut';
-      } else {
-        if (animCurrentIndex >= animPaths.length) {
-          restartStrokeAnimation();
-        } else {
-          animRunning = true;
-          document.getElementById('btnToggleAnim').innerText = '⏸️ Jeda';
-          stepNextStroke();
-        }
-      }
-    }
-
-    function stepForwardStroke() {
-      if (animTimer) clearTimeout(animTimer);
-      animRunning = false;
-      document.getElementById('btnToggleAnim').innerText = '▶️ Lanjut';
-      if (animCurrentIndex < animPaths.length) {
-        stepNextStroke();
-      }
-    }
-
-    function closeStrokeModal() {
-      if (animTimer) clearTimeout(animTimer);
-      animRunning = false;
-      document.getElementById('strokeModal').classList.remove('active');
-    }
-
-    function closeAuthModal() {
-      document.getElementById('authModal').classList.remove('active');
     }
 
     // --- POSTMESSAGE LISTENER (DASHBOARD INTEGRATION) ---
@@ -1011,7 +1858,7 @@ ${cssContent}
   // Write to index.html in Kanji Studio folder
   const targetPath = path.join(rootDir, 'index.html');
   fs.writeFileSync(targetPath, html, 'utf-8');
-  console.log(`Successfully generated unified index.html (${(html.length / 1024 / 1024).toFixed(2)} MB)!`);
+  console.log(`Successfully generated unified index.html with Flashcards & Claymorphism Nav (${(html.length / 1024 / 1024).toFixed(2)} MB)!`);
 }
 
 buildIndexApp();

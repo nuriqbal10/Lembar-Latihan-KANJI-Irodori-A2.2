@@ -534,12 +534,17 @@
     #animCanvasSvg { width: 100%; height: 100%; }
 
     .stroke-path {
-      fill: none; stroke-width: 4.6; stroke-linecap: round; stroke-linejoin: round;
+      fill: none; stroke-width: 4.2; stroke-linecap: round; stroke-linejoin: round;
       transition: stroke 0.3s ease, opacity 0.3s ease;
     }
-    .stroke-ghost { stroke: #cbd5e1; stroke-width: 3.8; opacity: 0.35; }
+    .stroke-ghost { stroke: #cbd5e1; stroke-width: 4; opacity: 0.25; }
+    @keyframes drawStrokeAnim {
+      from { stroke-dashoffset: var(--stroke-len); }
+      to { stroke-dashoffset: 0; }
+    }
     .stroke-drawing {
-      stroke: #e11d48 !important; stroke-width: 5.6 !important;
+      stroke: #e11d48 !important; stroke-width: 5.2 !important;
+      animation: drawStrokeAnim 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
 
     .anim-controls-bar {
@@ -148353,15 +148358,15 @@
         </svg>
       </div>
 
-      <div class="anim-controls-bar">
-        <button class="anim-ctrl-btn" onclick="stepBackwardStroke()" title="Langkah sebelumnya">⏮️ Mundur</button>
-        <button class="anim-ctrl-btn primary" id="animPlayBtn" onclick="toggleStrokePlay()">⏸️ Jeda</button>
-        <button class="anim-ctrl-btn" onclick="stepForwardStroke()" title="Langkah berikutnya">⏭️ Maju</button>
-        <button class="anim-ctrl-btn" onclick="restartStrokeAnimation()" title="Ulangi dari awal">🔄 Ulangi</button>
+      <div style="font-size:0.84rem;font-weight:700;color:var(--text-sub);margin:10px 0 14px;" id="animStepIndicator">
+        Langkah Goresan: 1 / 1
       </div>
 
-      <div style="margin-top:10px;font-size:0.78rem;color:var(--text-sub);">
-        Goresan ke- <span id="currentStrokeNum" style="font-weight:800;color:#e11d48;">1</span> dari <span id="totalStrokesNum" style="font-weight:800;">1</span>
+      <div class="anim-controls-bar">
+        <button class="anim-ctrl-btn" onclick="prevStrokeStep()" title="Langkah sebelumnya">⏮️ Mundur</button>
+        <button class="anim-ctrl-btn primary" id="animPlayBtn" onclick="toggleStrokePlay()">⏸️ Jeda</button>
+        <button class="anim-ctrl-btn" onclick="nextStrokeStep()" title="Langkah berikutnya">Maju ⏭️</button>
+        <button class="anim-ctrl-btn" onclick="resetStrokePlayer()" title="Ulangi dari awal">🔄 Ulangi</button>
       </div>
     </div>
   </div>
@@ -148636,16 +148641,16 @@
     // =======================================================
     let activeStrokeList = [];
     let activeAnimKanji = '';
-    let currentStrokeStepIndex = 0;
+    let currentStrokeIndex = 0;
     let strokeTimer = null;
-    let isStrokePlaying = false;
+    let isPlaying = false;
 
     function playStrokeAnimation(kanji, meaning, strokesCount) {
       activeAnimKanji = kanji;
       activeStrokeList = kanjiStrokesMap[kanji] || [];
-      currentStrokeStepIndex = 0;
-      isStrokePlaying = false;
-      if (strokeTimer) clearTimeout(strokeTimer);
+      currentStrokeIndex = 0;
+      isPlaying = false;
+      clearTimeout(strokeTimer);
 
       if (!meaning || !strokesCount) {
         let foundK = null;
@@ -148665,8 +148670,7 @@
       document.getElementById('animKanjiTitle').innerText = kanji;
       document.getElementById('animKanjiMeaning').innerText = meaning || 'Kanji';
       document.getElementById('animStrokeCountTag').innerText = (strokesCount || activeStrokeList.length || 0) + ' Goresan';
-      document.getElementById('totalStrokesNum').innerText = activeStrokeList.length || strokesCount || 1;
-      document.getElementById('animPlayBtn').innerText = '⏸️ Jeda';
+      document.getElementById('animPlayBtn').innerText = '▶️ Putar Animasi';
 
       // Open Modal
       const modal = document.getElementById('strokeModal');
@@ -148675,15 +148679,11 @@
 
       setupStrokeSvgCanvas();
       speakJapanese(kanji);
-
-      // Auto start playback
-      isStrokePlaying = true;
-      runStrokeLoop();
+      startStrokePlay();
     }
 
     function closeStrokeModal() {
-      if (strokeTimer) clearTimeout(strokeTimer);
-      isStrokePlaying = false;
+      pauseStrokePlay();
       const modal = document.getElementById('strokeModal');
       modal.classList.remove('active');
       modal.style.display = 'none';
@@ -148700,7 +148700,7 @@
       strokesGroup.innerHTML = '';
 
       if (!activeStrokeList || activeStrokeList.length === 0) {
-        strokesGroup.innerHTML = '<text x="54.5" y="65" font-size="42" text-anchor="middle" fill="#334155">' + activeAnimKanji + '</text>';
+        strokesGroup.innerHTML = '<text x="54.5" y="65" font-size="40" text-anchor="middle" fill="#334155">' + activeAnimKanji + '</text>';
         return;
       }
 
@@ -148708,9 +148708,14 @@
       activeStrokeList.forEach((dStr) => {
         const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         path.setAttribute('d', dStr);
-        path.setAttribute('class', 'stroke-path stroke-ghost');
+        path.setAttribute('class', 'stroke-path');
+        path.setAttribute('stroke', '#cbd5e1');
+        path.setAttribute('stroke-width', '4');
+        path.setAttribute('opacity', '0.25');
         ghostGroup.appendChild(path);
       });
+
+      renderStrokeStep(currentStrokeIndex);
     }
 
     function renderStrokeStep(step) {
@@ -148720,100 +148725,93 @@
       const total = activeStrokeList.length;
       if (total === 0) return;
 
-      document.getElementById('currentStrokeNum').innerText = Math.min(step + 1, total);
-
       for (let i = 0; i <= step && i < total; i++) {
         const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         path.setAttribute('d', activeStrokeList[i]);
+        path.setAttribute('class', 'stroke-path');
 
         if (i === step) {
-          path.setAttribute('class', 'stroke-path stroke-drawing');
+          path.setAttribute('stroke', '#e11d48');
+          path.setAttribute('stroke-width', '5.2');
           strokesGroup.appendChild(path);
 
-          try {
-            const len = path.getTotalLength() || 100;
-            path.style.strokeDasharray = len;
-            path.style.strokeDashoffset = len;
-            path.style.transition = 'stroke-dashoffset 0.45s ease-out';
-            setTimeout(() => {
-              path.style.strokeDashoffset = '0';
-            }, 20);
-          } catch (e) {
-            // fallback if getTotalLength not supported in rare headless contexts
-          }
+          const len = path.getTotalLength() || 100;
+          path.style.setProperty('--stroke-len', len);
+          path.style.strokeDasharray = len;
+          path.style.strokeDashoffset = len;
+          path.classList.add('stroke-drawing');
         } else {
-          path.setAttribute('class', 'stroke-path');
-          path.setAttribute('stroke', '#0f172a');
+          path.setAttribute('stroke', '#1e293b');
           path.setAttribute('stroke-width', '4.4');
           strokesGroup.appendChild(path);
+        }
+      }
+
+      const indicator = document.getElementById('animStepIndicator');
+      if (indicator) {
+        if (step >= total - 1 && !isPlaying) {
+          indicator.innerText = '✨ Selesai! Seluruh ' + total + ' goresan lengkap.';
+        } else {
+          indicator.innerText = 'Langkah Goresan: ' + (step + 1) + ' / ' + total;
         }
       }
     }
 
     function toggleStrokePlay() {
-      if (isStrokePlaying) {
-        isStrokePlaying = false;
-        if (strokeTimer) clearTimeout(strokeTimer);
-        document.getElementById('animPlayBtn').innerText = '▶️ Putar';
-      } else {
-        isStrokePlaying = true;
-        document.getElementById('animPlayBtn').innerText = '⏸️ Jeda';
-        runStrokeLoop();
-      }
+      if (isPlaying) { pauseStrokePlay(); } else { startStrokePlay(); }
     }
 
-    function runStrokeLoop() {
-      if (!isStrokePlaying || !activeStrokeList || activeStrokeList.length === 0) return;
-
-      renderStrokeStep(currentStrokeStepIndex);
-      currentStrokeStepIndex++;
-
-      if (currentStrokeStepIndex >= activeStrokeList.length) {
-        // Pause to appreciate completed kanji, then restart smoothly
-        strokeTimer = setTimeout(() => {
-          if (!isStrokePlaying) return;
-          currentStrokeStepIndex = 0;
-          runStrokeLoop();
-        }, 1400);
-      } else {
-        strokeTimer = setTimeout(() => {
-          runStrokeLoop();
-        }, 650);
+    function startStrokePlay() {
+      if (currentStrokeIndex >= activeStrokeList.length - 1) {
+        currentStrokeIndex = 0;
       }
-    }
-
-    function restartStrokeAnimation() {
-      if (strokeTimer) clearTimeout(strokeTimer);
-      currentStrokeStepIndex = 0;
-      isStrokePlaying = true;
+      isPlaying = true;
       document.getElementById('animPlayBtn').innerText = '⏸️ Jeda';
-      runStrokeLoop();
+      playNextStrokeLoop();
     }
 
-    function stepForwardStroke() {
-      if (strokeTimer) clearTimeout(strokeTimer);
-      isStrokePlaying = false;
-      document.getElementById('animPlayBtn').innerText = '▶️ Putar';
-
-      if (currentStrokeStepIndex < activeStrokeList.length - 1) {
-        currentStrokeStepIndex++;
-      } else {
-        currentStrokeStepIndex = 0;
-      }
-      renderStrokeStep(currentStrokeStepIndex);
+    function pauseStrokePlay() {
+      isPlaying = false;
+      clearTimeout(strokeTimer);
+      document.getElementById('animPlayBtn').innerText = '▶️ Lanjutkan';
     }
 
-    function stepBackwardStroke() {
-      if (strokeTimer) clearTimeout(strokeTimer);
-      isStrokePlaying = false;
-      document.getElementById('animPlayBtn').innerText = '▶️ Putar';
+    function playNextStrokeLoop() {
+      if (!isPlaying) return;
+      renderStrokeStep(currentStrokeIndex);
 
-      if (currentStrokeStepIndex > 0) {
-        currentStrokeStepIndex--;
+      if (currentStrokeIndex < activeStrokeList.length - 1) {
+        currentStrokeIndex++;
+        strokeTimer = setTimeout(playNextStrokeLoop, 850);
       } else {
-        currentStrokeStepIndex = Math.max(0, activeStrokeList.length - 1);
+        isPlaying = false;
+        document.getElementById('animPlayBtn').innerText = '🔄 Putar Ulang';
+        const indicator = document.getElementById('animStepIndicator');
+        if (indicator) indicator.innerText = '✨ Selesai! Seluruh ' + activeStrokeList.length + ' goresan lengkap.';
       }
-      renderStrokeStep(currentStrokeStepIndex);
+    }
+
+    function nextStrokeStep() {
+      pauseStrokePlay();
+      if (currentStrokeIndex < activeStrokeList.length - 1) {
+        currentStrokeIndex++;
+        renderStrokeStep(currentStrokeIndex);
+      }
+    }
+
+    function prevStrokeStep() {
+      pauseStrokePlay();
+      if (currentStrokeIndex > 0) {
+        currentStrokeIndex--;
+        renderStrokeStep(currentStrokeIndex);
+      }
+    }
+
+    function resetStrokePlayer() {
+      pauseStrokePlay();
+      currentStrokeIndex = 0;
+      renderStrokeStep(0);
+      startStrokePlay();
     }
 
     // =======================================================
